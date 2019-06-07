@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="339.0" prefWidth="385.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="NursingHome.controller.AboutInfoUIController">
+   <children>
+      <Label alignment="CENTER" layoutX="96.0" layoutY="54.0" prefHeight="50.0" prefWidth="194.0" text="NursingHome" textAlignment="CENTER">
+         <font>
+            <Font size="26.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutX="155.0" layoutY="113.0" prefHeight="39.0" prefWidth="76.0" text="版本0.0.1">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutX="116.0" layoutY="162.0" prefHeight="33.0" prefWidth="154.0" text="Copyright © 2019 ">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutX="131.0" layoutY="195.0" prefHeight="33.0" prefWidth="124.0" text="保留一切权利">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
