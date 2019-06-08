@@ -10,6 +10,8 @@ import javafx.fxml.Initializable;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import static NursingHome.ControllerUtils.showAlert;
+
 public class AdminLoginUIController implements Initializable {
     private Main application;
     @FXML private JFXPasswordField managerPassword;
@@ -32,11 +34,19 @@ public class AdminLoginUIController implements Initializable {
     }
 
     public void login() throws Exception{
+        if (check()){
+            application.gotoAdminMainUI();
+        }else{
+            showAlert("[错误]用户名或密码错误！");
+        }
+
+    }
+
+    public boolean check(){
         id=managerId.getText();
         password=managerPassword.getText();
-
         // TODO 从数据库中获得用户名密码，比较，放到GlobalInfo中
 
-        application.gotoAdminMainUI();
+        return true;
     }
 }

@@ -42,4 +42,5 @@ public class BusinessAdminUIController implements Initializable {
     public void aboutInfo() {
         application.createAboutInfoUI();
     }
+
 }
