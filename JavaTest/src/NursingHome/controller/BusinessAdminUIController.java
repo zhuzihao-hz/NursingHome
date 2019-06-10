@@ -1,7 +1,10 @@
 package NursingHome.controller;
 
 import NursingHome.Main;
+import javafx.beans.property.StringProperty;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.TableColumn;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -10,6 +13,7 @@ import static NursingHome.GlobalInfo.*;
 
 public class BusinessAdminUIController implements Initializable {
     private Main application;
+    @FXML TableColumn<StringProperty,String> busineddID;
     public void setApp(Main app) {
         this.application = app;
     }

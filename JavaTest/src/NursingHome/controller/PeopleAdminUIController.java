@@ -1,7 +1,10 @@
 package NursingHome.controller;
 
 import NursingHome.Main;
+import javafx.beans.property.StringProperty;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.TableColumn;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -15,7 +18,14 @@ public class PeopleAdminUIController implements Initializable {
     }
     public Main getApp() {return this.application; }
     @Override
-    public void initialize(URL url, ResourceBundle rb){}
+    public void initialize(URL url, ResourceBundle rb){
+        displayDoctor();
+        bindDoctor();
+        displayDoorBoy();
+        bindDoorBoy();
+        displayWorker();
+        bindWorker();
+    }
 
     public void logout() throws Exception{
         MANAGER_ID = "";
@@ -42,4 +52,26 @@ public class PeopleAdminUIController implements Initializable {
     public void aboutInfo() {
         application.createAboutInfoUI();
     }
+
+
+    public void bindDoctor(){
+
+    }
+    public void bindWorker(){
+
+    }
+    public void bindDoorBoy(){
+
+    }
+
+    public void displayDoctor(){
+
+    }
+    public void displayWorker(){
+
+    }
+    public void displayDoorBoy(){
+
+    }
+
 }

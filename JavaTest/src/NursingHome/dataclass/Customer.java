@@ -3,25 +3,79 @@ package NursingHome.dataclass;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.StringProperty;
 
-import java.util.Date;
-
 public class Customer {
     private StringProperty customerId;
     private StringProperty customerName;
     private IntegerProperty customerAge;
     private StringProperty customerEnterTime;
+    private IntegerProperty customerRoomID;
+    private IntegerProperty customerBedID;
     private StringProperty customerPhone;
     private StringProperty customerCareWorker;
+    private IntegerProperty customerCareType;
+    private StringProperty customerRelationName;
     private StringProperty customerRelation;
     private StringProperty customerRelationPhone;
 
-    public Customer(StringProperty customerId, StringProperty customerName, IntegerProperty customerAge, StringProperty customerEnterTime, StringProperty customerPhone, StringProperty customerCareWorker, StringProperty customerRelation, StringProperty customerRelationPhone) {
+    public int getCustomerRoomID() {
+        return customerRoomID.get();
+    }
+
+    public IntegerProperty customerRoomIDProperty() {
+        return customerRoomID;
+    }
+
+    public void setCustomerRoomID(int customerRoomID) {
+        this.customerRoomID.set(customerRoomID);
+    }
+
+    public int getCustomerBedID() {
+        return customerBedID.get();
+    }
+
+    public IntegerProperty customerBedIDProperty() {
+        return customerBedID;
+    }
+
+    public void setCustomerBedID(int customerBedID) {
+        this.customerBedID.set(customerBedID);
+    }
+
+    public int getCustomerCareType() {
+        return customerCareType.get();
+    }
+
+    public IntegerProperty customerCareTypeProperty() {
+        return customerCareType;
+    }
+
+    public void setCustomerCareType(int customerCareType) {
+        this.customerCareType.set(customerCareType);
+    }
+
+    public String getCustomerRelationName() {
+        return customerRelationName.get();
+    }
+
+    public StringProperty customerRelationNameProperty() {
+        return customerRelationName;
+    }
+
+    public void setCustomerRelationName(String customerRelationName) {
+        this.customerRelationName.set(customerRelationName);
+    }
+
+    public Customer(StringProperty customerId, StringProperty customerName, IntegerProperty customerAge, StringProperty customerEnterTime, IntegerProperty customerRoomID, IntegerProperty customerBedID, StringProperty customerPhone, StringProperty customerCareWorker, IntegerProperty customerCareType, StringProperty customerRelationName, StringProperty customerRelation, StringProperty customerRelationPhone) {
         this.customerId = customerId;
         this.customerName = customerName;
         this.customerAge = customerAge;
         this.customerEnterTime = customerEnterTime;
+        this.customerRoomID = customerRoomID;
+        this.customerBedID = customerBedID;
         this.customerPhone = customerPhone;
         this.customerCareWorker = customerCareWorker;
+        this.customerCareType = customerCareType;
+        this.customerRelationName = customerRelationName;
         this.customerRelation = customerRelation;
         this.customerRelationPhone = customerRelationPhone;
     }
