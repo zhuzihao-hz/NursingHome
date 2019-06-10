@@ -69,7 +69,7 @@
                      <tabs>
                         <Tab closable="false" text="业务管理">
                            <content>
-                              <TableView prefHeight="706.0" prefWidth="973.0">
+                              <TableView fx:id="customerTableView" prefHeight="706.0" prefWidth="973.0">
                                 <columns>
                                   <TableColumn fx:id="businessID" prefWidth="75.0" text="编号" />
                                   <TableColumn fx:id="businessName" prefWidth="75.0" text="姓名" />
@@ -79,7 +79,7 @@
                                     <TableColumn fx:id="businessBedID" prefWidth="75.0" text="床号" />
                                     <TableColumn fx:id="businessPhone" prefWidth="75.0" text="电话" />
                                     <TableColumn fx:id="businessCareWorkerID" prefWidth="75.0" text="护工编号" />
-                                    <TableColumn fx:id="businessCareMode" prefWidth="75.0" text="护理等级" />
+                                    <TableColumn fx:id="businessCareType" prefWidth="75.0" text="护理等级" />
                                     <TableColumn fx:id="businessRelationName" prefWidth="75.0" text="亲属姓名" />
                                     <TableColumn fx:id="businessRelation" prefWidth="75.0" text="亲属关系" />
                                     <TableColumn fx:id="businessRelationPhone" prefWidth="75.0" text="亲属电话" />
@@ -89,7 +89,7 @@
                         </Tab>
                         <Tab closable="false" text="床位管理">
                            <content>
-                              <TableView prefHeight="706.0" prefWidth="973.0">
+                              <TableView fx:id="bedTableView" prefHeight="706.0" prefWidth="973.0">
                                  <columns>
                                     <TableColumn fx:id="bedID" prefWidth="75.0" text="编号" />
                                     <TableColumn fx:id="bedRoomID" prefWidth="75.0" text="所在房间" />

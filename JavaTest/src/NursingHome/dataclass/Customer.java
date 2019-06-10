@@ -17,54 +17,6 @@ public class Customer {
     private StringProperty customerRelation;
     private StringProperty customerRelationPhone;
 
-    public int getCustomerRoomID() {
-        return customerRoomID.get();
-    }
-
-    public IntegerProperty customerRoomIDProperty() {
-        return customerRoomID;
-    }
-
-    public void setCustomerRoomID(int customerRoomID) {
-        this.customerRoomID.set(customerRoomID);
-    }
-
-    public int getCustomerBedID() {
-        return customerBedID.get();
-    }
-
-    public IntegerProperty customerBedIDProperty() {
-        return customerBedID;
-    }
-
-    public void setCustomerBedID(int customerBedID) {
-        this.customerBedID.set(customerBedID);
-    }
-
-    public int getCustomerCareType() {
-        return customerCareType.get();
-    }
-
-    public IntegerProperty customerCareTypeProperty() {
-        return customerCareType;
-    }
-
-    public void setCustomerCareType(int customerCareType) {
-        this.customerCareType.set(customerCareType);
-    }
-
-    public String getCustomerRelationName() {
-        return customerRelationName.get();
-    }
-
-    public StringProperty customerRelationNameProperty() {
-        return customerRelationName;
-    }
-
-    public void setCustomerRelationName(String customerRelationName) {
-        this.customerRelationName.set(customerRelationName);
-    }
-
     public Customer(StringProperty customerId, StringProperty customerName, IntegerProperty customerAge, StringProperty customerEnterTime, IntegerProperty customerRoomID, IntegerProperty customerBedID, StringProperty customerPhone, StringProperty customerCareWorker, IntegerProperty customerCareType, StringProperty customerRelationName, StringProperty customerRelation, StringProperty customerRelationPhone) {
         this.customerId = customerId;
         this.customerName = customerName;
@@ -80,104 +32,55 @@ public class Customer {
         this.customerRelationPhone = customerRelationPhone;
     }
 
-    public Customer() {
-    }
+    public Customer() { }
 
+    public int getCustomerRoomID() { return customerRoomID.get(); }
+    public IntegerProperty customerRoomIDProperty() { return customerRoomID; }
 
-    public String getCustomerId() {
-        return customerId.get();
-    }
+    public int getCustomerBedID() { return customerBedID.get(); }
+    public IntegerProperty customerBedIDProperty() { return customerBedID; }
 
-    public StringProperty customerIdProperty() {
-        return customerId;
-    }
+    public int getCustomerCareType() { return customerCareType.get(); }
+    public IntegerProperty customerCareTypeProperty() { return customerCareType; }
 
-    public String getCustomerName() {
-        return customerName.get();
-    }
+    public String getCustomerRelationName() { return customerRelationName.get(); }
+    public StringProperty customerRelationNameProperty() { return customerRelationName; }
 
-    public StringProperty customerNameProperty() {
-        return customerName;
-    }
+    public String getCustomerId() { return customerId.get(); }
+    public StringProperty customerIdProperty() { return customerId; }
 
-    public void setCustomerName(String customerName) {
-        this.customerName.set(customerName);
-    }
+    public String getCustomerName() { return customerName.get(); }
+    public StringProperty customerNameProperty() { return customerName; }
 
-    public int getCustomerAge() {
-        return customerAge.get();
-    }
+    public int getCustomerAge() { return customerAge.get(); }
+    public IntegerProperty customerAgeProperty() { return customerAge; }
 
-    public IntegerProperty customerAgeProperty() {
-        return customerAge;
-    }
+    public String getCustomerEnterTime() { return customerEnterTime.get(); }
+    public StringProperty customerEnterTimeProperty() { return customerEnterTime; }
 
-    public void setCustomerAge(int customerAge) {
-        this.customerAge.set(customerAge);
-    }
+    public String getCustomerPhone() { return customerPhone.get(); }
+    public StringProperty customerPhoneProperty() { return customerPhone; }
 
-    public String getCustomerEnterTime() {
-        return customerEnterTime.get();
-    }
+    public String getCustomerCareWorker() { return customerCareWorker.get(); }
+    public StringProperty customerCareWorkerProperty() { return customerCareWorker; }
 
-    public StringProperty customerEnterTimeProperty() {
-        return customerEnterTime;
-    }
+    public String getCustomerRelation() { return customerRelation.get(); }
+    public StringProperty customerRelationProperty() { return customerRelation; }
 
-    public void setCustomerEnterTime(String customerEnterTime) {
-        this.customerEnterTime.set(customerEnterTime);
-    }
+    public String getCustomerRelationPhone() { return customerRelationPhone.get(); }
+    public StringProperty customerRelationPhoneProperty() { return customerRelationPhone; }
 
-    public String getCustomerPhone() {
-        return customerPhone.get();
-    }
-
-    public StringProperty customerPhoneProperty() {
-        return customerPhone;
-    }
-
-    public String getCustomerCareWorker() {
-        return customerCareWorker.get();
-    }
-
-    public StringProperty customerCareWorkerProperty() {
-        return customerCareWorker;
-    }
-
-    public void setCustomerCareWorker(String customerCareWorker) {
-        this.customerCareWorker.set(customerCareWorker);
-    }
-
-    public String getCustomerRelation() {
-        return customerRelation.get();
-    }
-
-    public StringProperty customerRelationProperty() {
-        return customerRelation;
-    }
-
-    public String getCustomerRelationPhone() {
-        return customerRelationPhone.get();
-    }
-
-    public StringProperty customerRelationPhoneProperty() {
-        return customerRelationPhone;
-    }
-
-    public void setCustomerId(String customerId) {
-        this.customerId.set(customerId);
-    }
-
-    public void setCustomerPhone(String customerPhone) {
-        this.customerPhone.set(customerPhone);
-    }
-
-    public void setCustomerRelationPhone(String customerRelationPhone) {
-        this.customerRelationPhone.set(customerRelationPhone);
-    }
-
-    public void setCustomerRelation(String customerRelation) {
-        this.customerRelation.set(customerRelation);
-    }
+    public void setCustomerRoomID(int customerRoomID) { this.customerRoomID.set(customerRoomID); }
+    public void setCustomerBedID(int customerBedID) { this.customerBedID.set(customerBedID); }
+    public void setCustomerCareType(int customerCareType) { this.customerCareType.set(customerCareType); }
+    public void setCustomerRelationName(String customerRelationName) { this.customerRelationName.set(customerRelationName); }
+    public void setCustomerName(String customerName) { this.customerName.set(customerName); }
+    public void setCustomerAge(int customerAge) { this.customerAge.set(customerAge); }
+    public void setCustomerEnterTime(String customerEnterTime) { this.customerEnterTime.set(customerEnterTime); }
+    public void setCustomerCareWorker(String customerCareWorker) { this.customerCareWorker.set(customerCareWorker); }
+    public void setCustomerId(String customerId) { this.customerId.set(customerId); }
+    public void setCustomerPhone(String customerPhone) { this.customerPhone.set(customerPhone); }
+    public void setCustomerRelationPhone(String customerRelationPhone) { this.customerRelationPhone.set(customerRelationPhone); }
+    public void setCustomerRelation(String customerRelation) { this.customerRelation.set(customerRelation); }
 
 }

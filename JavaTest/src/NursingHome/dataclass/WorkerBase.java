@@ -11,6 +11,11 @@ public class WorkerBase {
 
     public WorkerBase(){ }
 
+    public String getId() { return id.get(); }
+    public String getName() { return name.get(); }
+    public String getAge() { return age.get(); }
+    public double getSalary() { return salary.get(); }
+
     public void setId(String id) { this.id.set(id); }
     public void setAge(String age) { this.age.set(age); }
     public void setName(String name) { this.name.set(name); }
