@@ -70,12 +70,12 @@
                         <content>
                           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="365.0" prefWidth="455.0">
                                  <children>
-                                    <TableView layoutX="-2.0" prefHeight="367.0" prefWidth="461.0">
+                                    <TableView fx:id="workerTableView" layoutX="-2.0" prefHeight="367.0" prefWidth="461.0">
                                       <columns>
-                                        <TableColumn prefWidth="75.0" text="工号" />
-                                        <TableColumn prefWidth="75.0" text="姓名" />
-                                          <TableColumn prefWidth="75.0" text="年龄" />
-                                          <TableColumn prefWidth="75.0" text="薪水" />
+                                        <TableColumn fx:id="workerID" prefWidth="75.0" text="工号" />
+                                        <TableColumn fx:id="workerName" prefWidth="75.0" text="姓名" />
+                                          <TableColumn fx:id="workerAge" prefWidth="75.0" text="年龄" />
+                                          <TableColumn fx:id="workerSalary" prefWidth="75.0" text="薪水" />
                                       </columns>
                                     </TableView>
                                  </children>
@@ -86,13 +86,13 @@
                         <content>
                           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
-                                    <TableView layoutX="-2.0" prefHeight="366.0" prefWidth="463.0">
+                                    <TableView fx:id="doctorTableView" layoutX="-2.0" prefHeight="366.0" prefWidth="463.0">
                                       <columns>
-                                        <TableColumn prefWidth="75.0" text="工号" />
-                                        <TableColumn prefWidth="75.0" text="姓名" />
-                                          <TableColumn prefWidth="75.0" text="年龄" />
-                                          <TableColumn prefWidth="75.0" text="科室" />
-                                          <TableColumn prefWidth="75.0" text="薪水" />
+                                        <TableColumn fx:id="doctorID" prefWidth="75.0" text="工号" />
+                                        <TableColumn fx:id="doctorName" prefWidth="75.0" text="姓名" />
+                                          <TableColumn fx:id="doctorAge" prefWidth="75.0" text="年龄" />
+                                          <TableColumn fx:id="doctorMajor" prefWidth="75.0" text="科室" />
+                                          <TableColumn fx:id="doctorSalary" prefWidth="75.0" text="薪水" />
                                       </columns>
                                     </TableView>
                                  </children>
@@ -103,13 +103,13 @@
                           <content>
                             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
-                                    <TableView layoutX="-8.0" prefHeight="365.0" prefWidth="467.0">
+                                    <TableView fx:id="doorBoyTableView" layoutX="-8.0" prefHeight="365.0" prefWidth="467.0">
                                       <columns>
-                                        <TableColumn prefWidth="75.0" text="工号" />
-                                        <TableColumn prefWidth="75.0" text="姓名" />
-                                          <TableColumn prefWidth="75.0" text="年龄" />
-                                          <TableColumn prefWidth="75.0" text="薪水" />
-                                          <TableColumn prefWidth="75.0" text="岗位" />
+                                        <TableColumn fx:id="doorBoyID" prefWidth="75.0" text="工号" />
+                                        <TableColumn fx:id="doorBoyName" prefWidth="75.0" text="姓名" />
+                                          <TableColumn fx:id="doorBoyAge" prefWidth="75.0" text="年龄" />
+                                          <TableColumn fx:id="doorBoySalary" prefWidth="75.0" text="薪水" />
+                                          <TableColumn fx:id="doorBoyWorkPlace" prefWidth="75.0" text="岗位" />
                                       </columns>
                                     </TableView>
                                  </children>

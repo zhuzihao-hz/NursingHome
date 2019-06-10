@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -45,7 +46,12 @@ public class BusinessAdminUIController implements Initializable {
     }
     public Main getApp() {return this.application; }
     @Override
-    public void initialize(URL url, ResourceBundle rb){ }
+    public void initialize(URL url, ResourceBundle rb){
+        displayBusiness();
+        bindBusiness();
+        displayBed();
+        bindBed();
+    }
 
     public void logout() throws Exception{
         MANAGER_ID = "";
@@ -71,6 +77,44 @@ public class BusinessAdminUIController implements Initializable {
     }
     public void aboutInfo() {
         application.createAboutInfoUI();
+    }
+
+    public void bindBusiness(){
+        businessID.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+        businessName.setCellValueFactory(new PropertyValueFactory<>("customerName"));
+        businessAge.setCellValueFactory(new PropertyValueFactory<>("customerAge"));
+        businessBedID.setCellValueFactory(new PropertyValueFactory<>("customerBedID"));
+        businessCareType.setCellValueFactory(new PropertyValueFactory<>("customerCareType"));
+        businessEnterTime.setCellValueFactory(new PropertyValueFactory<>("customerEnterTime"));
+        businessPhone.setCellValueFactory(new PropertyValueFactory<>("customerPhone"));
+        businessRelation.setCellValueFactory(new PropertyValueFactory<>("customerRelation"));
+        businessRelationName.setCellValueFactory(new PropertyValueFactory<>("customerRelationName"));
+        businessRelationPhone.setCellValueFactory(new PropertyValueFactory<>("customerRelationPhone"));
+        businessRoomID.setCellValueFactory(new PropertyValueFactory<>("customerRoomID"));
+        businessCareWorkerID.setCellValueFactory(new PropertyValueFactory<>("customerCareWorker"));
+        customerTableView.setVisible(true);
+        customerTableView.setEditable(false);
+        customerTableView.setTableMenuButtonVisible(true);
+        customerTableView.setItems(customerObservableList);
+    }
+
+    public void bindBed(){
+        bedID.setCellValueFactory(new PropertyValueFactory<>("id"));
+        bedRoomID.setCellValueFactory(new PropertyValueFactory<>("roomID"));
+        bedIsPeople.setCellValueFactory(new PropertyValueFactory<>("isPeople"));
+        bedRank.setCellValueFactory(new PropertyValueFactory<>("rank"));
+        bedTableView.setVisible(true);
+        bedTableView.setEditable(false);
+        bedTableView.setTableMenuButtonVisible(true);
+        bedTableView.setItems(bedObservableList);
+    }
+
+    public void displayBusiness(){
+
+    }
+
+    public void displayBed(){
+
     }
 
 }

@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -36,7 +37,7 @@ public class PeopleAdminUIController implements Initializable {
 
     @FXML private TableColumn<StringProperty,String> doorBoyID;
     @FXML private TableColumn<StringProperty,String> doorBoyName;
-    @FXML private TableColumn<StringProperty,String> doorBoyrAge;
+    @FXML private TableColumn<StringProperty,String> doorBoyAge;
     @FXML private TableColumn<StringProperty,String> doorBoyWorkPlace;
     @FXML private TableColumn<StringProperty,Integer> doorBoySalary;
     @FXML private TableView<DoorBoy> doorBoyTableView;
@@ -84,13 +85,36 @@ public class PeopleAdminUIController implements Initializable {
 
 
     public void bindDoctor(){
-
+        doctorID.setCellValueFactory(new PropertyValueFactory<>("id"));
+        doctorName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        doctorAge.setCellValueFactory(new PropertyValueFactory<>("age"));
+        doctorSalary.setCellValueFactory(new PropertyValueFactory<>("salary"));
+        doctorMajor.setCellValueFactory(new PropertyValueFactory<>("major"));
+        doctorTableView.setVisible(true);
+        doctorTableView.setEditable(false);
+        doctorTableView.setTableMenuButtonVisible(true);
+        doctorTableView.setItems(doctorObservableList);
     }
     public void bindWorker(){
-
+        workerID.setCellValueFactory(new PropertyValueFactory<>("id"));
+        workerName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        workerAge.setCellValueFactory(new PropertyValueFactory<>("age"));
+        workerSalary.setCellValueFactory(new PropertyValueFactory<>("salary"));
+        workerTableView.setVisible(true);
+        workerTableView.setEditable(false);
+        workerTableView.setTableMenuButtonVisible(true);
+        workerTableView.setItems(workerObservableList);
     }
     public void bindDoorBoy(){
-
+        doorBoyID.setCellValueFactory(new PropertyValueFactory<>("id"));
+        doorBoyName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        doorBoyAge.setCellValueFactory(new PropertyValueFactory<>("age"));
+        doorBoySalary.setCellValueFactory(new PropertyValueFactory<>("salary"));
+        doorBoyWorkPlace.setCellValueFactory(new PropertyValueFactory<>("workPlace"));
+        doorBoyTableView.setVisible(true);
+        doorBoyTableView.setEditable(false);
+        doorBoyTableView.setTableMenuButtonVisible(true);
+        doorBoyTableView.setItems(doorBoyObservableList);
     }
 
     public void displayDoctor(){

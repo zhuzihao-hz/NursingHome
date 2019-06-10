@@ -7,6 +7,8 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.ImageView?>
@@ -14,9 +16,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="457.0" prefWidth="689.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="NursingHome.controller.BusinessAdminUIController">
+<AnchorPane prefHeight="732.0" prefWidth="1139.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="NursingHome.controller.BusinessAdminUIController">
    <children>
-      <VBox layoutY="1.0" prefHeight="487.0" prefWidth="747.0">
+      <VBox layoutY="1.0" prefHeight="598.0" prefWidth="936.0">
         <children>
           <MenuBar VBox.vgrow="NEVER">
             <menus>
@@ -43,9 +45,9 @@
           </MenuBar>
           <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="372.0" prefWidth="198.0" VBox.vgrow="ALWAYS">
                <children>
-                  <VBox prefHeight="493.0" prefWidth="169.0">
+                  <VBox prefHeight="705.0" prefWidth="169.0">
                      <children>
-                        <AnchorPane prefHeight="493.0" prefWidth="169.0">
+                        <AnchorPane prefHeight="710.0" prefWidth="169.0">
                            <children>
                               <ImageView fitHeight="103.0" fitWidth="102.0" layoutX="30.0" layoutY="26.0" onMouseReleased="#personInfoImage" pickOnBounds="true" preserveRatio="true" />
                               <Label alignment="CENTER" layoutX="38.0" layoutY="129.0" prefHeight="40.0" prefWidth="85.0" text="姓名">
@@ -62,19 +64,43 @@
                         </AnchorPane>
                      </children>
                   </VBox>
-                  <Separator layoutX="165.0" layoutY="3.0" orientation="VERTICAL" prefHeight="489.0" prefWidth="6.0" />
-                  <TableView layoutX="168.0" prefHeight="493.0" prefWidth="638.0">
-                    <columns>
-                      <TableColumn prefWidth="75.0" text="编号" />
-                      <TableColumn prefWidth="75.0" text="姓名" />
-                        <TableColumn prefWidth="75.0" text="年龄" />
-                        <TableColumn prefWidth="75.0" text="入院时间" />
-                        <TableColumn prefWidth="75.0" text="电话" />
-                        <TableColumn prefWidth="75.0" text="护工编号" />
-                        <TableColumn prefWidth="75.0" text="亲属姓名" />
-                        <TableColumn prefWidth="75.0" text="亲属电话" />
-                    </columns>
-                  </TableView>
+                  <Separator layoutX="165.0" layoutY="3.0" orientation="VERTICAL" prefHeight="702.0" prefWidth="6.0" />
+                  <TabPane layoutX="168.0">
+                     <tabs>
+                        <Tab closable="false" text="业务管理">
+                           <content>
+                              <TableView fx:id="customerTableView" prefHeight="706.0" prefWidth="973.0">
+                                <columns>
+                                  <TableColumn fx:id="businessID" prefWidth="75.0" text="编号" />
+                                  <TableColumn fx:id="businessName" prefWidth="75.0" text="姓名" />
+                                    <TableColumn fx:id="businessAge" prefWidth="75.0" text="年龄" />
+                                    <TableColumn fx:id="businessEnterTime" prefWidth="75.0" text="入院时间" />
+                                    <TableColumn fx:id="businessRoomID" prefWidth="75.0" text="房号" />
+                                    <TableColumn fx:id="businessBedID" prefWidth="75.0" text="床号" />
+                                    <TableColumn fx:id="businessPhone" prefWidth="75.0" text="电话" />
+                                    <TableColumn fx:id="businessCareWorkerID" prefWidth="75.0" text="护工编号" />
+                                    <TableColumn fx:id="businessCareType" prefWidth="75.0" text="护理等级" />
+                                    <TableColumn fx:id="businessRelationName" prefWidth="75.0" text="亲属姓名" />
+                                    <TableColumn fx:id="businessRelation" prefWidth="75.0" text="亲属关系" />
+                                    <TableColumn fx:id="businessRelationPhone" prefWidth="75.0" text="亲属电话" />
+                                </columns>
+                              </TableView>
+                           </content>
+                        </Tab>
+                        <Tab closable="false" text="床位管理">
+                           <content>
+                              <TableView fx:id="bedTableView" prefHeight="706.0" prefWidth="973.0">
+                                 <columns>
+                                    <TableColumn fx:id="bedID" prefWidth="75.0" text="编号" />
+                                    <TableColumn fx:id="bedRoomID" prefWidth="75.0" text="所在房间" />
+                                    <TableColumn fx:id="bedIsPeople" prefWidth="75.0" text="是否使用" />
+                                    <TableColumn fx:id="bedRank" prefWidth="75.0" text="床位等级" />
+                                 </columns>
+                              </TableView>
+                           </content>
+                        </Tab>
+                     </tabs>
+                  </TabPane>
                </children>
           </AnchorPane>
         </children>
