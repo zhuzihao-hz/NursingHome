@@ -1,43 +1,129 @@
 package NursingHome.dataclass;
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.StringProperty;
+
 import java.util.Date;
 
 public class Customer {
-    private String customerId;
-    private String customerName;
-    private Integer customerAge;
-    private Date customerEnterTime;
-    private String customerPhone;
-    private String customerCareWorker;
-    private String customerRelation;
-    private String customerRelationPhone;
+    private StringProperty customerId;
+    private StringProperty customerName;
+    private IntegerProperty customerAge;
+    private StringProperty customerEnterTime;
+    private StringProperty customerPhone;
+    private StringProperty customerCareWorker;
+    private StringProperty customerRelation;
+    private StringProperty customerRelationPhone;
 
-    public Customer(){
-        this.customerId="";
-        this.customerAge=0;
-        this.customerCareWorker="";
-        this.customerEnterTime=new Date();
-        this.customerName="";
-        this.customerPhone="";
-        this.customerRelation="";
-        this.customerRelationPhone="";
+    public Customer(StringProperty customerId, StringProperty customerName, IntegerProperty customerAge, StringProperty customerEnterTime, StringProperty customerPhone, StringProperty customerCareWorker, StringProperty customerRelation, StringProperty customerRelationPhone) {
+        this.customerId = customerId;
+        this.customerName = customerName;
+        this.customerAge = customerAge;
+        this.customerEnterTime = customerEnterTime;
+        this.customerPhone = customerPhone;
+        this.customerCareWorker = customerCareWorker;
+        this.customerRelation = customerRelation;
+        this.customerRelationPhone = customerRelationPhone;
     }
 
-    public Date getCustomerEnterTime() { return customerEnterTime; }
-    public Integer getCustomerAge() { return customerAge; }
-    public String getCustomerCareWorker() { return customerCareWorker; }
-    public String getCustomerId() { return customerId; }
-    public String getCustomerName() { return customerName; }
-    public String getCustomerPhone() { return customerPhone; }
-    public String getCustomerRelation() { return customerRelation; }
-    public String getCustomerRelationPhone() { return customerRelationPhone; }
+    public Customer() {
+    }
 
-    public void setCustomerAge(Integer customerAge) { this.customerAge = customerAge; }
-    public void setCustomerCareWorker(String customerCareWorker) { this.customerCareWorker = customerCareWorker; }
-    public void setCustomerEnterTime(Date customerEnterTime) { this.customerEnterTime = customerEnterTime; }
-    public void setCustomerId(String customerId) { this.customerId = customerId; }
-    public void setCustomerName(String customerName) { this.customerName = customerName; }
-    public void setCustomerPhone(String customerPhone) { this.customerPhone = customerPhone; }
-    public void setCustomerRelation(String customerRelation) { this.customerRelation = customerRelation; }
-    public void setCustomerRelationPhone(String customerRelationPhone) { this.customerRelationPhone = customerRelationPhone; }
+
+    public String getCustomerId() {
+        return customerId.get();
+    }
+
+    public StringProperty customerIdProperty() {
+        return customerId;
+    }
+
+    public String getCustomerName() {
+        return customerName.get();
+    }
+
+    public StringProperty customerNameProperty() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName.set(customerName);
+    }
+
+    public int getCustomerAge() {
+        return customerAge.get();
+    }
+
+    public IntegerProperty customerAgeProperty() {
+        return customerAge;
+    }
+
+    public void setCustomerAge(int customerAge) {
+        this.customerAge.set(customerAge);
+    }
+
+    public String getCustomerEnterTime() {
+        return customerEnterTime.get();
+    }
+
+    public StringProperty customerEnterTimeProperty() {
+        return customerEnterTime;
+    }
+
+    public void setCustomerEnterTime(String customerEnterTime) {
+        this.customerEnterTime.set(customerEnterTime);
+    }
+
+    public String getCustomerPhone() {
+        return customerPhone.get();
+    }
+
+    public StringProperty customerPhoneProperty() {
+        return customerPhone;
+    }
+
+    public String getCustomerCareWorker() {
+        return customerCareWorker.get();
+    }
+
+    public StringProperty customerCareWorkerProperty() {
+        return customerCareWorker;
+    }
+
+    public void setCustomerCareWorker(String customerCareWorker) {
+        this.customerCareWorker.set(customerCareWorker);
+    }
+
+    public String getCustomerRelation() {
+        return customerRelation.get();
+    }
+
+    public StringProperty customerRelationProperty() {
+        return customerRelation;
+    }
+
+    public String getCustomerRelationPhone() {
+        return customerRelationPhone.get();
+    }
+
+    public StringProperty customerRelationPhoneProperty() {
+        return customerRelationPhone;
+    }
+
+    public void setCustomerId(String customerId) {
+        this.customerId.set(customerId);
+    }
+
+    public void setCustomerPhone(String customerPhone) {
+        this.customerPhone.set(customerPhone);
+    }
+
+    public void setCustomerRelationPhone(String customerRelationPhone) {
+        this.customerRelationPhone.set(customerRelationPhone);
+    }
+
+    public void setCustomerRelation(String customerRelation) {
+        this.customerRelation.set(customerRelation);
+    }
+
 }
