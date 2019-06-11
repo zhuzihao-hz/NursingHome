@@ -76,7 +76,7 @@ public class PeopleAdminUIController implements Initializable {
 
     public void personInfoImage(){getApp().createPersonalInfoUI();}
 
-    public void backtoMainMenu() throws Exception{
+    public void backToMainMenu() throws Exception{
         application.stage.close();
         application.gotoAdminMainUI();
     }

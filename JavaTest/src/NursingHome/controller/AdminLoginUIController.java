@@ -10,6 +10,7 @@ import javafx.fxml.Initializable;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import static NursingHome.ControllerUtils.md5;
 import static NursingHome.ControllerUtils.showAlert;
 
 public class AdminLoginUIController implements Initializable {
@@ -45,7 +46,11 @@ public class AdminLoginUIController implements Initializable {
     public boolean check(){
         id=managerId.getText();
         password=managerPassword.getText();
-        // TODO 从数据库中获得用户名密码，比较，放到GlobalInfo中
+        // TODO 从数据库中获得用户名密码，比较，放到GlobalInfo中,password1从数据库中获得
+        String password1="";
+        if (password1.equals(md5(password))){
+            return true;
+        }
 
         return true;
     }
