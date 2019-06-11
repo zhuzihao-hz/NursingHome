@@ -26,14 +26,26 @@
                 <items>
                   <MenuItem fx:id="personInfoMenu" mnemonicParsing="false" onAction="#personalInfo" text="个人信息" />
                   <MenuItem fx:id="logoutMenu" mnemonicParsing="false" onAction="#logout" text="注销" />
-                        <MenuItem mnemonicParsing="false" onAction="#backtoMainMenu" text="返回" />
+                        <MenuItem mnemonicParsing="false" onAction="#backToMainMenu" text="返回" />
                   <MenuItem fx:id="quitMenu" mnemonicParsing="false" onAction="#quit" text="退出" />
                 </items>
               </Menu>
               <Menu mnemonicParsing="false" text="管理">
                 <items>
-                  <MenuItem mnemonicParsing="false" text="新增客户" />
-                  <MenuItem mnemonicParsing="false" text="Unselect All" />
+                        <Menu mnemonicParsing="false" text="客户管理">
+                          <items>
+                        <MenuItem mnemonicParsing="false" onAction="#insertBusiness" text="新增客户" />
+                              <MenuItem mnemonicParsing="false" onAction="#deleteBusiness" text="删除客户" />
+                              <MenuItem mnemonicParsing="false" onAction="#setBusinessInfo" text="修改客户信息" />
+                          </items>
+                        </Menu>
+                        <Menu mnemonicParsing="false" text="床位管理">
+                          <items>
+                        <MenuItem mnemonicParsing="false" onAction="#insertBed" text="新增床位" />
+                              <MenuItem mnemonicParsing="false" onAction="#deleteBed" text="删除床位" />
+                              <MenuItem mnemonicParsing="false" onAction="#setBedInfo" text="修改床位信息" />
+                          </items>
+                        </Menu>
                 </items>
               </Menu>
               <Menu mnemonicParsing="false" text="帮助">
@@ -55,7 +67,7 @@
                                     <Font size="17.0" />
                                  </font>
                               </Label>
-                              <JFXButton layoutX="30.0" layoutY="206.0" onAction="#backtoMainMenu" prefHeight="40.0" prefWidth="102.0" text="返回主界面">
+                              <JFXButton layoutX="30.0" layoutY="206.0" onAction="#backToMainMenu" prefHeight="40.0" prefWidth="102.0" text="返回主界面">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
@@ -72,17 +84,17 @@
                               <TableView fx:id="customerTableView" prefHeight="706.0" prefWidth="973.0">
                                 <columns>
                                   <TableColumn fx:id="businessID" prefWidth="75.0" text="编号" />
-                                  <TableColumn fx:id="businessName" prefWidth="75.0" text="姓名" />
-                                    <TableColumn fx:id="businessAge" prefWidth="75.0" text="年龄" />
-                                    <TableColumn fx:id="businessEnterTime" prefWidth="75.0" text="入院时间" />
-                                    <TableColumn fx:id="businessRoomID" prefWidth="75.0" text="房号" />
-                                    <TableColumn fx:id="businessBedID" prefWidth="75.0" text="床号" />
-                                    <TableColumn fx:id="businessPhone" prefWidth="75.0" text="电话" />
-                                    <TableColumn fx:id="businessCareWorkerID" prefWidth="75.0" text="护工编号" />
-                                    <TableColumn fx:id="businessCareType" prefWidth="75.0" text="护理等级" />
+                                  <TableColumn fx:id="businessName" prefWidth="67.0" text="姓名" />
+                                    <TableColumn fx:id="businessAge" prefWidth="58.0" text="年龄" />
+                                    <TableColumn fx:id="businessEnterTime" prefWidth="145.0" text="入院时间" />
+                                    <TableColumn fx:id="businessRoomID" prefWidth="53.0" text="房号" />
+                                    <TableColumn fx:id="businessBedID" prefWidth="49.0" text="床号" />
+                                    <TableColumn fx:id="businessPhone" prefWidth="105.0" text="电话" />
+                                    <TableColumn fx:id="businessCareWorkerID" prefWidth="68.0" text="护工编号" />
+                                    <TableColumn fx:id="businessCareType" prefWidth="64.0" text="护理等级" />
                                     <TableColumn fx:id="businessRelationName" prefWidth="75.0" text="亲属姓名" />
-                                    <TableColumn fx:id="businessRelation" prefWidth="75.0" text="亲属关系" />
-                                    <TableColumn fx:id="businessRelationPhone" prefWidth="75.0" text="亲属电话" />
+                                    <TableColumn fx:id="businessRelation" prefWidth="68.0" text="亲属关系" />
+                                    <TableColumn fx:id="businessRelationPhone" prefWidth="102.0" text="亲属电话" />
                                 </columns>
                               </TableView>
                            </content>

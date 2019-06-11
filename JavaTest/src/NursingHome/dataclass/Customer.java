@@ -1,7 +1,6 @@
 package NursingHome.dataclass;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
 
 public class Customer {
     private StringProperty customerId;
@@ -32,7 +31,20 @@ public class Customer {
         this.customerRelationPhone = customerRelationPhone;
     }
 
-    public Customer() { }
+    public Customer() {
+        this.customerId = new SimpleStringProperty("");
+        this.customerName = new SimpleStringProperty("");
+        this.customerAge = new SimpleIntegerProperty(0);
+        this.customerEnterTime = new SimpleStringProperty("");
+        this.customerRoomID = new SimpleIntegerProperty(0);
+        this.customerBedID = new SimpleIntegerProperty(0);
+        this.customerPhone = new SimpleStringProperty("");
+        this.customerCareWorker = new SimpleStringProperty("");
+        this.customerCareType = new SimpleIntegerProperty(0);
+        this.customerRelationName = new SimpleStringProperty("");
+        this.customerRelation = new SimpleStringProperty("");
+        this.customerRelationPhone = new SimpleStringProperty("");
+    }
 
     public int getCustomerRoomID() { return customerRoomID.get(); }
     public IntegerProperty customerRoomIDProperty() { return customerRoomID; }

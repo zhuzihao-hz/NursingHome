@@ -14,6 +14,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
+import java.sql.*;
 import java.util.ResourceBundle;
 
 import static NursingHome.GlobalInfo.*;
@@ -83,6 +84,41 @@ public class PeopleAdminUIController implements Initializable {
         application.createAboutInfoUI();
     }
 
+    public void insertWorker(){
+        // TODO 新增护工
+    }
+
+    public void deleteWorker(){
+        // TODO 删除护工
+    }
+
+    public void setWorkerInfo(){
+        // TODO 设置护工信息
+    }
+
+    public void insertDoctor(){
+        // TODO 新增医生
+    }
+
+    public void deleteDoctor(){
+        // TODO 删除医生
+    }
+
+    public void setDoctorInfo(){
+        // TODO 设置医生信息
+    }
+
+    public void insertDoorBoy(){
+        // TODO 新增勤杂人员
+    }
+
+    public void deleteDoorBoy(){
+        // TODO 删除勤杂人员
+    }
+
+    public void setDoorBoyInfo(){
+        // TODO 设置勤杂人员信息
+    }
 
     public void bindDoctor(){
         doctorID.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -95,6 +131,7 @@ public class PeopleAdminUIController implements Initializable {
         doctorTableView.setTableMenuButtonVisible(true);
         doctorTableView.setItems(doctorObservableList);
     }
+
     public void bindWorker(){
         workerID.setCellValueFactory(new PropertyValueFactory<>("id"));
         workerName.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -105,6 +142,7 @@ public class PeopleAdminUIController implements Initializable {
         workerTableView.setTableMenuButtonVisible(true);
         workerTableView.setItems(workerObservableList);
     }
+
     public void bindDoorBoy(){
         doorBoyID.setCellValueFactory(new PropertyValueFactory<>("id"));
         doorBoyName.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -118,13 +156,92 @@ public class PeopleAdminUIController implements Initializable {
     }
 
     public void displayDoctor(){
-
+        // TODO 显示医生信息
+        Connection conn;
+        Statement stmt;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306", "root", "12345678");
+            String sql="SELECT * FROM NursingHome.dotcor";
+            stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()){
+                Doctor doctor=new Doctor();
+                doctor.setId(rs.getString(1));
+                doctor.setName(rs.getString(2));
+                doctor.setAge(rs.getInt(3));
+                doctor.setMajor(rs.getString(4));
+                doctor.setSalary(rs.getDouble(5));
+                doctorObservableList.add(doctor);
+            }
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        System.out.println("医生数据导入成功！");
     }
+
     public void displayWorker(){
-
+        // TODO 显示护工信息
+        Connection conn;
+        Statement stmt;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306", "root", "12345678");
+            String sql="SELECT * FROM NursingHome.worker";
+            stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()){
+                Worker worker=new Worker();
+                worker.setId(rs.getString(1));
+                worker.setName(rs.getString(2));
+                worker.setAge(rs.getInt(3));
+                worker.setSalary(rs.getDouble(4));
+                workerObservableList.add(worker);
+            }
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        System.out.println("护工数据导入成功！");
     }
-    public void displayDoorBoy(){
 
+    public void displayDoorBoy(){
+        // TODO 显示勤杂人员信息
+        Connection conn;
+        Statement stmt;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306", "root", "12345678");
+            String sql="SELECT * FROM NursingHome.doorboy";
+            stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()){
+                DoorBoy doorBoy=new DoorBoy();
+                doorBoy.setId(rs.getString(1));
+                doorBoy.setName(rs.getString(2));
+                doorBoy.setAge(rs.getInt(3));
+                doorBoy.setSalary(rs.getDouble(4));
+                doorBoy.setWorkPlace(rs.getString(5));
+                doorBoyObservableList.add(doorBoy);
+            }
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        System.out.println("勤杂人员数据导入成功！");
     }
 
 }

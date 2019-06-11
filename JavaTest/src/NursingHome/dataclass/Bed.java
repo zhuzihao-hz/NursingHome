@@ -1,26 +1,30 @@
 package NursingHome.dataclass;
 
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.*;
 
 public class Bed {
-    private IntegerProperty id;
+    private StringProperty id;
     private IntegerProperty roomID;
     private IntegerProperty rank;
     private BooleanProperty isPeople;
 
-    public Bed(IntegerProperty id, IntegerProperty roomID, IntegerProperty rank, BooleanProperty isPeople) {
+    public Bed(StringProperty id, IntegerProperty roomID, IntegerProperty rank, BooleanProperty isPeople) {
         this.id = id;
         this.roomID = roomID;
         this.rank = rank;
         this.isPeople = isPeople;
     }
 
-    public Bed() { }
+    public Bed() {
+        this.id=new SimpleStringProperty("");
+        this.roomID=new SimpleIntegerProperty(0);
+        this.rank=new SimpleIntegerProperty(0);
+        this.isPeople=new SimpleBooleanProperty(false);
+    }
 
-    public int getId() { return id.get(); }
-    public IntegerProperty idProperty() { return id; }
-    public void setId(int id) { this.id.set(id); }
+    public String getId() { return id.get(); }
+    public StringProperty idProperty() { return id; }
+    public void setId(String id) { this.id.set(id); }
 
     public int getRoomID() { return roomID.get(); }
     public IntegerProperty roomIDProperty() { return roomID; }

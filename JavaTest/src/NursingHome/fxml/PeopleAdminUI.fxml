@@ -31,8 +31,27 @@
                 </Menu>
                 <Menu mnemonicParsing="false" text="管理">
                   <items>
-                    <MenuItem mnemonicParsing="false" text="Delete" />
-                        <MenuItem mnemonicParsing="false" text="Delete" />
+                        <Menu mnemonicParsing="false" text="护工管理">
+                          <items>
+                          <MenuItem mnemonicParsing="false" onAction="#insertWorker" text="新增护工" />
+                              <MenuItem mnemonicParsing="false" onAction="#deleteWorker" text="解雇护工" />
+                              <MenuItem mnemonicParsing="false" onAction="#setWorkerInfo" text="修改护工信息" />
+                          </items>
+                        </Menu>
+                        <Menu mnemonicParsing="false" text="医务人员管理">
+                           <items>
+                              <MenuItem mnemonicParsing="false" onAction="#insertDoctor" text="新增医生" />
+                              <MenuItem mnemonicParsing="false" onAction="#deleteDoctor" text="解雇医生" />
+                              <MenuItem mnemonicParsing="false" onAction="#setDoctorInfo" text="修改医生信息" />
+                           </items>
+                        </Menu>
+                        <Menu mnemonicParsing="false" text="勤杂人员管理">
+                           <items>
+                              <MenuItem mnemonicParsing="false" onAction="#insertDoorBoy" text="新增勤杂人员" />
+                              <MenuItem mnemonicParsing="false" onAction="#deleteDoorBoy" text="解雇勤杂人员" />
+                              <MenuItem mnemonicParsing="false" onAction="#setDoorBoyInfo" text="修改勤杂人员" />
+                           </items>
+                        </Menu>
                   </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="帮助">
@@ -70,7 +89,7 @@
                         <content>
                           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="369.0" prefWidth="461.0">
                                  <children>
-                                    <TableView fx:id="workerTableView" layoutX="-2.0" prefHeight="367.0" prefWidth="463.0">
+                                    <TableView fx:id="workerTableView" prefHeight="367.0" prefWidth="461.0">
                                       <columns>
                                         <TableColumn fx:id="workerID" prefWidth="75.0" text="工号" />
                                         <TableColumn fx:id="workerName" prefWidth="75.0" text="姓名" />
@@ -86,7 +105,7 @@
                         <content>
                           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
-                                    <TableView fx:id="doctorTableView" layoutX="-2.0" prefHeight="366.0" prefWidth="463.0">
+                                    <TableView fx:id="doctorTableView" prefHeight="366.0" prefWidth="461.0">
                                       <columns>
                                         <TableColumn fx:id="doctorID" prefWidth="75.0" text="工号" />
                                         <TableColumn fx:id="doctorName" prefWidth="75.0" text="姓名" />
@@ -103,7 +122,7 @@
                           <content>
                             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
-                                    <TableView fx:id="doorBoyTableView" layoutX="-8.0" prefHeight="365.0" prefWidth="467.0">
+                                    <TableView fx:id="doorBoyTableView" prefHeight="365.0" prefWidth="459.0">
                                       <columns>
                                         <TableColumn fx:id="doorBoyID" prefWidth="75.0" text="工号" />
                                         <TableColumn fx:id="doorBoyName" prefWidth="75.0" text="姓名" />

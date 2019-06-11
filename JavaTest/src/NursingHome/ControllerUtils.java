@@ -8,6 +8,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.sql.*;
+
 public class ControllerUtils {
     public static void showAlert(String message) {
         Stage window = new Stage();
@@ -27,5 +29,4 @@ public class ControllerUtils {
         window.setScene(scene);
         window.showAndWait();
     }
-
 }
