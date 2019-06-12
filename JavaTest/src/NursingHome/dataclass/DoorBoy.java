@@ -11,6 +11,12 @@ public class DoorBoy extends WorkerBase {
         this.workPlace=new SimpleStringProperty("");
     }
 
+    public String getDoorBoyInfo(){
+        String temp;
+        temp="('"+this.getId()+"','"+this.getName()+"','"+this.getAge()+"','"+this.getSalary()+"','"+this.getWorkPlace()+"')";
+        return temp;
+    }
+
     public String getWorkPlace() { return workPlace.get(); }
     public void setWorkPlace(String workPlace) { this.workPlace.set(workPlace); }
     public StringProperty workPlaceProperty() { return workPlace; }

@@ -1,8 +1,10 @@
 package NursingHome;
 
+import NursingHome.controller.PeopleSetInfoUIController;
 import com.jfoenix.controls.JFXButton;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -52,5 +54,57 @@ public class ControllerUtils {
             md5code = "0" + md5code;
         }
         return md5code;
+    }
+
+    public static void initPeopleComboBox(ComboBox<String> peopleTypeComboBox,String peopleType,ComboBox<Integer> peopleAgeComboBox,ComboBox<String> peopleOtherComboBox) {
+        peopleTypeComboBox.getItems().add("护工");
+        peopleTypeComboBox.getItems().add("医生");
+        peopleTypeComboBox.getItems().add("勤杂人员");
+        peopleTypeComboBox.setValue(peopleType);
+        for (int i=18;i<61;i++){
+            peopleAgeComboBox.getItems().add(i);
+        }
+        peopleAgeComboBox.setValue(30);
+        if (PeopleSetInfoUIController.peopleType.equals("护工")){
+            peopleOtherComboBox.getItems().add("高级护工");
+            peopleOtherComboBox.getItems().add("中级护工");
+            peopleOtherComboBox.getItems().add("低级护工");
+            peopleOtherComboBox.getItems().add("实习护工");
+            peopleOtherComboBox.setValue("低级护工");
+        }else if (PeopleSetInfoUIController.peopleType.equals("医生")){
+            peopleOtherComboBox.getItems().add("全科");
+            peopleOtherComboBox.getItems().add("外科");
+            peopleOtherComboBox.getItems().add("内科");
+            peopleOtherComboBox.getItems().add("实习");
+            peopleOtherComboBox.setValue("全科");
+        }else if (PeopleSetInfoUIController.peopleType.equals("勤杂人员")){
+            peopleOtherComboBox.getItems().add("厨房");
+            peopleOtherComboBox.getItems().add("保洁");
+            peopleOtherComboBox.getItems().add("门卫");
+            peopleOtherComboBox.getItems().add("前台");
+            peopleOtherComboBox.setValue("厨房");
+        }
+    }
+    public static void changeComboBox(String peopleType,ComboBox<String> peopleOtherComboBox){
+        peopleOtherComboBox.getItems().clear();
+        if (peopleType.equals("护工")){
+            peopleOtherComboBox.getItems().add("高级护工");
+            peopleOtherComboBox.getItems().add("中级护工");
+            peopleOtherComboBox.getItems().add("低级护工");
+            peopleOtherComboBox.getItems().add("实习护工");
+            peopleOtherComboBox.setValue("低级护工");
+        }else if (peopleType.equals("医生")){
+            peopleOtherComboBox.getItems().add("全科");
+            peopleOtherComboBox.getItems().add("外科");
+            peopleOtherComboBox.getItems().add("内科");
+            peopleOtherComboBox.getItems().add("实习");
+            peopleOtherComboBox.setValue("全科");
+        }else {
+            peopleOtherComboBox.getItems().add("厨房");
+            peopleOtherComboBox.getItems().add("保洁");
+            peopleOtherComboBox.getItems().add("门卫");
+            peopleOtherComboBox.getItems().add("前台");
+            peopleOtherComboBox.setValue("厨房");
+        }
     }
 }

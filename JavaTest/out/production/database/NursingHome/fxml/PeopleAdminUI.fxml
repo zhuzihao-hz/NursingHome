@@ -31,27 +31,9 @@
                 </Menu>
                 <Menu mnemonicParsing="false" text="管理">
                   <items>
-                        <Menu mnemonicParsing="false" text="护工管理">
-                          <items>
-                          <MenuItem mnemonicParsing="false" onAction="#insertWorker" text="新增护工" />
-                              <MenuItem mnemonicParsing="false" onAction="#deleteWorker" text="解雇护工" />
-                              <MenuItem mnemonicParsing="false" onAction="#setWorkerInfo" text="修改护工信息" />
-                          </items>
-                        </Menu>
-                        <Menu mnemonicParsing="false" text="医务人员管理">
-                           <items>
-                              <MenuItem mnemonicParsing="false" onAction="#insertDoctor" text="新增医生" />
-                              <MenuItem mnemonicParsing="false" onAction="#deleteDoctor" text="解雇医生" />
-                              <MenuItem mnemonicParsing="false" onAction="#setDoctorInfo" text="修改医生信息" />
-                           </items>
-                        </Menu>
-                        <Menu mnemonicParsing="false" text="勤杂人员管理">
-                           <items>
-                              <MenuItem mnemonicParsing="false" onAction="#insertDoorBoy" text="新增勤杂人员" />
-                              <MenuItem mnemonicParsing="false" onAction="#deleteDoorBoy" text="解雇勤杂人员" />
-                              <MenuItem mnemonicParsing="false" onAction="#setDoorBoyInfo" text="修改勤杂人员" />
-                           </items>
-                        </Menu>
+                    <MenuItem mnemonicParsing="false" onAction="#insertPeople" text="新增员工" />
+                        <MenuItem mnemonicParsing="false" onAction="#deletePeople" text="解雇员工" />
+                        <MenuItem mnemonicParsing="false" onAction="#setPeopleInfo" text="修改员工信息" />
                   </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="帮助">
@@ -85,27 +67,28 @@
                   <Separator layoutX="165.0" layoutY="-1.0" orientation="VERTICAL" prefHeight="399.0" prefWidth="6.0" />
                   <TabPane layoutX="168.0" prefHeight="399.0" prefWidth="461.0" tabClosingPolicy="UNAVAILABLE">
                     <tabs>
-                      <Tab text="护工">
+                      <Tab fx:id="workerTab" text="护工">
                         <content>
                           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="369.0" prefWidth="461.0">
                                  <children>
-                                    <TableView fx:id="workerTableView" prefHeight="367.0" prefWidth="461.0">
+                                    <TableView fx:id="workerTableView" onMouseReleased="#clickIntoDetail" prefHeight="367.0" prefWidth="461.0">
                                       <columns>
                                         <TableColumn fx:id="workerID" prefWidth="75.0" text="工号" />
                                         <TableColumn fx:id="workerName" prefWidth="75.0" text="姓名" />
                                           <TableColumn fx:id="workerAge" prefWidth="75.0" text="年龄" />
                                           <TableColumn fx:id="workerSalary" prefWidth="75.0" text="薪水" />
+                                          <TableColumn fx:id="workerRank" prefWidth="75.0" text="级别" />
                                       </columns>
                                     </TableView>
                                  </children>
                               </AnchorPane>
                         </content>
                       </Tab>
-                      <Tab text="医务人员">
+                      <Tab fx:id="doctorTab" text="医务人员">
                         <content>
                           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
-                                    <TableView fx:id="doctorTableView" prefHeight="366.0" prefWidth="461.0">
+                                    <TableView fx:id="doctorTableView" onMouseReleased="#clickIntoDetail" prefHeight="366.0" prefWidth="461.0">
                                       <columns>
                                         <TableColumn fx:id="doctorID" prefWidth="75.0" text="工号" />
                                         <TableColumn fx:id="doctorName" prefWidth="75.0" text="姓名" />
@@ -118,11 +101,11 @@
                               </AnchorPane>
                         </content>
                       </Tab>
-                        <Tab text="勤杂人员">
+                        <Tab fx:id="doorBoyTab" text="勤杂人员">
                           <content>
                             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
-                                    <TableView fx:id="doorBoyTableView" prefHeight="365.0" prefWidth="459.0">
+                                    <TableView fx:id="doorBoyTableView" onMouseReleased="#clickIntoDetail" prefHeight="365.0" prefWidth="459.0">
                                       <columns>
                                         <TableColumn fx:id="doorBoyID" prefWidth="75.0" text="工号" />
                                         <TableColumn fx:id="doorBoyName" prefWidth="75.0" text="姓名" />
