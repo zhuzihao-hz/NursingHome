@@ -143,6 +143,29 @@ public class Main extends Application {
         peopleSetInfoUI.setApp(this);
     }
 
+    public void createBedSetInfoUI() {
+        AnchorPane page = new AnchorPane();
+        floatStage = new Stage();
+        floatStage.setAlwaysOnTop(true);
+        floatStage.initModality(Modality.APPLICATION_MODAL);
+        floatStage.setTitle("床位管理 - 床位信息 Administrator Bed Information");
+        floatStage.setResizable(false);
+        FXMLLoader loader = new FXMLLoader();
+        try (InputStream ignored = Main.class.getResourceAsStream("fxml/BedSetInfoUI.fxml")) {
+            loader.setBuilderFactory(new JavaFXBuilderFactory());
+            loader.setLocation(Main.class.getResource("fxml/BedSetInfoUI.fxml"));
+            page = loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Scene scene = new Scene(page);
+
+        floatStage.setScene(scene);
+        floatStage.show();
+        BedSetInfoUIController bedSetInfoUI= loader.getController();
+        bedSetInfoUI.setApp(this);
+    }
+
     public void createAboutInfoUI() {
         AnchorPane page = new AnchorPane();
         floatStage = new Stage();

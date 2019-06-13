@@ -8,6 +8,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -42,12 +43,15 @@ public class BusinessAdminUIController implements Initializable {
     @FXML private TableView<Bed> bedTableView;
     private ObservableList<Bed> bedObservableList=FXCollections.observableArrayList();
 
+    @FXML private Label nameLabel;
+
     public void setApp(Main app) {
         this.application = app;
     }
     public Main getApp() {return this.application; }
     @Override
     public void initialize(URL url, ResourceBundle rb){
+        nameLabel.setText(MANAGER_NAME);
         displayBusiness();
         bindBusiness();
         displayBed();
@@ -86,6 +90,7 @@ public class BusinessAdminUIController implements Initializable {
 
     public void insertBed(){
         // TODO 新增床位
+        application.createBedSetInfoUI();
     }
 
     public void deleteBusiness(){
@@ -102,6 +107,7 @@ public class BusinessAdminUIController implements Initializable {
 
     public void setBedInfo(){
         // TODO 设置床位信息
+        application.createBedSetInfoUI();
     }
 
     public void bindBusiness(){

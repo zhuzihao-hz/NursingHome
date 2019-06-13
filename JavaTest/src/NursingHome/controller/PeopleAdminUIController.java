@@ -9,10 +9,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.SelectionMode;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
@@ -51,12 +48,15 @@ public class PeopleAdminUIController implements Initializable {
     @FXML private Tab doorBoyTab;
     private static ObservableList<DoorBoy>doorBoyObservableList= FXCollections.observableArrayList();
 
+    @FXML private Label nameLabel;
+
     public void setApp(Main app) {
         this.application = app;
     }
     public Main getApp() {return this.application; }
     @Override
     public void initialize(URL url, ResourceBundle rb){
+        nameLabel.setText(MANAGER_NAME);
         displayDoctor();
         bindDoctor();
         displayDoorBoy();
