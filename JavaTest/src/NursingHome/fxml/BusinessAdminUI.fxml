@@ -79,9 +79,9 @@
                   <Separator layoutX="165.0" layoutY="3.0" orientation="VERTICAL" prefHeight="702.0" prefWidth="6.0" />
                   <TabPane layoutX="168.0">
                      <tabs>
-                        <Tab closable="false" text="业务管理">
+                        <Tab fx:id="customerTab" closable="false" text="业务管理">
                            <content>
-                              <TableView fx:id="customerTableView" prefHeight="706.0" prefWidth="973.0">
+                              <TableView fx:id="customerTableView" onMouseReleased="#clickIntoDetail" prefHeight="706.0" prefWidth="973.0">
                                 <columns>
                                   <TableColumn fx:id="businessID" prefWidth="75.0" text="编号" />
                                   <TableColumn fx:id="businessName" prefWidth="67.0" text="姓名" />
@@ -99,11 +99,11 @@
                               </TableView>
                            </content>
                         </Tab>
-                        <Tab closable="false" text="床位管理">
+                        <Tab fx:id="bedTab" closable="false" text="床位管理">
                            <content>
-                              <TableView fx:id="bedTableView" prefHeight="706.0" prefWidth="973.0">
+                              <TableView fx:id="bedTableView" onMouseReleased="#clickIntoDetail" prefHeight="706.0" prefWidth="973.0">
                                  <columns>
-                                    <TableColumn fx:id="bedID" prefWidth="75.0" text="编号" />
+                                    <TableColumn fx:id="bedID" prefWidth="75.0" text="床位号" />
                                     <TableColumn fx:id="bedRoomID" prefWidth="75.0" text="所在房间" />
                                     <TableColumn fx:id="bedIsPeople" prefWidth="75.0" text="是否使用" />
                                     <TableColumn fx:id="bedRank" prefWidth="75.0" text="床位等级" />

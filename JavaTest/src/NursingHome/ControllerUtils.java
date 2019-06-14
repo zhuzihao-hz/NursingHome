@@ -85,6 +85,7 @@ public class ControllerUtils {
             peopleOtherComboBox.setValue("厨房");
         }
     }
+
     public static void changeComboBox(String peopleType,ComboBox<String> peopleOtherComboBox){
         peopleOtherComboBox.getItems().clear();
         if (peopleType.equals("护工")){
@@ -106,5 +107,15 @@ public class ControllerUtils {
             peopleOtherComboBox.getItems().add("前台");
             peopleOtherComboBox.setValue("厨房");
         }
+    }
+
+    public static void initBedComboBox(ComboBox<String> bedUsedComboBox, ComboBox<String> bedRankComboBox){
+        bedUsedComboBox.getItems().add("是");
+        bedUsedComboBox.getItems().add("否");
+        bedUsedComboBox.setValue("否");
+        bedRankComboBox.getItems().add("高级床位");
+        bedRankComboBox.getItems().add("中级床位");
+        bedRankComboBox.getItems().add("低级床位");
+        bedRankComboBox.setValue("低级床位");
     }
 }

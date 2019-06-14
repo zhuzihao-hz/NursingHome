@@ -1,20 +1,18 @@
 package NursingHome.controller;
 
 import NursingHome.Main;
-import NursingHome.dataclass.Bed;
-import NursingHome.dataclass.Customer;
+import NursingHome.dataclass.*;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
 import java.sql.*;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import static NursingHome.GlobalInfo.*;
@@ -35,6 +33,7 @@ public class BusinessAdminUIController implements Initializable {
     @FXML private TableColumn<StringProperty,String> businessRelationPhone;
     @FXML private TableView<Customer> customerTableView;
     private ObservableList<Customer> customerObservableList= FXCollections.observableArrayList();
+    @FXML private Tab customerTab;
 
     @FXML private TableColumn<StringProperty,Integer> bedID;
     @FXML private TableColumn<StringProperty,Integer> bedRoomID;
@@ -42,6 +41,7 @@ public class BusinessAdminUIController implements Initializable {
     @FXML private TableColumn<StringProperty,Boolean> bedIsPeople;
     @FXML private TableView<Bed> bedTableView;
     private ObservableList<Bed> bedObservableList=FXCollections.observableArrayList();
+    @FXML private Tab bedTab;
 
     @FXML private Label nameLabel;
 
@@ -86,6 +86,7 @@ public class BusinessAdminUIController implements Initializable {
 
     public void insertBusiness(){
         // TODO 新增客户
+        application.createCustomerSetInfoUI();
     }
 
     public void insertBed(){
@@ -99,15 +100,75 @@ public class BusinessAdminUIController implements Initializable {
 
     public void deleteBed(){
         // TODO 删除床位
+        List<Bed> bedSelected = bedTableView.getSelectionModel().getSelectedItems();
+        for(int i=0;i<bedSelected.size();i++){
+            Connection conn;
+            Statement stmt;
+            try {
+                Class.forName("com.mysql.jdbc.Driver");
+                conn = DriverManager.getConnection("jdbc:mysql://localhost:3306", "root", "12345678");
+                String sql="DELETE FROM NursingHome.bed WHERE bed_id='"+bedSelected.get(i).getId()+"'"+" AND bed_roomid='"+bedSelected.get(i).getRoomID()+"'";
+                stmt = conn.createStatement();
+                stmt.executeUpdate(sql);
+                stmt.close();
+                conn.close();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println("删除Bed成功");
     }
 
     public void setBusinessInfo(){
-        // TODO 设置客户信息
+        // TODO
+        CustomerSetInfoUIController.isInsert=false;
+        application.createCustomerSetInfoUI();
     }
 
     public void setBedInfo(){
         // TODO 设置床位信息
-        application.createBedSetInfoUI();
+        BedSetInfoUIController.isInsert=false;
+        List<Bed> bedSelected = bedTableView.getSelectionModel().getSelectedItems();
+        BedSetInfoUIController.setBed((bedSelected.get(0)));
+        getApp().createBedSetInfoUI();
+    }
+
+    public void clickIntoDetail(){
+        // TODO 双击进入修改信息界面
+        if (customerTab.isSelected()){
+            // TODO 选中workerTab时，修改
+            customerTableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
+            List<Customer> customerSelected = customerTableView.getSelectionModel().getSelectedItems();
+            customerTableView.setOnMouseClicked(event -> {
+                if (event.getClickCount()==2&&customerSelected.size()==1){
+                    try {
+                        CustomerSetInfoUIController.setCustomer((customerSelected.get(0)));
+                        getApp().createCustomerSetInfoUI();
+                    } catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            });
+        } else if (bedTab.isSelected()){
+            // TODO 选中doorBoyTab时，修改
+            bedTableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
+            List<Bed> bedSelected = bedTableView.getSelectionModel().getSelectedItems();
+            bedTableView.setOnMouseClicked(event -> {
+                if (event.getClickCount()==2&&bedSelected.size()==1){
+                    try {
+                        BedSetInfoUIController.isInsert=false;
+                        BedSetInfoUIController.setBed((bedSelected.get(0)));
+                        getApp().createBedSetInfoUI();
+                    } catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
     }
 
     public void bindBusiness(){
@@ -190,9 +251,9 @@ public class BusinessAdminUIController implements Initializable {
             while (rs.next()){
                 Bed bed=new Bed();
                 bed.setId(rs.getString(1));
-                bed.setRoomID(rs.getInt(2));
-                bed.setIsPeople(rs.getBoolean(3));
-                bed.setRank(rs.getInt(4));
+                bed.setRoomID(rs.getString(2));
+                bed.setIsPeople(rs.getString(3));
+                bed.setRank(rs.getString(4));
                 bedObservableList.add(bed);
             }
             rs.close();
