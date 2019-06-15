@@ -70,6 +70,7 @@ public class BusinessAdminUIController implements Initializable {
     public void quit() {
         application.stage.close();
     }
+
     public void personalInfo() {
         getApp ().createPersonalInfoUI();
     }
@@ -80,6 +81,7 @@ public class BusinessAdminUIController implements Initializable {
         application.stage.close();
         application.gotoAdminMainUI();
     }
+
     public void aboutInfo() {
         application.createAboutInfoUI();
     }
@@ -89,13 +91,41 @@ public class BusinessAdminUIController implements Initializable {
         application.createCustomerSetInfoUI();
     }
 
+    public void deleteBusiness(){
+        // TODO 删除客户
+        List<Customer> customerSelected = customerTableView.getSelectionModel().getSelectedItems();
+        for(int i=0;i<customerSelected.size();i++){
+            Connection conn;
+            Statement stmt;
+            try {
+                Class.forName("com.mysql.jdbc.Driver");
+                conn = DriverManager.getConnection("jdbc:mysql://localhost:3306", "root", "12345678");
+                String sql="DELETE FROM NursingHome.customer WHERE customer_id='"+customerSelected.get(i).getCustomerId()+"'";
+                stmt = conn.createStatement();
+                stmt.executeUpdate(sql);
+                stmt.close();
+                conn.close();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println("删除Customer成功");
+    }
+
+    public void setBusinessInfo(){
+        // TODO 设置客户信息
+        //  需要自动生成一些信息，如自动分配空余的床位等
+        CustomerSetInfoUIController.isInsert=false;
+        List<Customer> customerSelected = customerTableView.getSelectionModel().getSelectedItems();
+        CustomerSetInfoUIController.setCustomer(customerSelected.get(0));
+        application.createCustomerSetInfoUI();
+    }
+
     public void insertBed(){
         // TODO 新增床位
         application.createBedSetInfoUI();
-    }
-
-    public void deleteBusiness(){
-        // TODO 删除客户
     }
 
     public void deleteBed(){
@@ -121,12 +151,6 @@ public class BusinessAdminUIController implements Initializable {
         System.out.println("删除Bed成功");
     }
 
-    public void setBusinessInfo(){
-        // TODO
-        CustomerSetInfoUIController.isInsert=false;
-        application.createCustomerSetInfoUI();
-    }
-
     public void setBedInfo(){
         // TODO 设置床位信息
         BedSetInfoUIController.isInsert=false;
@@ -145,6 +169,7 @@ public class BusinessAdminUIController implements Initializable {
             customerTableView.setOnMouseClicked(event -> {
                 if (event.getClickCount()==2&&customerSelected.size()==1){
                     try {
+                        CustomerSetInfoUIController.isInsert=false;
                         CustomerSetInfoUIController.setCustomer((customerSelected.get(0)));
                         getApp().createCustomerSetInfoUI();
                     } catch (Exception e){

@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDate;
 
 public class ControllerUtils {
     public static void showAlert(String message) {
@@ -117,5 +118,20 @@ public class ControllerUtils {
         bedRankComboBox.getItems().add("中级床位");
         bedRankComboBox.getItems().add("低级床位");
         bedRankComboBox.setValue("低级床位");
+    }
+
+    public static String localDateToString(LocalDate localDate){
+        return String.valueOf(localDate);
+    }
+
+    public static  void  initCustomerComboBox(ComboBox<Integer> customerAgeComboBox,ComboBox<Integer> customerCareTypeComboBox){
+        for (int i=50;i<120;i++){
+            customerAgeComboBox.getItems().add(i);
+        }
+        customerAgeComboBox.setValue(60);
+        for(int i=1;i<=3;i++){
+            customerCareTypeComboBox.getItems().add(i);
+        }
+        customerCareTypeComboBox.setValue(3);
     }
 }

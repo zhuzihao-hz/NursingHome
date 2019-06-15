@@ -46,7 +46,7 @@ public class BedSetInfoUIController implements Initializable {
     }
 
 
-    public void savePeopleInfo() {
+    public void saveBedInfo() {
         Bed bed=new Bed();
         // TODO 关于新增床位需要再考虑一下？？？？？？？？？
         try {

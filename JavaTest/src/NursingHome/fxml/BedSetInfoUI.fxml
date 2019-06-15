@@ -11,7 +11,7 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="NursingHome.controller.BedSetInfoUIController">
    <children>
-      <JFXButton fx:id="saveInfoButton" layoutX="177.0" layoutY="337.0" onAction="#savePeopleInfo" prefHeight="35.0" prefWidth="61.0" text="保存" />
+      <JFXButton fx:id="saveInfoButton" layoutX="177.0" layoutY="337.0" onAction="#saveBedInfo" prefHeight="35.0" prefWidth="61.0" text="保存" />
       <JFXButton fx:id="infoBackButton" layoutX="371.0" layoutY="337.0" onAction="#backToPeopleAdmin" prefHeight="35.0" prefWidth="61.0" text="退出" />
       <GridPane layoutX="95.0" layoutY="90.0" prefHeight="189.0" prefWidth="428.0">
          <columnConstraints>

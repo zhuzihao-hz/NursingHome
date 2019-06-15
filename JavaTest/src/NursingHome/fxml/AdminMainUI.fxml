@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
@@ -42,7 +43,10 @@
                      <children>
                         <AnchorPane prefHeight="399.0" prefWidth="161.0">
                            <children>
-                              <ImageView fitHeight="103.0" fitWidth="102.0" layoutX="30.0" layoutY="26.0" onMouseReleased="#personInfoImage" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fitHeight="78.0" fitWidth="78.0" layoutX="41.0" layoutY="26.0" onMouseReleased="#personInfoImage" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../img/dummy_potrait.jpg" />
+                                 </image></ImageView>
                               <Text fx:id="welcome" layoutX="51.0" layoutY="142.0" strokeType="OUTSIDE" strokeWidth="0.0" text="姓名" textAlignment="CENTER" wrappingWidth="58.2060546875">
                                  <font>
                                     <Font size="20.0" />
