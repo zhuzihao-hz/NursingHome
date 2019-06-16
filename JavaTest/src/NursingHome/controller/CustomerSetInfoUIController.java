@@ -14,6 +14,8 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 
+import static NursingHome.ControllerUtils.showAlert;
+
 public class CustomerSetInfoUIController implements Initializable {
     public static boolean isInsert=true;
     private Main application;
@@ -56,10 +58,38 @@ public class CustomerSetInfoUIController implements Initializable {
 
     public void saveCustomerInfo() {
         // TODO 保存客户信息
+        if(isInsert){
+            Customer customer=new Customer();
+            customer=fillCustomerInfo();
+
+        }else{
+
+        }
     }
 
-    public void fillCustomerInfo(){
+    public Customer fillCustomerInfo(){
+        Customer customer=new Customer();
+        if (customerIdTextField.getText().equals("")){
 
+        }else{
+            customer.setCustomerId(customerIdTextField.getText());
+            customer.setCustomerName(customerNameTextField.getText());
+            customer.setCustomerAge(customerAgeComboBox.getValue());
+            customer.setCustomerRoomID(Integer.parseInt(customerRoomIdTextField.getText()));
+            customer.setCustomerBedID(Integer.parseInt(customerBedIdTextField.getText()));
+            try {
+                customer.setCustomerPhone(customerPhoneTextField.getText());
+                customer.setCustomerRelationPhone(customerRelationPhoneTextField.getText());
+            }catch (NumberFormatException e){
+                showAlert("[错误]电话格式错误");
+            }
+            customer.setCustomerCareWorker(customerCareWorkerIdTextField.getText());
+            customer.setCustomerCareType(customerCareTypeComboBox.getValue());
+            customer.setCustomerRelation(customerRelationTextField.getText());
+            customer.setCustomerRelationName(customerRelationNameTextField.getText());
+            customer.setCustomerEnterTime(ControllerUtils.localDateToString(customerEnterTimeDatePicker.getValue()));
+        }
+        return customer;
     }
 
     public void backToPeopleAdmin(ActionEvent actionEvent) {
