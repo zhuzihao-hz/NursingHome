@@ -3,96 +3,100 @@ package NursingHome.dataclass;
 import javafx.beans.property.*;
 
 public class Customer {
-    private StringProperty customerId;
-    private StringProperty customerName;
-    private IntegerProperty customerAge;
-    private StringProperty customerEnterTime;
-    private IntegerProperty customerRoomID;
-    private IntegerProperty customerBedID;
-    private StringProperty customerPhone;
-    private StringProperty customerCareWorker;
-    private IntegerProperty customerCareType;
-    private StringProperty customerRelationName;
-    private StringProperty customerRelation;
-    private StringProperty customerRelationPhone;
+    private StringProperty id;
+    private StringProperty name;
+    private IntegerProperty age;
+    private StringProperty enterTime;
+    private IntegerProperty roomID;
+    private IntegerProperty bedID;
+    private StringProperty phone;
+    private StringProperty careWorker;
+    private IntegerProperty careType;
+    private StringProperty relationName;
+    private StringProperty relation;
+    private StringProperty relationPhone;
 
-    public Customer(StringProperty customerId, StringProperty customerName, IntegerProperty customerAge, StringProperty customerEnterTime, IntegerProperty customerRoomID, IntegerProperty customerBedID, StringProperty customerPhone, StringProperty customerCareWorker, IntegerProperty customerCareType, StringProperty customerRelationName, StringProperty customerRelation, StringProperty customerRelationPhone) {
-        this.customerId = customerId;
-        this.customerName = customerName;
-        this.customerAge = customerAge;
-        this.customerEnterTime = customerEnterTime;
-        this.customerRoomID = customerRoomID;
-        this.customerBedID = customerBedID;
-        this.customerPhone = customerPhone;
-        this.customerCareWorker = customerCareWorker;
-        this.customerCareType = customerCareType;
-        this.customerRelationName = customerRelationName;
-        this.customerRelation = customerRelation;
-        this.customerRelationPhone = customerRelationPhone;
+    public Customer(StringProperty id, StringProperty name, IntegerProperty age, StringProperty enterTime, IntegerProperty roomID, IntegerProperty bedID, StringProperty phone, StringProperty careWorker, IntegerProperty careType, StringProperty relationName, StringProperty relation, StringProperty relationPhone) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+        this.enterTime = enterTime;
+        this.roomID = roomID;
+        this.bedID = bedID;
+        this.phone = phone;
+        this.careWorker = careWorker;
+        this.careType = careType;
+        this.relationName = relationName;
+        this.relation = relation;
+        this.relationPhone = relationPhone;
     }
 
     public Customer() {
-        this.customerId = new SimpleStringProperty("");
-        this.customerName = new SimpleStringProperty("");
-        this.customerAge = new SimpleIntegerProperty(0);
-        this.customerEnterTime = new SimpleStringProperty("");
-        this.customerRoomID = new SimpleIntegerProperty(0);
-        this.customerBedID = new SimpleIntegerProperty(0);
-        this.customerPhone = new SimpleStringProperty("");
-        this.customerCareWorker = new SimpleStringProperty("");
-        this.customerCareType = new SimpleIntegerProperty(0);
-        this.customerRelationName = new SimpleStringProperty("");
-        this.customerRelation = new SimpleStringProperty("");
-        this.customerRelationPhone = new SimpleStringProperty("");
+        this.id = new SimpleStringProperty("");
+        this.name = new SimpleStringProperty("");
+        this.age = new SimpleIntegerProperty(0);
+        this.enterTime = new SimpleStringProperty("");
+        this.roomID = new SimpleIntegerProperty(0);
+        this.bedID = new SimpleIntegerProperty(0);
+        this.phone = new SimpleStringProperty("");
+        this.careWorker = new SimpleStringProperty("");
+        this.careType = new SimpleIntegerProperty(0);
+        this.relationName = new SimpleStringProperty("");
+        this.relation = new SimpleStringProperty("");
+        this.relationPhone = new SimpleStringProperty("");
     }
 
-    public int getCustomerRoomID() { return customerRoomID.get(); }
-    public IntegerProperty customerRoomIDProperty() { return customerRoomID; }
+    public String getId() { return id.get(); }
+    public StringProperty idProperty() { return id; }
+    public void setId(String id) { this.id.set(id); }
 
-    public int getCustomerBedID() { return customerBedID.get(); }
-    public IntegerProperty customerBedIDProperty() { return customerBedID; }
+    public String getName() { return name.get(); }
+    public StringProperty nameProperty() { return name; }
+    public void setName(String name) { this.name.set(name); }
 
-    public int getCustomerCareType() { return customerCareType.get(); }
-    public IntegerProperty customerCareTypeProperty() { return customerCareType; }
+    public int getAge() { return age.get(); }
+    public IntegerProperty ageProperty() { return age; }
+    public void setAge(int age) { this.age.set(age); }
 
-    public String getCustomerRelationName() { return customerRelationName.get(); }
-    public StringProperty customerRelationNameProperty() { return customerRelationName; }
+    public String getEnterTime() { return enterTime.get(); }
+    public StringProperty enterTimeProperty() { return enterTime; }
+    public void setEnterTime(String enterTime) { this.enterTime.set(enterTime); }
 
-    public String getCustomerId() { return customerId.get(); }
-    public StringProperty customerIdProperty() { return customerId; }
+    public int getRoomID() { return roomID.get(); }
+    public IntegerProperty roomIDProperty() { return roomID; }
+    public void setRoomID(int roomID) { this.roomID.set(roomID); }
 
-    public String getCustomerName() { return customerName.get(); }
-    public StringProperty customerNameProperty() { return customerName; }
+    public int getBedID() { return bedID.get(); }
+    public IntegerProperty bedIDProperty() { return bedID; }
+    public void setBedID(int bedID) { this.bedID.set(bedID); }
 
-    public int getCustomerAge() { return customerAge.get(); }
-    public IntegerProperty customerAgeProperty() { return customerAge; }
+    public String getPhone() { return phone.get(); }
+    public StringProperty phoneProperty() { return phone; }
+    public void setPhone(String phone) { this.phone.set(phone); }
 
-    public String getCustomerEnterTime() { return customerEnterTime.get(); }
-    public StringProperty customerEnterTimeProperty() { return customerEnterTime; }
+    public String getCareWorker() { return careWorker.get(); }
+    public StringProperty careWorkerProperty() { return careWorker; }
+    public void setCareWorker(String careWorker) { this.careWorker.set(careWorker); }
 
-    public String getCustomerPhone() { return customerPhone.get(); }
-    public StringProperty customerPhoneProperty() { return customerPhone; }
+    public int getCareType() { return careType.get(); }
+    public IntegerProperty careTypeProperty() { return careType; }
+    public void setCareType(int careType) { this.careType.set(careType); }
 
-    public String getCustomerCareWorker() { return customerCareWorker.get(); }
-    public StringProperty customerCareWorkerProperty() { return customerCareWorker; }
+    public String getRelationName() { return relationName.get(); }
+    public StringProperty relationNameProperty() { return relationName; }
+    public void setRelationName(String relationName) { this.relationName.set(relationName); }
 
-    public String getCustomerRelation() { return customerRelation.get(); }
-    public StringProperty customerRelationProperty() { return customerRelation; }
+    public String getRelation() { return relation.get(); }
+    public StringProperty relationProperty() { return relation; }
+    public void setRelation(String relation) { this.relation.set(relation); }
 
-    public String getCustomerRelationPhone() { return customerRelationPhone.get(); }
-    public StringProperty customerRelationPhoneProperty() { return customerRelationPhone; }
+    public String getRelationPhone() { return relationPhone.get(); }
+    public StringProperty relationPhoneProperty() { return relationPhone; }
+    public void setRelationPhone(String relationPhone) { this.relationPhone.set(relationPhone); }
 
-    public void setCustomerRoomID(int customerRoomID) { this.customerRoomID.set(customerRoomID); }
-    public void setCustomerBedID(int customerBedID) { this.customerBedID.set(customerBedID); }
-    public void setCustomerCareType(int customerCareType) { this.customerCareType.set(customerCareType); }
-    public void setCustomerRelationName(String customerRelationName) { this.customerRelationName.set(customerRelationName); }
-    public void setCustomerName(String customerName) { this.customerName.set(customerName); }
-    public void setCustomerAge(int customerAge) { this.customerAge.set(customerAge); }
-    public void setCustomerEnterTime(String customerEnterTime) { this.customerEnterTime.set(customerEnterTime); }
-    public void setCustomerCareWorker(String customerCareWorker) { this.customerCareWorker.set(customerCareWorker); }
-    public void setCustomerId(String customerId) { this.customerId.set(customerId); }
-    public void setCustomerPhone(String customerPhone) { this.customerPhone.set(customerPhone); }
-    public void setCustomerRelationPhone(String customerRelationPhone) { this.customerRelationPhone.set(customerRelationPhone); }
-    public void setCustomerRelation(String customerRelation) { this.customerRelation.set(customerRelation); }
-
+    public String getCustomerInfo() {
+        String temp;
+        temp="('"+this.getId()+"','"+this.getName()+"','"+this.getAge()+"','"+this.getEnterTime()+"','"+this.getRoomID()+"','"+this.getBedID()+"','"+this.getPhone()+"','"+this.getCareWorker()+"','"+this.getCareType()+"','"+this.getRelationName()+"','"+this.getRelation()+"','"+this.getRelationPhone()+"')";
+        return temp;
+    }
 }

@@ -62,6 +62,7 @@ public class ControllerUtils {
         peopleTypeComboBox.getItems().add("医生");
         peopleTypeComboBox.getItems().add("勤杂人员");
         peopleTypeComboBox.setValue(peopleType);
+        peopleTypeComboBox.setEditable(false);
         for (int i=18;i<61;i++){
             peopleAgeComboBox.getItems().add(i);
         }
@@ -122,6 +123,15 @@ public class ControllerUtils {
 
     public static String localDateToString(LocalDate localDate){
         return String.valueOf(localDate);
+    }
+
+    public static LocalDate StringToDate(String string){
+        int year,month,day;
+        year=Integer.parseInt(string.substring(0,4));
+        month=Integer.parseInt(string.substring(5,7));
+        day=Integer.parseInt(string.substring(8,10));
+        LocalDate localDate=LocalDate.of(year,month,day);
+        return localDate;
     }
 
     public static  void  initCustomerComboBox(ComboBox<Integer> customerAgeComboBox,ComboBox<Integer> customerCareTypeComboBox){

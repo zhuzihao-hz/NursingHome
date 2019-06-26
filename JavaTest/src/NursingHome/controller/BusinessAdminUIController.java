@@ -32,7 +32,7 @@ public class BusinessAdminUIController implements Initializable {
     @FXML private TableColumn<StringProperty,String> businessRelation;
     @FXML private TableColumn<StringProperty,String> businessRelationPhone;
     @FXML private TableView<Customer> customerTableView;
-    private ObservableList<Customer> customerObservableList= FXCollections.observableArrayList();
+    private static ObservableList<Customer> customerObservableList= FXCollections.observableArrayList();
     @FXML private Tab customerTab;
 
     @FXML private TableColumn<StringProperty,Integer> bedID;
@@ -40,7 +40,7 @@ public class BusinessAdminUIController implements Initializable {
     @FXML private TableColumn<StringProperty,Integer> bedRank;
     @FXML private TableColumn<StringProperty,Boolean> bedIsPeople;
     @FXML private TableView<Bed> bedTableView;
-    private ObservableList<Bed> bedObservableList=FXCollections.observableArrayList();
+    private static ObservableList<Bed> bedObservableList=FXCollections.observableArrayList();
     @FXML private Tab bedTab;
 
     @FXML private Label nameLabel;
@@ -49,6 +49,24 @@ public class BusinessAdminUIController implements Initializable {
         this.application = app;
     }
     public Main getApp() {return this.application; }
+
+    /*
+    private Timer timer = new Timer();
+    private TimerTask display = new TimerTask() {
+        @Override
+        public void run() {
+            displayBusiness();
+            //displayIndex();
+            if(!Main.flashStockFlag)
+                timer.cancel();
+        }
+    };
+
+    private void startTimerLoop(){
+        timer.schedule(display,200,2000);
+    }
+*/
+
     @Override
     public void initialize(URL url, ResourceBundle rb){
         nameLabel.setText(MANAGER_NAME);
@@ -56,6 +74,7 @@ public class BusinessAdminUIController implements Initializable {
         bindBusiness();
         displayBed();
         bindBed();
+        //startTimerLoop();
     }
 
     public void logout() throws Exception{
@@ -100,7 +119,7 @@ public class BusinessAdminUIController implements Initializable {
             try {
                 Class.forName("com.mysql.jdbc.Driver");
                 conn = DriverManager.getConnection("jdbc:mysql://localhost:3306", "root", "12345678");
-                String sql="DELETE FROM NursingHome.customer WHERE customer_id='"+customerSelected.get(i).getCustomerId()+"'";
+                String sql="DELETE FROM NursingHome.customer WHERE customer_id='"+customerSelected.get(i).getId()+"'";
                 stmt = conn.createStatement();
                 stmt.executeUpdate(sql);
                 stmt.close();
@@ -146,6 +165,15 @@ public class BusinessAdminUIController implements Initializable {
                 e.printStackTrace();
             } catch (SQLException e) {
                 e.printStackTrace();
+            }
+        }
+        // TODO 在tableView中也把员工信息去掉
+        for (int i=0;i<bedSelected.size();i++){
+            for (int j=0;j<bedObservableList.size();j++){
+                if (bedSelected.get(i).getId().equals(bedObservableList.get(j).getId())){
+                    bedObservableList.remove(j);
+                    break;
+                }
             }
         }
         System.out.println("删除Bed成功");
@@ -196,19 +224,56 @@ public class BusinessAdminUIController implements Initializable {
         }
     }
 
+    public static void  setInfoTableView(boolean isBed,boolean isInsert,Object object){
+        if (isBed){
+            Bed bed=(Bed)object;
+            if (isInsert){
+                bedObservableList.add(bed);
+            }else{
+                for (int i=0;i<bedObservableList.size();i++){
+                    if (bedObservableList.get(i).equal(bed)){
+                        bedObservableList.get(i).setRank(bed.getRank());
+                        bedObservableList.get(i).setIsPeople(bed.getIsPeople());
+                    }
+                }
+            }
+        }else{
+            Customer customer=(Customer)object;
+            if (isInsert){
+                customerObservableList.add(customer);
+            }else {
+                for (int i=0;i<customerObservableList.size();i++){
+                    if (customerObservableList.get(i).getId().equals(customer.getId())){
+                        customerObservableList.get(i).setAge(customer.getAge());
+                        customerObservableList.get(i).setBedID(customer.getBedID());
+                        customerObservableList.get(i).setCareType(customer.getCareType());
+                        customerObservableList.get(i).setCareWorker(customer.getCareWorker());
+                        customerObservableList.get(i).setEnterTime(customer.getEnterTime());
+                        customerObservableList.get(i).setName(customer.getName());
+                        customerObservableList.get(i).setPhone(customer.getPhone());
+                        customerObservableList.get(i).setRelation(customer.getRelation());
+                        customerObservableList.get(i).setRelationName(customer.getRelationName());
+                        customerObservableList.get(i).setRelationPhone(customer.getRelationPhone());
+                        customerObservableList.get(i).setRoomID(customer.getRoomID());
+                    }
+                }
+            }
+        }
+    }
+
     public void bindBusiness(){
-        businessID.setCellValueFactory(new PropertyValueFactory<>("customerId"));
-        businessName.setCellValueFactory(new PropertyValueFactory<>("customerName"));
-        businessAge.setCellValueFactory(new PropertyValueFactory<>("customerAge"));
-        businessBedID.setCellValueFactory(new PropertyValueFactory<>("customerBedID"));
-        businessCareType.setCellValueFactory(new PropertyValueFactory<>("customerCareType"));
-        businessEnterTime.setCellValueFactory(new PropertyValueFactory<>("customerEnterTime"));
-        businessPhone.setCellValueFactory(new PropertyValueFactory<>("customerPhone"));
-        businessRelation.setCellValueFactory(new PropertyValueFactory<>("customerRelation"));
-        businessRelationName.setCellValueFactory(new PropertyValueFactory<>("customerRelationName"));
-        businessRelationPhone.setCellValueFactory(new PropertyValueFactory<>("customerRelationPhone"));
-        businessRoomID.setCellValueFactory(new PropertyValueFactory<>("customerRoomID"));
-        businessCareWorkerID.setCellValueFactory(new PropertyValueFactory<>("customerCareWorker"));
+        businessID.setCellValueFactory(new PropertyValueFactory<>("id"));
+        businessName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        businessAge.setCellValueFactory(new PropertyValueFactory<>("age"));
+        businessBedID.setCellValueFactory(new PropertyValueFactory<>("bedID"));
+        businessCareType.setCellValueFactory(new PropertyValueFactory<>("careType"));
+        businessEnterTime.setCellValueFactory(new PropertyValueFactory<>("enterTime"));
+        businessPhone.setCellValueFactory(new PropertyValueFactory<>("phone"));
+        businessRelation.setCellValueFactory(new PropertyValueFactory<>("relation"));
+        businessRelationName.setCellValueFactory(new PropertyValueFactory<>("relationName"));
+        businessRelationPhone.setCellValueFactory(new PropertyValueFactory<>("relationPhone"));
+        businessRoomID.setCellValueFactory(new PropertyValueFactory<>("roomID"));
+        businessCareWorkerID.setCellValueFactory(new PropertyValueFactory<>("careWorker"));
         customerTableView.setVisible(true);
         customerTableView.setEditable(false);
         customerTableView.setTableMenuButtonVisible(true);
@@ -238,18 +303,18 @@ public class BusinessAdminUIController implements Initializable {
             ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()){
                 Customer customer=new Customer();
-                customer.setCustomerId(rs.getString(1));
-                customer.setCustomerName(rs.getString(2));
-                customer.setCustomerAge(rs.getInt(3));
-                customer.setCustomerEnterTime(rs.getString(4));
-                customer.setCustomerRoomID(rs.getInt(5));
-                customer.setCustomerBedID(rs.getInt(6));
-                customer.setCustomerPhone(rs.getString(7));
-                customer.setCustomerCareWorker(rs.getString(8));
-                customer.setCustomerCareType(rs.getInt(9));
-                customer.setCustomerRelationName(rs.getString(10));
-                customer.setCustomerRelation(rs.getString(11));
-                customer.setCustomerRelationPhone(rs.getString(12));
+                customer.setId(rs.getString(1));
+                customer.setName(rs.getString(2));
+                customer.setAge(rs.getInt(3));
+                customer.setEnterTime(rs.getString(4));
+                customer.setRoomID(rs.getInt(5));
+                customer.setBedID(rs.getInt(6));
+                customer.setPhone(rs.getString(7));
+                customer.setCareWorker(rs.getString(8));
+                customer.setCareType(rs.getInt(9));
+                customer.setRelationName(rs.getString(10));
+                customer.setRelation(rs.getString(11));
+                customer.setRelationPhone(rs.getString(12));
                 customerObservableList.add(customer);
             }
             rs.close();

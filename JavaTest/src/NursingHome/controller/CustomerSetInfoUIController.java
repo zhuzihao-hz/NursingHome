@@ -11,9 +11,14 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 
+import static NursingHome.ControllerUtils.StringToDate;
 import static NursingHome.ControllerUtils.showAlert;
 
 public class CustomerSetInfoUIController implements Initializable {
@@ -43,61 +48,110 @@ public class CustomerSetInfoUIController implements Initializable {
     public void initialize(URL url, ResourceBundle rb){
         ControllerUtils.initCustomerComboBox(customerAgeComboBox,customerCareTypeComboBox);
         if (!isInsert){
-            customerIdTextField.setText(customer.getCustomerId());
+            customerIdTextField.setText(customer.getId());
             customerIdTextField.setEditable(false);
-            customerNameTextField.setText(customer.getCustomerName());
-            customerRoomIdTextField.setText(String.valueOf(customer.getCustomerRoomID()));
-            customerBedIdTextField.setText(String.valueOf(customer.getCustomerBedID()));
-            customerPhoneTextField.setText(customer.getCustomerPhone());
-            customerCareWorkerIdTextField.setText(customer.getCustomerCareWorker());
-            customerRelationNameTextField.setText(customer.getCustomerRelationName());
-            customerRelationTextField.setText(customer.getCustomerRelation());
-            customerRelationPhoneTextField.setText(customer.getCustomerRelationPhone());
+            customerAgeComboBox.setValue(customer.getAge());
+            customerNameTextField.setText(customer.getName());
+            customerCareTypeComboBox.setValue(customer.getCareType());
+            customerRoomIdTextField.setText(String.valueOf(customer.getRoomID()));
+            customerBedIdTextField.setText(String.valueOf(customer.getBedID()));
+            customerPhoneTextField.setText(customer.getPhone());
+            customerCareWorkerIdTextField.setText(customer.getCareWorker());
+            customerRelationNameTextField.setText(customer.getRelationName());
+            customerRelationTextField.setText(customer.getRelation());
+            customerRelationPhoneTextField.setText(customer.getRelationPhone());
+            LocalDate localDate=StringToDate(customer.getEnterTime());
+            customerEnterTimeDatePicker.setValue(localDate);
         }
     }
 
     public void saveCustomerInfo() {
         // TODO 保存客户信息
         if(isInsert){
-            Customer customer=new Customer();
             customer=fillCustomerInfo();
 
+            Connection conn;
+            Statement stmt;
+            try {
+                Class.forName("com.mysql.jdbc.Driver");
+                conn = DriverManager.getConnection("jdbc:mysql://localhost:3306", "root", "12345678");
+                String sql="INSERT INTO NursingHome.customer VALUES "+customer.getCustomerInfo();
+                stmt = conn.createStatement();
+                stmt.executeUpdate(sql);
+                stmt.close();
+                conn.close();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }else{
+            // TODO 保存修改的信息
+            customer.setId(customerIdTextField.getText());
+            customer.setName(customerNameTextField.getText());
+            customer.setAge(customerAgeComboBox.getValue());
+            customer.setRoomID(Integer.parseInt(customerRoomIdTextField.getText()));
+            customer.setBedID(Integer.parseInt(customerBedIdTextField.getText()));
+            try {
+                customer.setPhone(customerPhoneTextField.getText());
+                customer.setRelationPhone(customerRelationPhoneTextField.getText());
+            }catch (NumberFormatException e){
+                showAlert("[错误]电话格式错误");
+            }
+            customer.setCareWorker(customerCareWorkerIdTextField.getText());
+            customer.setCareType(customerCareTypeComboBox.getValue());
+            customer.setRelation(customerRelationTextField.getText());
+            customer.setRelationName(customerRelationNameTextField.getText());
+            customer.setEnterTime(ControllerUtils.localDateToString(customerEnterTimeDatePicker.getValue()));
+
+            // TODO 在数据库中新增信息
+            Connection conn;
+            Statement stmt;
+            try {
+                Class.forName("com.mysql.jdbc.Driver");
+                conn = DriverManager.getConnection("jdbc:mysql://localhost:3306", "root", "12345678");
+                String sql="UPDATE NursingHome.customer SET customer_name='"+customer.getName()+"', customer_age='"+customer.getAge()+"', customer_entertime='"+customer.getEnterTime()+"', customer_roomid='"+customer.getRoomID()+"', customer_bedid='"+customer.getBedID()+"', customer_phone='"+customer.getPhone()+"', customer_careworker='"+customer.getCareWorker()+"', customer_caretype='"+customer.getCareType()+"', customer_relationname='"+customer.getRelationName()+"', customer_relation='"+customer.getRelation()+"', customer_relationphone='"+customer.getRelationPhone()+"' WHERE customer_id='"+customer.getId()+"'";
+                stmt = conn.createStatement();
+                stmt.executeUpdate(sql);
+                stmt.close();
+                conn.close();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
 
         }
+        BusinessAdminUIController.setInfoTableView(false,isInsert,customer);
+        application.floatStage.close();
     }
 
     public Customer fillCustomerInfo(){
         Customer customer=new Customer();
         if (customerIdTextField.getText().equals("")){
-
+            //
         }else{
-            customer.setCustomerId(customerIdTextField.getText());
-            customer.setCustomerName(customerNameTextField.getText());
-            customer.setCustomerAge(customerAgeComboBox.getValue());
-            customer.setCustomerRoomID(Integer.parseInt(customerRoomIdTextField.getText()));
-            customer.setCustomerBedID(Integer.parseInt(customerBedIdTextField.getText()));
+            customer.setId(customerIdTextField.getText());
+            customer.setName(customerNameTextField.getText());
+            customer.setAge(customerAgeComboBox.getValue());
+            customer.setRoomID(Integer.parseInt(customerRoomIdTextField.getText()));
+            customer.setBedID(Integer.parseInt(customerBedIdTextField.getText()));
             try {
-                customer.setCustomerPhone(customerPhoneTextField.getText());
-                customer.setCustomerRelationPhone(customerRelationPhoneTextField.getText());
+                customer.setPhone(customerPhoneTextField.getText());
+                customer.setRelationPhone(customerRelationPhoneTextField.getText());
             }catch (NumberFormatException e){
                 showAlert("[错误]电话格式错误");
             }
-            customer.setCustomerCareWorker(customerCareWorkerIdTextField.getText());
-            customer.setCustomerCareType(customerCareTypeComboBox.getValue());
-            customer.setCustomerRelation(customerRelationTextField.getText());
-            customer.setCustomerRelationName(customerRelationNameTextField.getText());
-            customer.setCustomerEnterTime(ControllerUtils.localDateToString(customerEnterTimeDatePicker.getValue()));
+            customer.setCareWorker(customerCareWorkerIdTextField.getText());
+            customer.setCareType(customerCareTypeComboBox.getValue());
+            customer.setRelation(customerRelationTextField.getText());
+            customer.setRelationName(customerRelationNameTextField.getText());
+            customer.setEnterTime(ControllerUtils.localDateToString(customerEnterTimeDatePicker.getValue()));
         }
         return customer;
     }
 
     public void backToPeopleAdmin(ActionEvent actionEvent) {
         getApp().floatStage.close();
-        LocalDate localDate;
-        localDate=customerEnterTimeDatePicker.getValue();
-        System.out.println(localDate);
-        String string=String.valueOf(localDate);
-        System.out.println(string);
     }
 }

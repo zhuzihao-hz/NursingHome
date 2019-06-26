@@ -99,6 +99,7 @@ public class BedSetInfoUIController implements Initializable {
             }
             System.out.println("新增床位成功！");
         }
+        BusinessAdminUIController.setInfoTableView(true,isInsert,bed);
         getApp().floatStage.close();
     }
 

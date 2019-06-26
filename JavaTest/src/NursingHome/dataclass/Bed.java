@@ -22,6 +22,14 @@ public class Bed {
         this.isPeople=new SimpleStringProperty("");
     }
 
+    public boolean equal(Bed bed){
+        if (this.getId().equals(bed.getId()) && this.getRoomID().equals(bed.getRoomID())){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
     public String getId() { return id.get(); }
     public StringProperty idProperty() { return id; }
     public void setId(String id) { this.id.set(id); }

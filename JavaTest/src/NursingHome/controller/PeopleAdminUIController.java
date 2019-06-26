@@ -84,7 +84,7 @@ public class PeopleAdminUIController implements Initializable {
     public void personInfoImage(){getApp().createPersonalInfoUI();}
 
     public void backToMainMenu() throws Exception{
-        application.stage.close();
+        quit();
         application.gotoAdminMainUI();
     }
 
@@ -128,6 +128,15 @@ public class PeopleAdminUIController implements Initializable {
                     e.printStackTrace();
                 }
             }
+            // TODO 在tableView中也把员工信息去掉
+            for (int i=0;i<workerSelected.size();i++){
+                for (int j=0;j<workerObservableList.size();j++){
+                    if (workerSelected.get(i).getId().equals(workerObservableList.get(j).getId())){
+                        workerObservableList.remove(j);
+                        break;
+                    }
+                }
+            }
             System.out.println("解雇Worker成功");
         }else if (doctorTab.isSelected()) {
             List<Doctor> doctorSelected = doctorTableView.getSelectionModel().getSelectedItems();
@@ -147,6 +156,15 @@ public class PeopleAdminUIController implements Initializable {
                     e.printStackTrace();
                 } catch (SQLException e) {
                     e.printStackTrace();
+                }
+            }
+            // TODO 在tableView中也把员工信息去掉
+            for (int i=0;i<doctorSelected.size();i++){
+                for (int j=0;j<doctorObservableList.size();j++){
+                    if (doctorSelected.get(i).getId().equals(doctorObservableList.get(j).getId())){
+                        doctorObservableList.remove(j);
+                        break;
+                    }
                 }
             }
             System.out.println("解雇Doctor成功");
@@ -170,6 +188,15 @@ public class PeopleAdminUIController implements Initializable {
                     e.printStackTrace();
                 }
             }
+            // TODO 在tableView中也把员工信息去掉
+            for (int i=0;i<doorBoySelected.size();i++){
+                for (int j=0;j<doorBoyObservableList.size();j++){
+                    if (doorBoySelected.get(i).getId().equals(doorBoyObservableList.get(j).getId())){
+                        doorBoyObservableList.remove(j);
+                        break;
+                    }
+                }
+            }
             System.out.println("解雇DoorBoy成功");
         }
     }
@@ -188,6 +215,60 @@ public class PeopleAdminUIController implements Initializable {
             List<DoorBoy> doorBoySelected = doorBoyTableView.getSelectionModel().getSelectedItems();
             PeopleSetInfoUIController.setPeople((doorBoySelected.get(0)));
             getApp().createPeopleSetInfoUI();
+        }
+    }
+
+    public static void setInfoTableView(boolean isInsert,Object people){
+        // TODO 在新增或者修改完信息后，在TableView中也修改或者新增信息
+        if (isInsert){
+            if (people.getClass().getName().equals("NursingHome.dataclass.Worker")){
+                Worker worker=((Worker)people);
+                workerObservableList.add(worker);
+            }else if (people.getClass().getName().equals("NursingHome.dataclass.Doctor")){
+                Doctor doctor=((Doctor)people);
+                doctorObservableList.add(doctor);
+            }else{
+                DoorBoy doorBoy=((DoorBoy)people);
+                doorBoyObservableList.add(doorBoy);
+            }
+        }else{
+            if (people.getClass().getName().equals("NursingHome.dataclass.Worker")){
+                Worker worker=((Worker)people);
+                for (int i=0;i<workerObservableList.size();i++){
+                    if (workerObservableList.get(i).getId().equals(worker.getId())){
+                        workerObservableList.get(i).setId(worker.getId());
+                        workerObservableList.get(i).setName(worker.getName());
+                        workerObservableList.get(i).setSalary(worker.getSalary());
+                        workerObservableList.get(i).setRank(worker.getRank());
+                        workerObservableList.get(i).setAge(worker.getAge());
+                        break;
+                    }
+                }
+            }else if (people.getClass().getName().equals("NursingHome.dataclass.Doctor")){
+                Doctor doctor=((Doctor)people);
+                for (int i=0;i<doctorObservableList.size();i++){
+                    if (doctorObservableList.get(i).getId().equals(doctor.getId())){
+                        doctorObservableList.get(i).setId(doctor.getId());
+                        doctorObservableList.get(i).setName(doctor.getName());
+                        doctorObservableList.get(i).setSalary(doctor.getSalary());
+                        doctorObservableList.get(i).setMajor(doctor.getMajor());
+                        doctorObservableList.get(i).setAge(doctor.getAge());
+                        break;
+                    }
+                }
+            }else{
+                DoorBoy doorBoy=((DoorBoy)people);
+                for (int i=0;i<doorBoyObservableList.size();i++){
+                    if (doorBoyObservableList.get(i).getId().equals(doorBoy.getId())){
+                        doorBoyObservableList.get(i).setId(doorBoy.getId());
+                        doorBoyObservableList.get(i).setName(doorBoy.getName());
+                        doorBoyObservableList.get(i).setSalary(doorBoy.getSalary());
+                        doorBoyObservableList.get(i).setWorkPlace(doorBoy.getWorkPlace());
+                        doorBoyObservableList.get(i).setAge(doorBoy.getAge());
+                        break;
+                    }
+                }
+            }
         }
     }
 
@@ -310,7 +391,7 @@ public class PeopleAdminUIController implements Initializable {
 
     public void displayWorker(){
         // TODO 显示护工信息
-        this.workerObservableList.clear();
+        workerObservableList.clear();
         Connection conn;
         Statement stmt;
         try {
@@ -341,7 +422,7 @@ public class PeopleAdminUIController implements Initializable {
 
     public void displayDoorBoy(){
         // TODO 显示勤杂人员信息
-        this.doorBoyObservableList.clear();
+        doorBoyObservableList.clear();
         Connection conn;
         Statement stmt;
         try {

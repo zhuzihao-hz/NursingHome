@@ -20,6 +20,7 @@ import static NursingHome.ControllerUtils.showAlert;
 public class PeopleSetInfoUIController implements Initializable {
     private Main application;
     private static Object people=new Object();
+    private boolean isInsert=true;
     @FXML private JFXComboBox<String> peopleTypeComboBox;
     @FXML private TextField peopleIdTextField;
     @FXML private TextField peopleNameTextField;
@@ -41,7 +42,9 @@ public class PeopleSetInfoUIController implements Initializable {
             ControllerUtils.initPeopleComboBox(peopleTypeComboBox,peopleType,peopleAgeComboBox,peopleOtherComboBox);
         }else if (people.getClass().getName().equals("NursingHome.dataclass.Worker")){
             peopleType="护工";
+            peopleIdTextField.setEditable(false);
             ControllerUtils.initPeopleComboBox(peopleTypeComboBox,peopleType,peopleAgeComboBox,peopleOtherComboBox);
+            peopleTypeComboBox.setDisable(true);
             Worker oldWorker= ((Worker) people);
             peopleIdTextField.setText(oldWorker.getId());
             peopleNameTextField.setText(oldWorker.getName());
@@ -50,7 +53,9 @@ public class PeopleSetInfoUIController implements Initializable {
             peopleOtherComboBox.setValue(oldWorker.getRank());
         }else if (people.getClass().getName().equals("NursingHome.dataclass.Doctor")){
             peopleType="医生";
+            peopleIdTextField.setEditable(false);
             ControllerUtils.initPeopleComboBox(peopleTypeComboBox,peopleType,peopleAgeComboBox,peopleOtherComboBox);
+            peopleTypeComboBox.setDisable(true);
             Doctor oldDoctor= ((Doctor) people);
             peopleIdTextField.setText(oldDoctor.getId());
             peopleNameTextField.setText(oldDoctor.getName());
@@ -59,7 +64,9 @@ public class PeopleSetInfoUIController implements Initializable {
             peopleOtherComboBox.setValue(oldDoctor.getMajor());
         }else if (people.getClass().getName().equals("NursingHome.dataclass.DoorBoy")){
             peopleType="勤杂人员";
+            peopleIdTextField.setEditable(false);
             ControllerUtils.initPeopleComboBox(peopleTypeComboBox,peopleType,peopleAgeComboBox,peopleOtherComboBox);
+            peopleTypeComboBox.setDisable(true);
             DoorBoy oldDoorBoy= ((DoorBoy) people);
             peopleIdTextField.setText(oldDoorBoy.getId());
             peopleNameTextField.setText(oldDoorBoy.getName());
@@ -86,6 +93,7 @@ public class PeopleSetInfoUIController implements Initializable {
         // TODO 获取信息并保存
         if (people.getClass().getName().equals("java.lang.Object")){
             // TODO 新增
+            isInsert=true;
             if (peopleTypeComboBox.getValue().equals("护工")){
                 Worker worker=new Worker();
                 worker.setId(peopleIdTextField.getText());
@@ -114,6 +122,7 @@ public class PeopleSetInfoUIController implements Initializable {
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
+                people=(Object)worker;
             }else if (peopleTypeComboBox.getValue().equals("医生")){
                 Doctor doctor=new Doctor();
                 doctor.setId(peopleIdTextField.getText());
@@ -142,7 +151,7 @@ public class PeopleSetInfoUIController implements Initializable {
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-
+                people=(Object)doctor;
             }else{
                 DoorBoy doorBoy=new DoorBoy();
                 doorBoy.setId(peopleIdTextField.getText());
@@ -171,8 +180,10 @@ public class PeopleSetInfoUIController implements Initializable {
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
+                people=(Object)doorBoy;
             }
         }else{
+            isInsert=false;
             // TODO 修改
             if (peopleTypeComboBox.getValue().equals("护工")){
                 Worker worker=new Worker();
@@ -202,6 +213,7 @@ public class PeopleSetInfoUIController implements Initializable {
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
+                people=(Object)worker;
             }else if (peopleTypeComboBox.getValue().equals("医生")){
                 Doctor doctor=new Doctor();
                 doctor.setId(peopleIdTextField.getText());
@@ -230,7 +242,7 @@ public class PeopleSetInfoUIController implements Initializable {
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-
+                people=(Object)doctor;
             }else{
                 DoorBoy doorBoy=new DoorBoy();
                 doorBoy.setId(peopleIdTextField.getText());
@@ -259,9 +271,10 @@ public class PeopleSetInfoUIController implements Initializable {
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
+                people=(Object)doorBoy;
             }
         }
-
+        PeopleAdminUIController.setInfoTableView(isInsert,people);
         getApp().floatStage.close();
     }
 
