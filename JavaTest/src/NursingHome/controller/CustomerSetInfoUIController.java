@@ -67,44 +67,49 @@ public class CustomerSetInfoUIController implements Initializable {
 
     public void saveCustomerInfo() {
         // TODO 保存客户信息
-        if(isInsert){
-            customer=fillCustomerInfo();
+        customer.setId(customerIdTextField.getText());
+        customer.setName(customerNameTextField.getText());
+        customer.setAge(customerAgeComboBox.getValue());
+        customer.setRoomID(Integer.parseInt(customerRoomIdTextField.getText()));
+        customer.setBedID(Integer.parseInt(customerBedIdTextField.getText()));
+        try {
+            customer.setPhone(customerPhoneTextField.getText());
+            customer.setRelationPhone(customerRelationPhoneTextField.getText());
+        }catch (NumberFormatException e){
+            showAlert("[错误]电话格式错误");
+        }
+        customer.setCareWorker(customerCareWorkerIdTextField.getText());
+        customer.setCareType(customerCareTypeComboBox.getValue());
+        customer.setRelation(customerRelationTextField.getText());
+        customer.setRelationName(customerRelationNameTextField.getText());
+        customer.setEnterTime(ControllerUtils.localDateToString(customerEnterTimeDatePicker.getValue()));
 
-            Connection conn;
-            Statement stmt;
-            try {
-                Class.forName("com.mysql.jdbc.Driver");
-                conn = DriverManager.getConnection("jdbc:mysql://localhost:3306", "root", "12345678");
-                String sql="INSERT INTO NursingHome.customer VALUES "+customer.getCustomerInfo();
-                stmt = conn.createStatement();
-                stmt.executeUpdate(sql);
-                stmt.close();
-                conn.close();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            } catch (SQLException e) {
-                e.printStackTrace();
+        if(isInsert){
+            // TODO 在数据库中新增信息
+            if (customerIdTextField.getText().equals("")||customerBedIdTextField.getText().equals("")||customerCareWorkerIdTextField.getText().equals("")||customerRoomIdTextField.getText().equals("")){
+                // TODO 当id,bedId,roomId,careWorker有没填的时，自动填充
+                showAlert("[警告]有未填充的信息，将进行自动安排");
+                fillCustomerInfo();
+            }else{
+                // TODO 否则新增信息
+                Connection conn;
+                Statement stmt;
+                try {
+                    Class.forName("com.mysql.jdbc.Driver");
+                    conn = DriverManager.getConnection("jdbc:mysql://localhost:3306", "root", "12345678");
+                    String sql="INSERT INTO NursingHome.customer VALUES "+customer.getCustomerInfo();
+                    stmt = conn.createStatement();
+                    stmt.executeUpdate(sql);
+                    stmt.close();
+                    conn.close();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
         }else{
             // TODO 保存修改的信息
-            customer.setId(customerIdTextField.getText());
-            customer.setName(customerNameTextField.getText());
-            customer.setAge(customerAgeComboBox.getValue());
-            customer.setRoomID(Integer.parseInt(customerRoomIdTextField.getText()));
-            customer.setBedID(Integer.parseInt(customerBedIdTextField.getText()));
-            try {
-                customer.setPhone(customerPhoneTextField.getText());
-                customer.setRelationPhone(customerRelationPhoneTextField.getText());
-            }catch (NumberFormatException e){
-                showAlert("[错误]电话格式错误");
-            }
-            customer.setCareWorker(customerCareWorkerIdTextField.getText());
-            customer.setCareType(customerCareTypeComboBox.getValue());
-            customer.setRelation(customerRelationTextField.getText());
-            customer.setRelationName(customerRelationNameTextField.getText());
-            customer.setEnterTime(ControllerUtils.localDateToString(customerEnterTimeDatePicker.getValue()));
-
-            // TODO 在数据库中新增信息
             Connection conn;
             Statement stmt;
             try {
@@ -120,35 +125,55 @@ public class CustomerSetInfoUIController implements Initializable {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-
         }
         BusinessAdminUIController.setInfoTableView(false,isInsert,customer);
-        application.floatStage.close();
+        getApp().floatStage.close();
     }
 
-    public Customer fillCustomerInfo(){
-        Customer customer=new Customer();
-        if (customerIdTextField.getText().equals("")){
-            //
-        }else{
-            customer.setId(customerIdTextField.getText());
-            customer.setName(customerNameTextField.getText());
-            customer.setAge(customerAgeComboBox.getValue());
-            customer.setRoomID(Integer.parseInt(customerRoomIdTextField.getText()));
-            customer.setBedID(Integer.parseInt(customerBedIdTextField.getText()));
+    public void fillCustomerInfo(){
+        // TODO 自动安排
+        //  customer
+        /**
+        * 这里进行自动安排！！！！！！！！！！！！！
+        * */
+
+        if (isInsert) {
+            // TODO 新增自动安排的信息
+            Connection conn;
+            Statement stmt;
             try {
-                customer.setPhone(customerPhoneTextField.getText());
-                customer.setRelationPhone(customerRelationPhoneTextField.getText());
-            }catch (NumberFormatException e){
-                showAlert("[错误]电话格式错误");
+                Class.forName("com.mysql.jdbc.Driver");
+                conn = DriverManager.getConnection("jdbc:mysql://localhost:3306", "root", "12345678");
+                String sql="INSERT INTO NursingHome.customer VALUES "+customer.getCustomerInfo();
+                stmt = conn.createStatement();
+                stmt.executeUpdate(sql);
+                stmt.close();
+                conn.close();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
-            customer.setCareWorker(customerCareWorkerIdTextField.getText());
-            customer.setCareType(customerCareTypeComboBox.getValue());
-            customer.setRelation(customerRelationTextField.getText());
-            customer.setRelationName(customerRelationNameTextField.getText());
-            customer.setEnterTime(ControllerUtils.localDateToString(customerEnterTimeDatePicker.getValue()));
+        }else {
+            // TODO 保存修改的信息
+            Connection conn;
+            Statement stmt;
+            try {
+                Class.forName("com.mysql.jdbc.Driver");
+                conn = DriverManager.getConnection("jdbc:mysql://localhost:3306", "root", "12345678");
+                String sql="UPDATE NursingHome.customer SET customer_name='"+customer.getName()+"', customer_age='"+customer.getAge()+"', customer_entertime='"+customer.getEnterTime()+"', customer_roomid='"+customer.getRoomID()+"', customer_bedid='"+customer.getBedID()+"', customer_phone='"+customer.getPhone()+"', customer_careworker='"+customer.getCareWorker()+"', customer_caretype='"+customer.getCareType()+"', customer_relationname='"+customer.getRelationName()+"', customer_relation='"+customer.getRelation()+"', customer_relationphone='"+customer.getRelationPhone()+"' WHERE customer_id='"+customer.getId()+"'";
+                stmt = conn.createStatement();
+                stmt.executeUpdate(sql);
+                stmt.close();
+                conn.close();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
-        return customer;
+        BusinessAdminUIController.setInfoTableView(false,isInsert,customer);
+        getApp().floatStage.close();
     }
 
     public void backToPeopleAdmin(ActionEvent actionEvent) {

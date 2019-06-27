@@ -9,12 +9,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.text.Text;
 
 import java.net.URL;
 import java.sql.*;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import static NursingHome.ControllerUtils.showtime;
 import static NursingHome.GlobalInfo.*;
 
 public class BusinessAdminUIController implements Initializable {
@@ -42,7 +44,7 @@ public class BusinessAdminUIController implements Initializable {
     @FXML private TableView<Bed> bedTableView;
     private static ObservableList<Bed> bedObservableList=FXCollections.observableArrayList();
     @FXML private Tab bedTab;
-
+    @FXML Text dateText;
     @FXML private Label nameLabel;
 
     public void setApp(Main app) {
@@ -50,31 +52,14 @@ public class BusinessAdminUIController implements Initializable {
     }
     public Main getApp() {return this.application; }
 
-    /*
-    private Timer timer = new Timer();
-    private TimerTask display = new TimerTask() {
-        @Override
-        public void run() {
-            displayBusiness();
-            //displayIndex();
-            if(!Main.flashStockFlag)
-                timer.cancel();
-        }
-    };
-
-    private void startTimerLoop(){
-        timer.schedule(display,200,2000);
-    }
-*/
-
     @Override
     public void initialize(URL url, ResourceBundle rb){
         nameLabel.setText(MANAGER_NAME);
+        showtime(dateText);
         displayBusiness();
         bindBusiness();
         displayBed();
         bindBed();
-        //startTimerLoop();
     }
 
     public void logout() throws Exception{
@@ -224,7 +209,7 @@ public class BusinessAdminUIController implements Initializable {
         }
     }
 
-    public static void  setInfoTableView(boolean isBed,boolean isInsert,Object object){
+    public static void setInfoTableView(boolean isBed,boolean isInsert,Object object){
         if (isBed){
             Bed bed=(Bed)object;
             if (isInsert){

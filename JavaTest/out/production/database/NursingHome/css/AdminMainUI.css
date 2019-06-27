@@ -2,3 +2,10 @@
 	-fx-background-image: url("../img/bg.jpg");
 	-fx-background-repeat: round;
 }
+.root {
+	-fx-font-family: "微软雅黑";
+
+	-fx-background-image: url("../img/bg.jpg");
+	-fx-background-size: stretch stretch;
+	-fx-background-position: center center;
+}

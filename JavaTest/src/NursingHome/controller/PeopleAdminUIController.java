@@ -11,12 +11,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.text.Text;
 
 import java.net.URL;
 import java.sql.*;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import static NursingHome.ControllerUtils.showtime;
 import static NursingHome.GlobalInfo.*;
 
 public class PeopleAdminUIController implements Initializable {
@@ -48,6 +50,7 @@ public class PeopleAdminUIController implements Initializable {
     @FXML private Tab doorBoyTab;
     private static ObservableList<DoorBoy>doorBoyObservableList= FXCollections.observableArrayList();
 
+    @FXML Text dateText;
     @FXML private Label nameLabel;
 
     public void setApp(Main app) {
@@ -57,6 +60,7 @@ public class PeopleAdminUIController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb){
         nameLabel.setText(MANAGER_NAME);
+        showtime(dateText);
         displayDoctor();
         bindDoctor();
         displayDoorBoy();

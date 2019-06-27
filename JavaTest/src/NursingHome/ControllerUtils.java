@@ -7,13 +7,16 @@ import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Date;
 
 public class ControllerUtils {
     public static void showAlert(String message) {
@@ -134,7 +137,7 @@ public class ControllerUtils {
         return localDate;
     }
 
-    public static  void  initCustomerComboBox(ComboBox<Integer> customerAgeComboBox,ComboBox<Integer> customerCareTypeComboBox){
+    public static void initCustomerComboBox(ComboBox<Integer> customerAgeComboBox,ComboBox<Integer> customerCareTypeComboBox){
         for (int i=50;i<120;i++){
             customerAgeComboBox.getItems().add(i);
         }
@@ -143,5 +146,10 @@ public class ControllerUtils {
             customerCareTypeComboBox.getItems().add(i);
         }
         customerCareTypeComboBox.setValue(3);
+    }
+
+    public static void showtime(Text text){
+        SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd");
+        text.setText(df.format(new Date()));
     }
 }
