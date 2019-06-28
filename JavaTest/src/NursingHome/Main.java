@@ -189,6 +189,30 @@ public class Main extends Application {
         customerSetInfoUI.setApp(this);
     }
 
+
+    public void createRecordSetInfoUI() {
+        AnchorPane page = new AnchorPane();
+        floatStage = new Stage();
+        floatStage.setAlwaysOnTop(true);
+        floatStage.initModality(Modality.APPLICATION_MODAL);
+        floatStage.setTitle("档案管理 - 档案信息 Administrator Record Information");
+        floatStage.setResizable(false);
+        FXMLLoader loader = new FXMLLoader();
+        try (InputStream ignored = Main.class.getResourceAsStream("fxml/RecordSetInfoUI.fxml")) {
+            loader.setBuilderFactory(new JavaFXBuilderFactory());
+            loader.setLocation(Main.class.getResource("fxml/RecordSetInfoUI.fxml"));
+            page = loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Scene scene = new Scene(page);
+
+        floatStage.setScene(scene);
+        floatStage.show();
+        RecordSetInfoUIController recordSetInfoUI= loader.getController();
+        recordSetInfoUI.setApp(this);
+    }
+
     public void createAboutInfoUI() {
         AnchorPane page = new AnchorPane();
         floatStage = new Stage();

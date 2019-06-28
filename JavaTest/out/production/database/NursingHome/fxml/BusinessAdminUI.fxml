@@ -45,8 +45,13 @@
                           <items>
                         <MenuItem mnemonicParsing="false" onAction="#insertBed" text="新增床位" />
                               <MenuItem mnemonicParsing="false" onAction="#deleteBed" text="删除床位" />
-                              <MenuItem mnemonicParsing="false" onAction="#setBedInfo" text="修改床位信息" />
                           </items>
+                        </Menu>
+                        <Menu mnemonicParsing="false" text="档案管理">
+                           <items>
+                              <MenuItem mnemonicParsing="false" onAction="#insertRecord" text="新增档案" />
+                              <MenuItem mnemonicParsing="false" onAction="#alterRecord" text="修改档案" />
+                           </items>
                         </Menu>
                 </items>
               </Menu>
@@ -115,20 +120,21 @@
                                  <columns>
                                     <TableColumn fx:id="bedID" prefWidth="75.0" text="床位号" />
                                     <TableColumn fx:id="bedRoomID" prefWidth="75.0" text="所在房间" />
-                                    <TableColumn fx:id="bedIsPeople" prefWidth="75.0" text="是否使用" />
-                                    <TableColumn fx:id="bedRank" prefWidth="75.0" text="床位等级" />
+                                    <TableColumn fx:id="bedStatus" prefWidth="75.0" text="是否使用" />
                                  </columns>
                               </TableView>
                            </content>
                         </Tab>
-                        <Tab fx:id="bedTab1" closable="false" text="档案管理">
+                        <Tab fx:id="recordTab" closable="false" text="档案管理">
                            <content>
-                              <TableView fx:id="bedTableView1" onMouseReleased="#clickIntoDetail" prefHeight="706.0" prefWidth="973.0">
+                              <TableView fx:id="recordTableView" onMouseReleased="#clickIntoDetail" prefHeight="706.0" prefWidth="973.0">
                                  <columns>
-                                    <TableColumn fx:id="bedID1" prefWidth="75.0" text="床位号" />
-                                    <TableColumn fx:id="bedRoomID1" prefWidth="75.0" text="所在房间" />
-                                    <TableColumn fx:id="bedIsPeople1" prefWidth="75.0" text="是否使用" />
-                                    <TableColumn fx:id="bedRank1" prefWidth="75.0" text="床位等级" />
+                                    <TableColumn fx:id="recordID" prefWidth="75.0" text="档案编号" />
+                                    <TableColumn fx:id="recordCustomerID" prefWidth="75.0" text="客户编号" />
+                                    <TableColumn fx:id="recordCustomerName" prefWidth="75.0" text="客户姓名" />
+                                    <TableColumn fx:id="recordDoctorID" prefWidth="75.0" text="医生编号" />
+                                    <TableColumn fx:id="recordDate" prefWidth="75.0" text="记录日期" />
+                                    <TableColumn fx:id="recordContext" prefWidth="75.0" text="记录内容" />
                                  </columns>
                               </TableView>
                            </content>

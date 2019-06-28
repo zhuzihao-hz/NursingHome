@@ -5,21 +5,18 @@ import javafx.beans.property.*;
 public class Bed {
     private StringProperty id;
     private StringProperty roomID;
-    private StringProperty rank;
-    private StringProperty isPeople;
+    private IntegerProperty status;
 
-    public Bed(StringProperty id, StringProperty roomID, StringProperty rank, StringProperty isPeople) {
+    public Bed(StringProperty id, StringProperty roomID, IntegerProperty status) {
         this.id = id;
         this.roomID = roomID;
-        this.rank = rank;
-        this.isPeople = isPeople;
+        this.status = status;
     }
 
     public Bed() {
         this.id=new SimpleStringProperty("");
         this.roomID=new SimpleStringProperty("");
-        this.rank=new SimpleStringProperty("");
-        this.isPeople=new SimpleStringProperty("");
+        this.status=new SimpleIntegerProperty(0);
     }
 
     public boolean equal(Bed bed){
@@ -38,17 +35,13 @@ public class Bed {
     public StringProperty roomIDProperty() { return roomID; }
     public void setRoomID(String roomID) { this.roomID.set(roomID); }
 
-    public String getRank() { return rank.get(); }
-    public StringProperty rankProperty() { return rank; }
-    public void setRank(String rank) { this.rank.set(rank); }
-
-    public String getIsPeople() { return isPeople.get(); }
-    public StringProperty isPeopleProperty() { return isPeople; }
-    public void setIsPeople(String isPeople) { this.isPeople.set(isPeople); }
+    public Integer getStatus(){return status.get();}
+    public IntegerProperty statusProperty() { return status; }
+    public void setStatus(int status) { this.status.set(status); }
 
     public String getBedInfo() {
         String temp;
-        temp="('"+this.getId()+"','"+this.getRoomID()+"','"+this.getIsPeople()+"','"+this.getRank()+"')";
+        temp="('"+this.getId()+"','"+this.getRoomID()+"','"+this.getStatus()+"')";
         return temp;
     }
 }

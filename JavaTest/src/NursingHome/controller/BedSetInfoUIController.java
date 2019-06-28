@@ -38,8 +38,7 @@ public class BedSetInfoUIController implements Initializable {
         if (!isInsert){
             bedIdTextField.setText(bed.getId());
             bedRoomTextField.setText(bed.getRoomID());
-            bedUsedComboBox.setValue(bed.getIsPeople());
-            bedRankComboBox.setValue(bed.getRank());
+            //bedUsedComboBox.setValue(bed.getIsPeople());
             bedIdTextField.setEditable(false);
             bedRoomTextField.setEditable(false);
         }
@@ -61,8 +60,8 @@ public class BedSetInfoUIController implements Initializable {
         }
         bed.setId(bedIdTextField.getText());
         bed.setRoomID(bedRoomTextField.getText());
-        bed.setIsPeople(bedUsedComboBox.getValue());
-        bed.setRank(bedRankComboBox.getValue());
+        //bed.setIsPeople(bedUsedComboBox.getValue());
+        //bed.setRank(bedRankComboBox.getValue());
         Connection conn;
         Statement stmt;
 
@@ -71,9 +70,9 @@ public class BedSetInfoUIController implements Initializable {
             try {
                 Class.forName("com.mysql.jdbc.Driver");
                 conn = DriverManager.getConnection("jdbc:mysql://localhost:3306", "root", "12345678");
-                String sql="UPDATE NursingHome.bed SET bed_rank='"+bed.getRank()+"', bed_ispeople='"+bed.getIsPeople()+"' WHERE bed_id = '"+bed.getId()+"' AND bed_roomid = '"+bed.getRoomID()+"'";
+                //String sql="UPDATE NursingHome.bed SET bed_rank='"+bed.getRank()+"', bed_ispeople='"+bed.getIsPeople()+"' WHERE bed_id = '"+bed.getId()+"' AND bed_roomid = '"+bed.getRoomID()+"'";
                 stmt = conn.createStatement();
-                stmt.executeUpdate(sql);
+                //stmt.executeUpdate(sql);
                 stmt.close();
                 conn.close();
             } catch (ClassNotFoundException e) {
