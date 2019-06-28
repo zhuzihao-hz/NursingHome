@@ -121,6 +121,18 @@
                               </TableView>
                            </content>
                         </Tab>
+                        <Tab fx:id="bedTab1" closable="false" text="档案管理">
+                           <content>
+                              <TableView fx:id="bedTableView1" onMouseReleased="#clickIntoDetail" prefHeight="706.0" prefWidth="973.0">
+                                 <columns>
+                                    <TableColumn fx:id="bedID1" prefWidth="75.0" text="床位号" />
+                                    <TableColumn fx:id="bedRoomID1" prefWidth="75.0" text="所在房间" />
+                                    <TableColumn fx:id="bedIsPeople1" prefWidth="75.0" text="是否使用" />
+                                    <TableColumn fx:id="bedRank1" prefWidth="75.0" text="床位等级" />
+                                 </columns>
+                              </TableView>
+                           </content>
+                        </Tab>
                      </tabs>
                   </TabPane>
                </children>

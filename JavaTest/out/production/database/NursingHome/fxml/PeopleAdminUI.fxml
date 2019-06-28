@@ -49,12 +49,13 @@
                <children>
                   <VBox prefHeight="399.0" prefWidth="165.0">
                      <children>
-                        <AnchorPane prefHeight="399.0" prefWidth="169.0">
+                        <AnchorPane prefHeight="403.0" prefWidth="165.0">
                            <children>
                               <ImageView fitHeight="76.0" fitWidth="76.0" layoutX="43.0" layoutY="28.0" onMouseReleased="#personInfoImage" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../img/dummy_potrait.jpg" />
-                                 </image></ImageView>
+                                 </image>
+                              </ImageView>
                               <Label fx:id="nameLabel" alignment="CENTER" layoutX="38.0" layoutY="129.0" prefHeight="40.0" prefWidth="85.0" text="姓名">
                                  <font>
                                     <Font size="17.0" />
