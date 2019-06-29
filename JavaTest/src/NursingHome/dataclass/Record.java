@@ -29,6 +29,12 @@ public class Record {
         this.context = context;
     }
 
+    public String getRecordInfo(){
+        String temp;
+        temp="('"+this.getId()+"','"+this.getCustomerId()+"','"+this.getCustomerName()+"','"+this.getDoctorId()+"','"+this.getDate()+"','"+this.getContext()+"')";
+        return temp;
+    }
+
     public String getId() { return id.get(); }
     public StringProperty idProperty() { return id; }
     public void setId(String id) { this.id.set(id); }

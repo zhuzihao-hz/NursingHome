@@ -114,16 +114,6 @@ public class ControllerUtils {
         }
     }
 
-    public static void initBedComboBox(ComboBox<String> bedUsedComboBox, ComboBox<String> bedRankComboBox){
-        bedUsedComboBox.getItems().add("是");
-        bedUsedComboBox.getItems().add("否");
-        bedUsedComboBox.setValue("否");
-        bedRankComboBox.getItems().add("高级床位");
-        bedRankComboBox.getItems().add("中级床位");
-        bedRankComboBox.getItems().add("低级床位");
-        bedRankComboBox.setValue("低级床位");
-    }
-
     public static String localDateToString(LocalDate localDate){
         return String.valueOf(localDate);
     }
@@ -137,15 +127,15 @@ public class ControllerUtils {
         return localDate;
     }
 
-    public static void initCustomerComboBox(ComboBox<Integer> customerAgeComboBox,ComboBox<Integer> customerCareTypeComboBox){
+    public static void initCustomerComboBox(ComboBox<Integer> customerAgeComboBox,ComboBox<Integer> customerRankComboBox){
         for (int i=50;i<120;i++){
             customerAgeComboBox.getItems().add(i);
         }
         customerAgeComboBox.setValue(60);
         for(int i=1;i<=3;i++){
-            customerCareTypeComboBox.getItems().add(i);
+            customerRankComboBox.getItems().add(i);
         }
-        customerCareTypeComboBox.setValue(3);
+        customerRankComboBox.setValue(3);
     }
 
     public static void showtime(Text text){

@@ -1,6 +1,8 @@
 package NursingHome.controller;
 
+import NursingHome.GlobalInfo;
 import NursingHome.Main;
+import NursingHome.dataclass.Administrator;
 import NursingHome.dataclass.Doctor;
 import NursingHome.dataclass.DoorBoy;
 import NursingHome.dataclass.Worker;
@@ -50,6 +52,15 @@ public class PeopleAdminUIController implements Initializable {
     @FXML private Tab doorBoyTab;
     private static ObservableList<DoorBoy>doorBoyObservableList= FXCollections.observableArrayList();
 
+    @FXML private TableColumn<StringProperty,String> adminID;
+    @FXML private TableColumn<StringProperty,String> adminName;
+    @FXML private TableColumn<StringProperty,String> adminAge;
+    @FXML private TableColumn<StringProperty,String> adminPosition;
+    @FXML private TableColumn<StringProperty,Integer> adminSalary;
+    @FXML private TableView<Administrator> adminTableView;
+    @FXML private Tab adminTab;
+    private static ObservableList<Administrator> adminObservableList= FXCollections.observableArrayList();
+
     @FXML Text dateText;
     @FXML private Label nameLabel;
 
@@ -67,6 +78,8 @@ public class PeopleAdminUIController implements Initializable {
         bindDoorBoy();
         displayWorker();
         bindWorker();
+        displayAdministrator();
+        bindAdministrator();
     }
 
     public void logout() throws Exception{
@@ -81,6 +94,7 @@ public class PeopleAdminUIController implements Initializable {
     public void quit() {
         application.stage.close();
     }
+
     public void personInfo() {
         getApp ().createPersonalInfoUI();
     }
@@ -107,6 +121,13 @@ public class PeopleAdminUIController implements Initializable {
         }else if (doorBoyTab.isSelected()){
             PeopleSetInfoUIController.peopleType="勤杂人员";
             application.createPeopleSetInfoUI();
+        }else if (adminTab.isSelected()){
+            if (MANAGER_PRIV==0){
+                // TODO 具有更高级的权限时才能新增行政人员
+                //  !!!!!!!!!!!!!!!!!!!!!
+                //  !!!!!!!!!!!!!!!!!!!!!
+                application.createPeopleSetInfoUI();
+            }
         }
     }
 
@@ -115,15 +136,17 @@ public class PeopleAdminUIController implements Initializable {
         if (workerTab.isSelected()){
             List<Worker> workerSelected = workerTableView.getSelectionModel().getSelectedItems();
             for(int i=0;i<workerSelected.size();i++){
-                //System.out.println(workerSelected.get(i).getId());
+                // TODO 在数据库中删除护工，并且在历史员工里把状态改为离职（0）
                 Connection conn;
                 Statement stmt;
                 try {
                     Class.forName("com.mysql.jdbc.Driver");
                     conn = DriverManager.getConnection("jdbc:mysql://localhost:3306", "root", "12345678");
                     String sql="DELETE FROM NursingHome.worker WHERE worker_id='"+workerSelected.get(i).getId()+"'";
+                    String sql1="UPDATE NursingHome.historical_staff SET staff_status=0 WHERE staff_id='"+workerSelected.get(i).getId()+"'";
                     stmt = conn.createStatement();
                     stmt.executeUpdate(sql);
+                    stmt.executeUpdate(sql1);
                     stmt.close();
                     conn.close();
                 } catch (ClassNotFoundException e) {
@@ -143,17 +166,19 @@ public class PeopleAdminUIController implements Initializable {
             }
             System.out.println("解雇Worker成功");
         }else if (doctorTab.isSelected()) {
+            // TODO 删除医生,并且把历史员工表里的状态改为（0）
             List<Doctor> doctorSelected = doctorTableView.getSelectionModel().getSelectedItems();
             for(int i=0;i<doctorSelected.size();i++){
-                //System.out.println(doctorSelected.get(i).getId());
                 Connection conn;
                 Statement stmt;
                 try {
                     Class.forName("com.mysql.jdbc.Driver");
                     conn = DriverManager.getConnection("jdbc:mysql://localhost:3306", "root", "12345678");
                     String sql="DELETE FROM NursingHome.doctor WHERE doctor_id='"+doctorSelected.get(i).getId()+"'";
+                    String sql1="UPDATE NursingHome.historical_staff SET staff_status=0 WHERE staff_id='"+doctorSelected.get(i).getId()+"'";
                     stmt = conn.createStatement();
                     stmt.executeUpdate(sql);
+                    stmt.executeUpdate(sql1);
                     stmt.close();
                     conn.close();
                 } catch (ClassNotFoundException e) {
@@ -173,17 +198,19 @@ public class PeopleAdminUIController implements Initializable {
             }
             System.out.println("解雇Doctor成功");
         }else if (doorBoyTab.isSelected()){
+            // TODO 删除勤杂工同时将历史员工表里的状态改为离职（0）
             List<DoorBoy> doorBoySelected = doorBoyTableView.getSelectionModel().getSelectedItems();
             for(int i=0;i<doorBoySelected.size();i++){
-                //System.out.println(doorBoySelected.get(i).getId());
                 Connection conn;
                 Statement stmt;
                 try {
                     Class.forName("com.mysql.jdbc.Driver");
                     conn = DriverManager.getConnection("jdbc:mysql://localhost:3306", "root", "12345678");
                     String sql="DELETE FROM NursingHome.doorboy WHERE doorboy_id='"+doorBoySelected.get(i).getId()+"'";
+                    String sql1="UPDATE NursingHome.historical_staff SET staff_status=0 WHERE staff_id='"+doorBoySelected.get(i).getId()+"'";
                     stmt = conn.createStatement();
                     stmt.executeUpdate(sql);
+                    stmt.executeUpdate(sql1);
                     stmt.close();
                     conn.close();
                 } catch (ClassNotFoundException e) {
@@ -362,6 +389,18 @@ public class PeopleAdminUIController implements Initializable {
         doorBoyTableView.setItems(doorBoyObservableList);
     }
 
+    public void bindAdministrator(){
+        adminID.setCellValueFactory(new PropertyValueFactory<>("id"));
+        adminName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        adminAge.setCellValueFactory(new PropertyValueFactory<>("age"));
+        adminSalary.setCellValueFactory(new PropertyValueFactory<>("salary"));
+        adminPosition.setCellValueFactory(new PropertyValueFactory<>("position"));
+        adminTableView.setVisible(true);
+        adminTableView.setEditable(false);
+        adminTableView.setTableMenuButtonVisible(true);
+        adminTableView.setItems(adminObservableList);
+    }
+
     public void displayDoctor(){
         // TODO 显示医生信息
         doctorObservableList.clear();
@@ -455,4 +494,34 @@ public class PeopleAdminUIController implements Initializable {
         System.out.println("勤杂人员数据导入成功！");
     }
 
+    public void displayAdministrator(){
+        // TODO 显示勤杂人员信息
+        adminObservableList.clear();
+        Connection conn;
+        Statement stmt;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306", "root", "12345678");
+            String sql="SELECT * FROM NursingHome.administrator";
+            stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()){
+                Administrator administrator=new Administrator();
+                administrator.setId(rs.getString(1));
+                administrator.setName(rs.getString(2));
+                administrator.setAge(rs.getInt(3));
+                administrator.setSalary(rs.getDouble(4));
+                administrator.setPosition(rs.getString(5));
+                adminObservableList.add(administrator);
+            }
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        System.out.println("行政人员数据导入成功！");
+    }
 }

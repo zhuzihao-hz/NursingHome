@@ -143,29 +143,6 @@ public class Main extends Application {
         peopleSetInfoUI.setApp(this);
     }
 
-    public void createBedSetInfoUI() {
-        AnchorPane page = new AnchorPane();
-        floatStage = new Stage();
-        floatStage.setAlwaysOnTop(true);
-        floatStage.initModality(Modality.APPLICATION_MODAL);
-        floatStage.setTitle("床位管理 - 床位信息 Administrator Bed Information");
-        floatStage.setResizable(false);
-        FXMLLoader loader = new FXMLLoader();
-        try (InputStream ignored = Main.class.getResourceAsStream("fxml/BedSetInfoUI.fxml")) {
-            loader.setBuilderFactory(new JavaFXBuilderFactory());
-            loader.setLocation(Main.class.getResource("fxml/BedSetInfoUI.fxml"));
-            page = loader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Scene scene = new Scene(page);
-
-        floatStage.setScene(scene);
-        floatStage.show();
-        BedSetInfoUIController bedSetInfoUI= loader.getController();
-        bedSetInfoUI.setApp(this);
-    }
-
     public void createCustomerSetInfoUI() {
         AnchorPane page = new AnchorPane();
         floatStage = new Stage();
@@ -189,6 +166,28 @@ public class Main extends Application {
         customerSetInfoUI.setApp(this);
     }
 
+    public void createCustomerInsertInfoUI() {
+        AnchorPane page = new AnchorPane();
+        floatStage = new Stage();
+        floatStage.setAlwaysOnTop(true);
+        floatStage.initModality(Modality.APPLICATION_MODAL);
+        floatStage.setTitle("客户管理 - 客户信息 Administrator Customer Information");
+        floatStage.setResizable(false);
+        FXMLLoader loader = new FXMLLoader();
+        try (InputStream ignored = Main.class.getResourceAsStream("fxml/CustomerInsertInfoUI.fxml")) {
+            loader.setBuilderFactory(new JavaFXBuilderFactory());
+            loader.setLocation(Main.class.getResource("fxml/CustomerInsertInfoUI.fxml"));
+            page = loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Scene scene = new Scene(page);
+
+        floatStage.setScene(scene);
+        floatStage.show();
+        CustomerInsertInfoUIController customerInsertInfoUI= loader.getController();
+        customerInsertInfoUI.setApp(this);
+    }
 
     public void createRecordSetInfoUI() {
         AnchorPane page = new AnchorPane();
@@ -211,6 +210,29 @@ public class Main extends Application {
         floatStage.show();
         RecordSetInfoUIController recordSetInfoUI= loader.getController();
         recordSetInfoUI.setApp(this);
+    }
+
+    public void createRecordLookInfoUI() {
+        AnchorPane page = new AnchorPane();
+        floatStage = new Stage();
+        floatStage.setAlwaysOnTop(true);
+        floatStage.initModality(Modality.APPLICATION_MODAL);
+        floatStage.setTitle("档案管理 - 档案信息 Administrator Record Information");
+        floatStage.setResizable(false);
+        FXMLLoader loader = new FXMLLoader();
+        try (InputStream ignored = Main.class.getResourceAsStream("fxml/RecordLookInfoUI.fxml")) {
+            loader.setBuilderFactory(new JavaFXBuilderFactory());
+            loader.setLocation(Main.class.getResource("fxml/RecordLookInfoUI.fxml"));
+            page = loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Scene scene = new Scene(page);
+
+        floatStage.setScene(scene);
+        floatStage.show();
+        RecordLookInfoUIController recordLookInfoUI= loader.getController();
+        recordLookInfoUI.setApp(this);
     }
 
     public void createAboutInfoUI() {

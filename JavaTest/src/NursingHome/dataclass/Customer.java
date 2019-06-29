@@ -7,16 +7,16 @@ public class Customer {
     private StringProperty name;
     private IntegerProperty age;
     private StringProperty enterTime;
-    private IntegerProperty roomID;
-    private IntegerProperty bedID;
+    private StringProperty roomID;
+    private StringProperty bedID;
     private StringProperty phone;
     private StringProperty careWorker;
-    private IntegerProperty careType;
+    private IntegerProperty rank;
     private StringProperty relationName;
     private StringProperty relation;
     private StringProperty relationPhone;
 
-    public Customer(StringProperty id, StringProperty name, IntegerProperty age, StringProperty enterTime, IntegerProperty roomID, IntegerProperty bedID, StringProperty phone, StringProperty careWorker, IntegerProperty careType, StringProperty relationName, StringProperty relation, StringProperty relationPhone) {
+    public Customer(StringProperty id, StringProperty name, IntegerProperty age, StringProperty enterTime, StringProperty roomID, StringProperty bedID, StringProperty phone, StringProperty careWorker, IntegerProperty rank, StringProperty relationName, StringProperty relation, StringProperty relationPhone) {
         this.id = id;
         this.name = name;
         this.age = age;
@@ -25,7 +25,7 @@ public class Customer {
         this.bedID = bedID;
         this.phone = phone;
         this.careWorker = careWorker;
-        this.careType = careType;
+        this.rank = rank;
         this.relationName = relationName;
         this.relation = relation;
         this.relationPhone = relationPhone;
@@ -36,11 +36,11 @@ public class Customer {
         this.name = new SimpleStringProperty("");
         this.age = new SimpleIntegerProperty(0);
         this.enterTime = new SimpleStringProperty("");
-        this.roomID = new SimpleIntegerProperty(0);
-        this.bedID = new SimpleIntegerProperty(0);
+        this.roomID = new SimpleStringProperty("");
+        this.bedID = new SimpleStringProperty("");
         this.phone = new SimpleStringProperty("");
         this.careWorker = new SimpleStringProperty("");
-        this.careType = new SimpleIntegerProperty(0);
+        this.rank = new SimpleIntegerProperty(0);
         this.relationName = new SimpleStringProperty("");
         this.relation = new SimpleStringProperty("");
         this.relationPhone = new SimpleStringProperty("");
@@ -62,13 +62,13 @@ public class Customer {
     public StringProperty enterTimeProperty() { return enterTime; }
     public void setEnterTime(String enterTime) { this.enterTime.set(enterTime); }
 
-    public int getRoomID() { return roomID.get(); }
-    public IntegerProperty roomIDProperty() { return roomID; }
-    public void setRoomID(int roomID) { this.roomID.set(roomID); }
+    public String getRoomID() { return roomID.get(); }
+    public StringProperty roomIDProperty() { return roomID; }
+    public void setRoomID(String roomID) { this.roomID.set(roomID); }
 
-    public int getBedID() { return bedID.get(); }
-    public IntegerProperty bedIDProperty() { return bedID; }
-    public void setBedID(int bedID) { this.bedID.set(bedID); }
+    public String getBedID() { return bedID.get(); }
+    public StringProperty bedIDProperty() { return bedID; }
+    public void setBedID(String bedID) { this.bedID.set(bedID); }
 
     public String getPhone() { return phone.get(); }
     public StringProperty phoneProperty() { return phone; }
@@ -78,9 +78,9 @@ public class Customer {
     public StringProperty careWorkerProperty() { return careWorker; }
     public void setCareWorker(String careWorker) { this.careWorker.set(careWorker); }
 
-    public int getCareType() { return careType.get(); }
-    public IntegerProperty careTypeProperty() { return careType; }
-    public void setCareType(int careType) { this.careType.set(careType); }
+    public int getRank() { return rank.get(); }
+    public IntegerProperty rankProperty() { return rank; }
+    public void setRank(int rank) { this.rank.set(rank); }
 
     public String getRelationName() { return relationName.get(); }
     public StringProperty relationNameProperty() { return relationName; }
@@ -96,7 +96,7 @@ public class Customer {
 
     public String getCustomerInfo() {
         String temp;
-        temp="('"+this.getId()+"','"+this.getName()+"','"+this.getAge()+"','"+this.getEnterTime()+"','"+this.getRoomID()+"','"+this.getBedID()+"','"+this.getPhone()+"','"+this.getCareWorker()+"','"+this.getCareType()+"','"+this.getRelationName()+"','"+this.getRelation()+"','"+this.getRelationPhone()+"')";
+        temp="('"+this.getId()+"','"+this.getName()+"','"+this.getAge()+"','"+this.getEnterTime()+"','"+this.getRoomID()+"','"+this.getBedID()+"','"+this.getPhone()+"','"+this.getCareWorker()+"','"+this.getRank()+"','"+this.getRelationName()+"','"+this.getRelation()+"','"+this.getRelationPhone()+"')";
         return temp;
     }
 }

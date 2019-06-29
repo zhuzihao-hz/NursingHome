@@ -11,10 +11,9 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="NursingHome.controller.RecordSetInfoUIController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="NursingHome.controller.RecordLookInfoUIController">
    <children>
-      <JFXButton fx:id="saveInfoButton" layoutX="173.0" layoutY="337.0" onAction="#saveRecordInfo" prefHeight="35.0" prefWidth="61.0" text="保存" />
-      <JFXButton fx:id="infoBackButton" layoutX="367.0" layoutY="337.0" onAction="#backToBusinessAdmin" prefHeight="35.0" prefWidth="61.0" text="退出" />
+      <JFXButton fx:id="infoBackButton" layoutX="270.0" layoutY="335.0" onAction="#backToBusinessAdmin" prefHeight="35.0" prefWidth="61.0" text="退出" />
       <GridPane layoutX="105.0" layoutY="54.0" prefHeight="259.0" prefWidth="428.0">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />

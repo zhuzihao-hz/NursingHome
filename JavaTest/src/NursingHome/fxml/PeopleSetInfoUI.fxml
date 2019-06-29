@@ -8,6 +8,7 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="NursingHome.controller.PeopleSetInfoUIController">
    <children>
@@ -26,7 +27,6 @@
          </rowConstraints>
          <children>
             <TextField fx:id="peopleNameTextField" promptText="请输入姓名" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <TextField fx:id="peopleIdTextField" promptText="请输入编号" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <TextField fx:id="peopleSalaryTextField" promptText="请输入薪水" GridPane.columnIndex="1" GridPane.rowIndex="4" />
             <Label prefHeight="28.0" prefWidth="76.0" text="编号" GridPane.rowIndex="1" />
             <Label fx:id="peopleOtherLabel" prefHeight="28.0" prefWidth="76.0" text="级别" GridPane.rowIndex="5" />
@@ -37,6 +37,11 @@
             <Label text="职工类型" />
             <JFXComboBox fx:id="peopleAgeComboBox" prefHeight="27.0" prefWidth="342.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <JFXComboBox fx:id="peopleOtherComboBox" prefHeight="27.0" prefWidth="342.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <Label fx:id="peopleIdLabel" prefHeight="24.0" prefWidth="341.0" text="职工编号" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
          </children>
       </GridPane>
       <JFXButton fx:id="saveInfoButton" layoutX="167.0" layoutY="327.0" onAction="#savePeopleInfo" prefHeight="35.0" prefWidth="61.0" text="保存" />

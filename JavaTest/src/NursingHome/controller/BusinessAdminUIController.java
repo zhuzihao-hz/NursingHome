@@ -44,6 +44,14 @@ public class BusinessAdminUIController implements Initializable {
     private static ObservableList<Bed> bedObservableList=FXCollections.observableArrayList();
     @FXML private Tab bedTab;
 
+    @FXML private TableColumn<StringProperty,String> roomID;
+    @FXML private TableColumn<StringProperty,String> roomRank;
+    @FXML private TableColumn<StringProperty,String> roomTotalBed;
+    @FXML private TableColumn<StringProperty,String> roomFreeBed;
+    @FXML private TableView<Room> roomTableView;
+    private static ObservableList<Room> roomObservableList=FXCollections.observableArrayList();
+    @FXML private Tab roomTab;
+
     @FXML private TableColumn<StringProperty,String> recordID;
     @FXML private TableColumn<StringProperty,String> recordCustomerID;
     @FXML private TableColumn<StringProperty,String> recordCustomerName;
@@ -70,6 +78,8 @@ public class BusinessAdminUIController implements Initializable {
         bindBusiness();
         displayBed();
         bindBed();
+        displayRoom();
+        bindRoom();
         displayRecord();
         bindRecord();
     }
@@ -104,11 +114,11 @@ public class BusinessAdminUIController implements Initializable {
 
     public void insertBusiness(){
         // TODO 新增客户
-        application.createCustomerSetInfoUI();
+        application.createCustomerInsertInfoUI();
     }
 
     public void deleteBusiness(){
-        // TODO 删除客户
+        // TODO 删除客户，并且在record表中将该客户的档案记录一起删除
         List<Customer> customerSelected = customerTableView.getSelectionModel().getSelectedItems();
         for(int i=0;i<customerSelected.size();i++){
             Connection conn;
@@ -116,8 +126,10 @@ public class BusinessAdminUIController implements Initializable {
             try {
                 Class.forName("com.mysql.jdbc.Driver");
                 conn = DriverManager.getConnection("jdbc:mysql://localhost:3306", "root", "12345678");
+                String sql1="DELETE FROM NursingHome.record WHERE customer_id='"+customerSelected.get(i).getId()+"'";
                 String sql="DELETE FROM NursingHome.customer WHERE customer_id='"+customerSelected.get(i).getId()+"'";
                 stmt = conn.createStatement();
+                stmt.executeUpdate(sql1);
                 stmt.executeUpdate(sql);
                 stmt.close();
                 conn.close();
@@ -125,6 +137,19 @@ public class BusinessAdminUIController implements Initializable {
                 e.printStackTrace();
             } catch (SQLException e) {
                 e.printStackTrace();
+            }
+        }
+        for (int i=0;i<customerSelected.size();i++){
+            for (int j=0;j<customerObservableList.size();j++){
+                if (customerSelected.get(i).getId().equals(customerObservableList.get(j).getId())){
+                    customerObservableList.remove(j);
+                    // TODO 将该客户的档案记录也删除
+                    for (int k=0;k<recordObservableList.size();k++){
+                        if (recordObservableList.get(k).getCustomerId().equals(customerSelected.get(i).getId())){
+                            recordObservableList.remove(k);
+                        }
+                    }
+                }
             }
         }
         System.out.println("删除Customer成功");
@@ -133,80 +158,33 @@ public class BusinessAdminUIController implements Initializable {
     public void setBusinessInfo(){
         // TODO 设置客户信息
         //  需要自动生成一些信息，如自动分配空余的床位等
-        CustomerSetInfoUIController.isInsert=false;
         List<Customer> customerSelected = customerTableView.getSelectionModel().getSelectedItems();
         CustomerSetInfoUIController.setCustomer(customerSelected.get(0));
         application.createCustomerSetInfoUI();
     }
 
-    public void insertBed(){
-        // TODO 新增床位
-        application.createBedSetInfoUI();
-    }
-
-    // TODO 删除床位应该不用了！！！！！！！！！！！
-
-    public void deleteBed(){
-        /*
-        // TODO 删除床位
-        List<Bed> bedSelected = bedTableView.getSelectionModel().getSelectedItems();
-        for(int i=0;i<bedSelected.size();i++){
-            Connection conn;
-            Statement stmt;
-            try {
-                Class.forName("com.mysql.jdbc.Driver");
-                conn = DriverManager.getConnection("jdbc:mysql://localhost:3306", "root", "12345678");
-                String sql="DELETE FROM NursingHome.bed WHERE bed_id='"+bedSelected.get(i).getId()+"'"+" AND bed_roomid='"+bedSelected.get(i).getRoomID()+"'";
-                stmt = conn.createStatement();
-                stmt.executeUpdate(sql);
-                stmt.close();
-                conn.close();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-        // TODO 在tableView中也把员工信息去掉
-        for (int i=0;i<bedSelected.size();i++){
-            for (int j=0;j<bedObservableList.size();j++){
-                if (bedSelected.get(i).getId().equals(bedObservableList.get(j).getId())){
-                    bedObservableList.remove(j);
-                    break;
-                }
-            }
-        }
-        System.out.println("删除Bed成功");
-         */
-    }
-
     public void insertRecord(){
-        if (recordTab.isSelected()){
-            RecordSetInfoUIController.isInsert=true;
-            application.createRecordSetInfoUI();
-        }
+        // TODO 新增记录
+        application.createRecordSetInfoUI();
         System.out.println("新增档案记录成功！");
     }
 
-    public void alterRecord(){
-        RecordSetInfoUIController.isInsert=false;
+    public void lookRecordInfo(){
         List<Record> recordSelected = recordTableView.getSelectionModel().getSelectedItems();
-        RecordSetInfoUIController.setRecord(recordSelected.get(0));
-        application.createRecordSetInfoUI();
-        System.out.println("修改档案记录成功！");
+        RecordLookInfoUIController.setRecord(recordSelected.get(0));
+        getApp().createRecordLookInfoUI();
     }
 
     public void clickIntoDetail(){
         // TODO 双击进入修改信息界面
         if (customerTab.isSelected()){
-            // TODO 选中workerTab时，修改
+            // TODO 选中customerTab时，修改
             customerTableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
             List<Customer> customerSelected = customerTableView.getSelectionModel().getSelectedItems();
             customerTableView.setOnMouseClicked(event -> {
                 if (event.getClickCount()==2&&customerSelected.size()==1){
                     try {
-                        CustomerSetInfoUIController.isInsert=false;
                         CustomerSetInfoUIController.setCustomer((customerSelected.get(0)));
                         getApp().createCustomerSetInfoUI();
                     } catch (Exception e){
@@ -214,43 +192,41 @@ public class BusinessAdminUIController implements Initializable {
                     }
                 }
             });
-        } else if (bedTab.isSelected()){
-            // TODO 选中doorBoyTab时，修改
-            bedTableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        }else if (recordTab.isSelected()){
+            // TODO 点击recordTab时查看Record详细信息
+            recordTableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-            List<Bed> bedSelected = bedTableView.getSelectionModel().getSelectedItems();
-            bedTableView.setOnMouseClicked(event -> {
-                if (event.getClickCount()==2&&bedSelected.size()==1){
+            List<Record> recordSelected = recordTableView.getSelectionModel().getSelectedItems();
+            recordTableView.setOnMouseClicked(event -> {
+                if (event.getClickCount()==2&&recordSelected.size()==1){
                     try {
-                        BedSetInfoUIController.isInsert=false;
-                        BedSetInfoUIController.setBed((bedSelected.get(0)));
-                        getApp().createBedSetInfoUI();
+                        RecordLookInfoUIController.setRecord((recordSelected.get(0)));
+                        getApp().createRecordLookInfoUI();
                     } catch (Exception e){
                         e.printStackTrace();
                     }
                 }
             });
         }
-        // TODO 注意此处要改！！！！！！！！！！！！
-        //  ！！！！！！！！！！！！！！！
-        //  ！！！！！！！！！！！！！！！！
     }
 
     public static void setInfoTableView(boolean isRecord,boolean isInsert,Object object){
         if (isRecord){
-
-            // TODO 修改记录在表格中！！
-            //  ！！！！！！！！
+            Record record=(Record)object;
+            if (isInsert){
+                recordObservableList.add(record);
+            }
         }else{
             Customer customer=(Customer)object;
             if (isInsert){
+                System.out.println("Test");
                 customerObservableList.add(customer);
             }else {
                 for (int i=0;i<customerObservableList.size();i++){
                     if (customerObservableList.get(i).getId().equals(customer.getId())){
                         customerObservableList.get(i).setAge(customer.getAge());
                         customerObservableList.get(i).setBedID(customer.getBedID());
-                        customerObservableList.get(i).setCareType(customer.getCareType());
+                        customerObservableList.get(i).setRank(customer.getRank());
                         customerObservableList.get(i).setCareWorker(customer.getCareWorker());
                         customerObservableList.get(i).setEnterTime(customer.getEnterTime());
                         customerObservableList.get(i).setName(customer.getName());
@@ -270,7 +246,7 @@ public class BusinessAdminUIController implements Initializable {
         businessName.setCellValueFactory(new PropertyValueFactory<>("name"));
         businessAge.setCellValueFactory(new PropertyValueFactory<>("age"));
         businessBedID.setCellValueFactory(new PropertyValueFactory<>("bedID"));
-        businessCareType.setCellValueFactory(new PropertyValueFactory<>("careType"));
+        businessCareType.setCellValueFactory(new PropertyValueFactory<>("rank"));
         businessEnterTime.setCellValueFactory(new PropertyValueFactory<>("enterTime"));
         businessPhone.setCellValueFactory(new PropertyValueFactory<>("phone"));
         businessRelation.setCellValueFactory(new PropertyValueFactory<>("relation"));
@@ -294,6 +270,17 @@ public class BusinessAdminUIController implements Initializable {
         bedTableView.setItems(bedObservableList);
     }
 
+    public void bindRoom(){
+        roomID.setCellValueFactory(new PropertyValueFactory<>("id"));
+        roomRank.setCellValueFactory(new PropertyValueFactory<>("rank"));
+        roomTotalBed.setCellValueFactory(new PropertyValueFactory<>("totalBed"));
+        roomFreeBed.setCellValueFactory(new PropertyValueFactory<>("freeBed"));
+        roomTableView.setVisible(true);
+        roomTableView.setEditable(false);
+        roomTableView.setTableMenuButtonVisible(true);
+        roomTableView.setItems(roomObservableList);
+    }
+
     public void bindRecord(){
         recordID.setCellValueFactory(new PropertyValueFactory<>("id"));
         recordCustomerID.setCellValueFactory(new PropertyValueFactory<>("customerId"));
@@ -308,6 +295,7 @@ public class BusinessAdminUIController implements Initializable {
     }
 
     public void displayBusiness(){
+        customerObservableList.clear();
         // TODO 显示客户信息
         Connection conn;
         Statement stmt;
@@ -323,11 +311,11 @@ public class BusinessAdminUIController implements Initializable {
                 customer.setName(rs.getString(2));
                 customer.setAge(rs.getInt(3));
                 customer.setEnterTime(rs.getString(4));
-                customer.setRoomID(rs.getInt(5));
-                customer.setBedID(rs.getInt(6));
+                customer.setRoomID(rs.getString(5));
+                customer.setBedID(rs.getString(6));
                 customer.setPhone(rs.getString(7));
                 customer.setCareWorker(rs.getString(8));
-                customer.setCareType(rs.getInt(9));
+                customer.setRank(rs.getInt(9));
                 customer.setRelationName(rs.getString(10));
                 customer.setRelation(rs.getString(11));
                 customer.setRelationPhone(rs.getString(12));
@@ -345,6 +333,7 @@ public class BusinessAdminUIController implements Initializable {
     }
 
     public void displayBed(){
+        bedObservableList.clear();
         // TODO 显示床位信息
         Connection conn;
         Statement stmt;
@@ -372,7 +361,38 @@ public class BusinessAdminUIController implements Initializable {
         System.out.println("床位数据导入成功！");
     }
 
+    public void displayRoom(){
+        roomObservableList.clear();
+        // TODO 显示房间信息
+        Connection conn;
+        Statement stmt;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306", "root", "12345678");
+            String sql="SELECT * FROM NursingHome.room";
+            stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()){
+                Room room=new Room();
+                room.setId(rs.getString(1));
+                room.setRank(rs.getString(2));
+                room.setTotalBed(rs.getInt(3));
+                room.setFreeBed(rs.getInt(4));
+                roomObservableList.add(room);
+            }
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        System.out.println("房间数据导入成功！");
+    }
+
     public void displayRecord(){
+        recordObservableList.clear();
         Connection conn;
         Statement stmt;
         try {

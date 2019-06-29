@@ -129,6 +129,23 @@
                               </AnchorPane>
                           </content>
                         </Tab>
+                        <Tab fx:id="adminTab" text="行政人员">
+                           <content>
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                 <children>
+                                    <TableView fx:id="adminTableView" onMouseReleased="#clickIntoDetail" prefHeight="365.0" prefWidth="459.0">
+                                       <columns>
+                                          <TableColumn fx:id="adminID" prefWidth="75.0" text="工号" />
+                                          <TableColumn fx:id="adminName" prefWidth="75.0" text="姓名" />
+                                          <TableColumn fx:id="adminAge" prefWidth="75.0" text="年龄" />
+                                          <TableColumn fx:id="adminSalary" prefWidth="75.0" text="薪水" />
+                                          <TableColumn fx:id="adminPosition" prefWidth="75.0" text="岗位" />
+                                       </columns>
+                                    </TableView>
+                                 </children>
+                              </AnchorPane>
+                           </content>
+                        </Tab>
                     </tabs>
                   </TabPane>
                </children>
