@@ -16,22 +16,38 @@ import static NursingHome.ControllerUtils.StringToDate;
 
 public class RecordLookInfoUIController implements Initializable {
     private Main application;
-    @FXML private Label recordIdLabel;
-    @FXML private TextField recordCustomerIdTextField;
-    @FXML private TextField recordCustomerNameTextField;
-    @FXML private TextField recordDoctorIdTextField;
-    @FXML private JFXDatePicker recordDatePicker;
-    @FXML private JFXTextArea recordContext;
+    @FXML
+    private Label recordIdLabel;
+    @FXML
+    private TextField recordCustomerIdTextField;
+    @FXML
+    private TextField recordCustomerNameTextField;
+    @FXML
+    private TextField recordDoctorIdTextField;
+    @FXML
+    private JFXDatePicker recordDatePicker;
+    @FXML
+    private JFXTextArea recordContext;
     private static Record record;
 
-    public void setApp(Main app) { this.application = app; }
-    public Main getApp() {return this.application; }
+    public void setApp(Main app) {
+        this.application = app;
+    }
 
-    public static Record getRecord() { return record; }
-    public static void setRecord(Record record) { RecordLookInfoUIController.record = record; }
+    public Main getApp() {
+        return this.application;
+    }
+
+    public static Record getRecord() {
+        return record;
+    }
+
+    public static void setRecord(Record record) {
+        RecordLookInfoUIController.record = record;
+    }
 
     @Override
-    public void initialize(URL url, ResourceBundle rb){
+    public void initialize(URL url, ResourceBundle rb) {
         recordIdLabel.setText(getRecord().getId());
         recordCustomerIdTextField.setText(getRecord().getCustomerId());
         recordCustomerNameTextField.setText(getRecord().getCustomerName());
@@ -46,8 +62,8 @@ public class RecordLookInfoUIController implements Initializable {
         recordContext.setEditable(false);
     }
 
-    public void backToBusinessAdmin(){
-        record=new Record();
+    public void backToBusinessAdmin() {
+        record = new Record();
         getApp().floatStage.close();
     }
 }

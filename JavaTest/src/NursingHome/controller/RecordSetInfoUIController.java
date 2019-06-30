@@ -19,46 +19,62 @@ import static NursingHome.ControllerUtils.*;
 
 public class RecordSetInfoUIController implements Initializable {
     private Main application;
-    @FXML private Label recordIdLabel;
-    @FXML private TextField recordCustomerIdTextField;
-    @FXML private TextField recordCustomerNameTextField;
-    @FXML private TextField recordDoctorIdTextField;
-    @FXML private JFXDatePicker recordDatePicker;
-    @FXML private JFXTextArea recordContext;
+    @FXML
+    private Label recordIdLabel;
+    @FXML
+    private TextField recordCustomerIdTextField;
+    @FXML
+    private TextField recordCustomerNameTextField;
+    @FXML
+    private TextField recordDoctorIdTextField;
+    @FXML
+    private JFXDatePicker recordDatePicker;
+    @FXML
+    private JFXTextArea recordContext;
     private static Record record;
 
-    public void setApp(Main app) { this.application = app; }
-    public Main getApp() {return this.application; }
+    public void setApp(Main app) {
+        this.application = app;
+    }
 
-    public static Record getRecord() { return record; }
-    public static void setRecord(Record record) { RecordSetInfoUIController.record = record; }
+    public Main getApp() {
+        return this.application;
+    }
+
+    public static Record getRecord() {
+        return record;
+    }
+
+    public static void setRecord(Record record) {
+        RecordSetInfoUIController.record = record;
+    }
 
     @Override
-    public void initialize(URL url, ResourceBundle rb){
-        recordIdLabel.setText("R"+ getRecordNumber());
+    public void initialize(URL url, ResourceBundle rb) {
+        recordIdLabel.setText("R" + getRecordNumber());
         recordCustomerIdTextField.setText("");
         recordCustomerNameTextField.setText("");
         recordDoctorIdTextField.setText("");
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String string=sdf.format(date);
+        String string = sdf.format(date);
         recordDatePicker.setValue(StringToDate(string));
         recordContext.setText("");
     }
 
-    public int getRecordNumber(){
-        int N=0;
+    public int getRecordNumber() {
+        int N = 0;
         // TODO 获取记录条数加1
         Connection conn;
         Statement stmt;
         try {
             Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-            String sql="SELECT count(*) FROM NursingHome.record;";
+            String sql = "SELECT count(*) FROM NursingHome.record;";
             stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
-            if (rs.next()){
-                N=rs.getInt(1);
+            if (rs.next()) {
+                N = rs.getInt(1);
             }
             //System.out.println(rs.getInt(0));
             rs.close();
@@ -70,12 +86,12 @@ public class RecordSetInfoUIController implements Initializable {
             e.printStackTrace();
         }
         System.out.println(N);
-        return N+1;
+        return N + 1;
     }
 
-    public void saveRecordInfo(){
+    public void saveRecordInfo() {
         // TODO 新增记录
-        Record record=new Record();
+        Record record = new Record();
         //System.out.println(recordIdLabel.getText());
         record.setId(recordIdLabel.getText());
         //System.out.println(record.getId());
@@ -91,7 +107,7 @@ public class RecordSetInfoUIController implements Initializable {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-            String sql="INSERT INTO NursingHome.record VALUES "+record.getRecordInfo();
+            String sql = "INSERT INTO NursingHome.record VALUES " + record.getRecordInfo();
             stmt = conn.createStatement();
             stmt.executeUpdate(sql);
             stmt.close();
@@ -101,12 +117,12 @@ public class RecordSetInfoUIController implements Initializable {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        BusinessAdminUIController.setInfoTableView(true,true,record);
+        BusinessAdminUIController.setInfoTableView(true, true, record);
         backToBusinessAdmin();
     }
 
-    public void backToBusinessAdmin(){
-        record=new Record();
+    public void backToBusinessAdmin() {
+        record = new Record();
         getApp().floatStage.close();
     }
 }

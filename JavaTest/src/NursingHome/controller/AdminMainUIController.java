@@ -14,30 +14,39 @@ import static NursingHome.GlobalInfo.*;
 
 public class AdminMainUIController implements Initializable {
     private Main application;
+
     public void setApp(Main app) {
         this.application = app;
     }
-    public Main getApp() {return this.application; }
-    @FXML Text welcome;
-    @FXML Text dateText;
+
+    public Main getApp() {
+        return this.application;
+    }
+
+    @FXML
+    Text welcome;
+    @FXML
+    Text dateText;
 
     @Override
-    public void initialize(URL url, ResourceBundle rb){
+    public void initialize(URL url, ResourceBundle rb) {
         welcome.setText(MANAGER_NAME);
         showtime(dateText);
     }
 
     public void personalInfo() {
-        getApp ().createPersonalInfoUI();
+        getApp().createPersonalInfoUI();
     }
 
-    public void personInfoImage(){getApp().createPersonalInfoUI();}
+    public void personInfoImage() {
+        getApp().createPersonalInfoUI();
+    }
 
     public void quit() {
         application.stage.close();
     }
 
-    public void logout() throws Exception{
+    public void logout() throws Exception {
         MANAGER_ID = "";
         MANAGER_NAME = "";
         MANAGER_PRIV = -1;
@@ -46,38 +55,38 @@ public class AdminMainUIController implements Initializable {
         application.gotoAdminLoginUI();
     }
 
-    public void movePeopleAdmin() throws Exception{
-        if (MANAGER_PRIV==0||MANAGER_PRIV==1){
+    public void movePeopleAdmin() throws Exception {
+        if (MANAGER_PRIV == 0 || MANAGER_PRIV == 1) {
             application.stage.close();
             application.gotoPeopleAdminUI();
-        }else{
+        } else {
             showAlert("[警告]您没有进入人事管理的权限！");
         }
     }
 
-    public void moveBusinessAdmin() throws Exception{
-        if (MANAGER_PRIV==2||MANAGER_PRIV==3){
+    public void moveBusinessAdmin() throws Exception {
+        if (MANAGER_PRIV == 2 || MANAGER_PRIV == 3) {
             application.stage.close();
             application.gotoBusinessAdminUI();
-        }else{
+        } else {
             showAlert("[警告]您没有进入业务管理的权限！");
         }
     }
 
-    public void movePeopleAdminMenu() throws Exception{
-        if (MANAGER_PRIV==0||MANAGER_PRIV==1){
+    public void movePeopleAdminMenu() throws Exception {
+        if (MANAGER_PRIV == 0 || MANAGER_PRIV == 1) {
             application.stage.close();
             application.gotoPeopleAdminUI();
-        }else{
+        } else {
             showAlert("[警告]您没有进入人事管理的权限！");
         }
     }
 
-    public void moveBusinessAdminMenu() throws Exception{
-        if (MANAGER_PRIV==2||MANAGER_PRIV==3){
+    public void moveBusinessAdminMenu() throws Exception {
+        if (MANAGER_PRIV == 2 || MANAGER_PRIV == 3) {
             application.stage.close();
             application.gotoBusinessAdminUI();
-        }else {
+        } else {
             showAlert("[警告]您没有进入业务管理的权限！");
         }
     }

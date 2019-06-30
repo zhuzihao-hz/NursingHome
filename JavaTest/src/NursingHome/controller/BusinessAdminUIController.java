@@ -21,57 +21,95 @@ import static NursingHome.GlobalInfo.*;
 
 public class BusinessAdminUIController implements Initializable {
     private Main application;
-    @FXML private TableColumn<StringProperty,String> businessID;
-    @FXML private TableColumn<StringProperty,String> businessName;
-    @FXML private TableColumn<StringProperty,Integer> businessAge;
-    @FXML private TableColumn<StringProperty,String> businessEnterTime;
-    @FXML private TableColumn<StringProperty,Integer> businessRoomID;
-    @FXML private TableColumn<StringProperty,Integer> businessBedID;
-    @FXML private TableColumn<StringProperty,String> businessPhone;
-    @FXML private TableColumn<StringProperty,String> businessCareWorkerID;
-    @FXML private TableColumn<StringProperty,Integer> businessCareType;
-    @FXML private TableColumn<StringProperty,String> businessRelationName;
-    @FXML private TableColumn<StringProperty,String> businessRelation;
-    @FXML private TableColumn<StringProperty,String> businessRelationPhone;
-    @FXML private TableView<Customer> customerTableView;
-    private static ObservableList<Customer> customerObservableList= FXCollections.observableArrayList();
-    @FXML private Tab customerTab;
+    @FXML
+    private TableColumn<StringProperty, String> businessID;
+    @FXML
+    private TableColumn<StringProperty, String> businessName;
+    @FXML
+    private TableColumn<StringProperty, Integer> businessAge;
+    @FXML
+    private TableColumn<StringProperty, String> businessEnterTime;
+    @FXML
+    private TableColumn<StringProperty, Integer> businessRoomID;
+    @FXML
+    private TableColumn<StringProperty, Integer> businessBedID;
+    @FXML
+    private TableColumn<StringProperty, String> businessPhone;
+    @FXML
+    private TableColumn<StringProperty, String> businessCareWorkerID;
+    @FXML
+    private TableColumn<StringProperty, Integer> businessCareType;
+    @FXML
+    private TableColumn<StringProperty, String> businessRelationName;
+    @FXML
+    private TableColumn<StringProperty, String> businessRelation;
+    @FXML
+    private TableColumn<StringProperty, String> businessRelationPhone;
+    @FXML
+    private TableView<Customer> customerTableView;
+    private static ObservableList<Customer> customerObservableList = FXCollections.observableArrayList();
+    @FXML
+    private Tab customerTab;
 
-    @FXML private TableColumn<StringProperty,String> bedID;
-    @FXML private TableColumn<StringProperty,String> bedRoomID;
-    @FXML private TableColumn<StringProperty,String> bedStatus;
-    @FXML private TableView<Bed> bedTableView;
-    private static ObservableList<Bed> bedObservableList=FXCollections.observableArrayList();
-    @FXML private Tab bedTab;
+    @FXML
+    private TableColumn<StringProperty, String> bedID;
+    @FXML
+    private TableColumn<StringProperty, String> bedRoomID;
+    @FXML
+    private TableColumn<StringProperty, String> bedStatus;
+    @FXML
+    private TableView<Bed> bedTableView;
+    private static ObservableList<Bed> bedObservableList = FXCollections.observableArrayList();
+    @FXML
+    private Tab bedTab;
 
-    @FXML private TableColumn<StringProperty,String> roomID;
-    @FXML private TableColumn<StringProperty,String> roomRank;
-    @FXML private TableColumn<StringProperty,String> roomTotalBed;
-    @FXML private TableColumn<StringProperty,String> roomFreeBed;
-    @FXML private TableView<Room> roomTableView;
-    private static ObservableList<Room> roomObservableList=FXCollections.observableArrayList();
-    @FXML private Tab roomTab;
+    @FXML
+    private TableColumn<StringProperty, String> roomID;
+    @FXML
+    private TableColumn<StringProperty, String> roomRank;
+    @FXML
+    private TableColumn<StringProperty, String> roomTotalBed;
+    @FXML
+    private TableColumn<StringProperty, String> roomFreeBed;
+    @FXML
+    private TableView<Room> roomTableView;
+    private static ObservableList<Room> roomObservableList = FXCollections.observableArrayList();
+    @FXML
+    private Tab roomTab;
 
-    @FXML private TableColumn<StringProperty,String> recordID;
-    @FXML private TableColumn<StringProperty,String> recordCustomerID;
-    @FXML private TableColumn<StringProperty,String> recordCustomerName;
-    @FXML private TableColumn<StringProperty,String> recordDoctorID;
-    @FXML private TableColumn<StringProperty,String> recordDate;
-    @FXML private TableColumn<StringProperty,String> recordContext;
-    @FXML private TableView<Record> recordTableView;
-    private static ObservableList<Record> recordObservableList=FXCollections.observableArrayList();
-    @FXML private Tab recordTab;
+    @FXML
+    private TableColumn<StringProperty, String> recordID;
+    @FXML
+    private TableColumn<StringProperty, String> recordCustomerID;
+    @FXML
+    private TableColumn<StringProperty, String> recordCustomerName;
+    @FXML
+    private TableColumn<StringProperty, String> recordDoctorID;
+    @FXML
+    private TableColumn<StringProperty, String> recordDate;
+    @FXML
+    private TableColumn<StringProperty, String> recordContext;
+    @FXML
+    private TableView<Record> recordTableView;
+    private static ObservableList<Record> recordObservableList = FXCollections.observableArrayList();
+    @FXML
+    private Tab recordTab;
 
-    @FXML Text dateText;
-    @FXML private Label nameLabel;
+    @FXML
+    Text dateText;
+    @FXML
+    private Label nameLabel;
 
     public void setApp(Main app) {
         this.application = app;
     }
-    public Main getApp() {return this.application; }
+
+    public Main getApp() {
+        return this.application;
+    }
 
     @Override
-    public void initialize(URL url, ResourceBundle rb){
+    public void initialize(URL url, ResourceBundle rb) {
         nameLabel.setText(MANAGER_NAME);
         showtime(dateText);
         displayBusiness();
@@ -84,7 +122,7 @@ public class BusinessAdminUIController implements Initializable {
         bindRecord();
     }
 
-    public void logout() throws Exception{
+    public void logout() throws Exception {
         MANAGER_ID = "";
         MANAGER_NAME = "";
         MANAGER_PRIV = -1;
@@ -98,12 +136,14 @@ public class BusinessAdminUIController implements Initializable {
     }
 
     public void personalInfo() {
-        getApp ().createPersonalInfoUI();
+        getApp().createPersonalInfoUI();
     }
 
-    public void personInfoImage(){getApp().createPersonalInfoUI();}
+    public void personInfoImage() {
+        getApp().createPersonalInfoUI();
+    }
 
-    public void backToMainMenu() throws Exception{
+    public void backToMainMenu() throws Exception {
         application.stage.close();
         application.gotoAdminMainUI();
     }
@@ -112,32 +152,34 @@ public class BusinessAdminUIController implements Initializable {
         application.createAboutInfoUI();
     }
 
-    public void insertBusiness(){
+    public void insertBusiness() {
         // TODO 新增客户
-        if (MANAGER_PRIV==3){
+        if (MANAGER_PRIV == 3) {
             // TODO 只有前台工作人员能添加客户
             application.createCustomerInsertInfoUI();
-        }else{
+        } else {
             showAlert("[警告]您没有添加客户的权限！");
         }
     }
 
-    public void deleteBusiness(){
-        // TODO 删除客户，并且在record表中将该客户的档案记录一起删除
-        if (MANAGER_PRIV==3){
+    public void deleteBusiness() {
+        // TODO 删除客户，并且在record表中将该客户的档案记录一起删除,最后将历史客户表的状态改为不在(0)
+        if (MANAGER_PRIV == 3) {
             // TODO 只有前台工作人员能删除客户
             List<Customer> customerSelected = customerTableView.getSelectionModel().getSelectedItems();
-            for(int i=0;i<customerSelected.size();i++){
+            for (int i = 0; i < customerSelected.size(); i++) {
                 Connection conn;
                 Statement stmt;
                 try {
                     Class.forName("com.mysql.jdbc.Driver");
                     conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-                    String sql1="DELETE FROM NursingHome.record WHERE customer_id='"+customerSelected.get(i).getId()+"'";
-                    String sql="DELETE FROM NursingHome.customer WHERE customer_id='"+customerSelected.get(i).getId()+"'";
+                    String sql1 = "DELETE FROM NursingHome.record WHERE customer_id='" + customerSelected.get(i).getId() + "'";
+                    String sql = "DELETE FROM NursingHome.customer WHERE customer_id='" + customerSelected.get(i).getId() + "'";
+                    String sql2 = "UPDATE NursingHome.historical_customer SET customer_status=0 WHERE customer_id='" + customerSelected.get(i).getId() + "'";
                     stmt = conn.createStatement();
                     stmt.executeUpdate(sql1);
                     stmt.executeUpdate(sql);
+                    stmt.executeUpdate(sql2);
                     stmt.close();
                     conn.close();
                 } catch (ClassNotFoundException e) {
@@ -146,13 +188,13 @@ public class BusinessAdminUIController implements Initializable {
                     e.printStackTrace();
                 }
             }
-            for (int i=0;i<customerSelected.size();i++){
-                for (int j=0;j<customerObservableList.size();j++){
-                    if (customerSelected.get(i).getId().equals(customerObservableList.get(j).getId())){
+            for (int i = 0; i < customerSelected.size(); i++) {
+                for (int j = 0; j < customerObservableList.size(); j++) {
+                    if (customerSelected.get(i).getId().equals(customerObservableList.get(j).getId())) {
                         customerObservableList.remove(j);
                         // TODO 将该客户的档案记录也删除
-                        for (int k=0;k<recordObservableList.size();k++){
-                            if (recordObservableList.get(k).getCustomerId().equals(customerSelected.get(i).getId())){
+                        for (int k = 0; k < recordObservableList.size(); k++) {
+                            if (recordObservableList.get(k).getCustomerId().equals(customerSelected.get(i).getId())) {
                                 recordObservableList.remove(k);
                             }
                         }
@@ -160,82 +202,82 @@ public class BusinessAdminUIController implements Initializable {
                 }
             }
             System.out.println("删除Customer成功");
-        }else{
+        } else {
             showAlert("[警告]您没有删除客户的权限！");
         }
     }
 
-    public void setBusinessInfo(){
+    public void setBusinessInfo() {
         // TODO 修改客户信息
         //  需要自动生成一些信息，如自动分配空余的床位等
-        if (MANAGER_PRIV==3){
+        if (MANAGER_PRIV == 3) {
             // TODO 只有前台工作人员可以修改客户信息
             List<Customer> customerSelected = customerTableView.getSelectionModel().getSelectedItems();
             CustomerSetInfoUIController.setCustomer(customerSelected.get(0));
             application.createCustomerSetInfoUI();
-        }else{
+        } else {
             showAlert("[警告]您没有修改客户信息的权限！");
         }
     }
 
-    public void insertRecord(){
+    public void insertRecord() {
         // TODO 新增记录
-        if (MANAGER_PRIV==2){
+        if (MANAGER_PRIV == 2) {
             // TODO 只有医生可以新增记录
             application.createRecordSetInfoUI();
             System.out.println("新增档案记录成功！");
-        }else{
+        } else {
             showAlert("[警告]您没有添加记录的权限！");
         }
     }
 
-    public void lookRecordInfo(){
-        if (MANAGER_PRIV==2){
+    public void lookRecordInfo() {
+        if (MANAGER_PRIV == 2) {
             // TODO 只有医生可以查看记录信息
             List<Record> recordSelected = recordTableView.getSelectionModel().getSelectedItems();
             RecordLookInfoUIController.setRecord(recordSelected.get(0));
             getApp().createRecordLookInfoUI();
-        }else {
+        } else {
             showAlert("[警告]您没有查看记录信息的权限！");
         }
     }
 
-    public void clickIntoDetail(){
+    public void clickIntoDetail() {
         // TODO 双击进入修改信息界面
-        if (customerTab.isSelected()){
+        if (customerTab.isSelected()) {
             // TODO 选中customerTab时，进入修改客户信息界面
             customerTableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
             List<Customer> customerSelected = customerTableView.getSelectionModel().getSelectedItems();
             customerTableView.setOnMouseClicked(event -> {
-                if (event.getClickCount()==2&&customerSelected.size()==1){
+                if (event.getClickCount() == 2 && customerSelected.size() == 1) {
                     try {
-                        if (MANAGER_PRIV==3){
+                        if (MANAGER_PRIV == 3) {
                             CustomerSetInfoUIController.setCustomer((customerSelected.get(0)));
                             getApp().createCustomerSetInfoUI();
-                        }else{
+                        } else {
                             showAlert("[警告]您没有修改客户信息的权限！");
                         }
-                    } catch (Exception e){
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
             });
-        }else if (recordTab.isSelected()){
+        } else if (recordTab.isSelected()) {
             // TODO 点击recordTab时查看Record详细信息
             recordTableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
             List<Record> recordSelected = recordTableView.getSelectionModel().getSelectedItems();
             recordTableView.setOnMouseClicked(event -> {
-                if (event.getClickCount()==2&&recordSelected.size()==1){
+                if (event.getClickCount() == 2 && recordSelected.size() == 1) {
                     try {
-                        if (MANAGER_PRIV==2){
+                        if (MANAGER_PRIV == 2) {
                             RecordLookInfoUIController.setRecord((recordSelected.get(0)));
                             getApp().createRecordLookInfoUI();
-                        }else{
+                        } else {
                             showAlert("[警告]您没有查看记录信息的权限！");
                         }
-                    } catch (Exception e){
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
@@ -243,20 +285,20 @@ public class BusinessAdminUIController implements Initializable {
         }
     }
 
-    public static void setInfoTableView(boolean isRecord,boolean isInsert,Object object){
-        if (isRecord){
-            Record record=(Record)object;
-            if (isInsert){
+    public static void setInfoTableView(boolean isRecord, boolean isInsert, Object object) {
+        if (isRecord) {
+            Record record = (Record) object;
+            if (isInsert) {
                 recordObservableList.add(record);
             }
-        }else{
-            Customer customer=(Customer)object;
-            if (isInsert){
+        } else {
+            Customer customer = (Customer) object;
+            if (isInsert) {
                 System.out.println("Test");
                 customerObservableList.add(customer);
-            }else {
-                for (int i=0;i<customerObservableList.size();i++){
-                    if (customerObservableList.get(i).getId().equals(customer.getId())){
+            } else {
+                for (int i = 0; i < customerObservableList.size(); i++) {
+                    if (customerObservableList.get(i).getId().equals(customer.getId())) {
                         customerObservableList.get(i).setAge(customer.getAge());
                         customerObservableList.get(i).setBedID(customer.getBedID());
                         customerObservableList.get(i).setRank(customer.getRank());
@@ -274,7 +316,7 @@ public class BusinessAdminUIController implements Initializable {
         }
     }
 
-    public void bindBusiness(){
+    public void bindBusiness() {
         businessID.setCellValueFactory(new PropertyValueFactory<>("id"));
         businessName.setCellValueFactory(new PropertyValueFactory<>("name"));
         businessAge.setCellValueFactory(new PropertyValueFactory<>("age"));
@@ -293,7 +335,7 @@ public class BusinessAdminUIController implements Initializable {
         customerTableView.setItems(customerObservableList);
     }
 
-    public void bindBed(){
+    public void bindBed() {
         bedID.setCellValueFactory(new PropertyValueFactory<>("id"));
         bedRoomID.setCellValueFactory(new PropertyValueFactory<>("roomID"));
         bedStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
@@ -303,7 +345,7 @@ public class BusinessAdminUIController implements Initializable {
         bedTableView.setItems(bedObservableList);
     }
 
-    public void bindRoom(){
+    public void bindRoom() {
         roomID.setCellValueFactory(new PropertyValueFactory<>("id"));
         roomRank.setCellValueFactory(new PropertyValueFactory<>("rank"));
         roomTotalBed.setCellValueFactory(new PropertyValueFactory<>("totalBed"));
@@ -314,7 +356,7 @@ public class BusinessAdminUIController implements Initializable {
         roomTableView.setItems(roomObservableList);
     }
 
-    public void bindRecord(){
+    public void bindRecord() {
         recordID.setCellValueFactory(new PropertyValueFactory<>("id"));
         recordCustomerID.setCellValueFactory(new PropertyValueFactory<>("customerId"));
         recordCustomerName.setCellValueFactory(new PropertyValueFactory<>("customerName"));
@@ -327,7 +369,7 @@ public class BusinessAdminUIController implements Initializable {
         recordTableView.setItems(recordObservableList);
     }
 
-    public void displayBusiness(){
+    public void displayBusiness() {
         customerObservableList.clear();
         // TODO 显示客户信息
         Connection conn;
@@ -335,11 +377,11 @@ public class BusinessAdminUIController implements Initializable {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-            String sql="SELECT * FROM NursingHome.customer";
+            String sql = "SELECT * FROM NursingHome.customer";
             stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
-            while (rs.next()){
-                Customer customer=new Customer();
+            while (rs.next()) {
+                Customer customer = new Customer();
                 customer.setId(rs.getString(1));
                 customer.setName(rs.getString(2));
                 customer.setAge(rs.getInt(3));
@@ -365,7 +407,7 @@ public class BusinessAdminUIController implements Initializable {
         System.out.println("客户数据导入成功！");
     }
 
-    public void displayBed(){
+    public void displayBed() {
         bedObservableList.clear();
         // TODO 显示床位信息
         Connection conn;
@@ -373,11 +415,11 @@ public class BusinessAdminUIController implements Initializable {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-            String sql="SELECT * FROM NursingHome.bed";
+            String sql = "SELECT * FROM NursingHome.bed";
             stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
-            while (rs.next()){
-                Bed bed=new Bed();
+            while (rs.next()) {
+                Bed bed = new Bed();
                 bed.setId(rs.getString(1));
                 bed.setRoomID(rs.getString(2));
                 bed.setStatus(rs.getInt(3));
@@ -394,7 +436,7 @@ public class BusinessAdminUIController implements Initializable {
         System.out.println("床位数据导入成功！");
     }
 
-    public void displayRoom(){
+    public void displayRoom() {
         roomObservableList.clear();
         // TODO 显示房间信息
         Connection conn;
@@ -402,11 +444,11 @@ public class BusinessAdminUIController implements Initializable {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-            String sql="SELECT * FROM NursingHome.room";
+            String sql = "SELECT * FROM NursingHome.room";
             stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
-            while (rs.next()){
-                Room room=new Room();
+            while (rs.next()) {
+                Room room = new Room();
                 room.setId(rs.getString(1));
                 room.setRank(rs.getString(2));
                 room.setTotalBed(rs.getInt(3));
@@ -424,18 +466,18 @@ public class BusinessAdminUIController implements Initializable {
         System.out.println("房间数据导入成功！");
     }
 
-    public void displayRecord(){
+    public void displayRecord() {
         recordObservableList.clear();
         Connection conn;
         Statement stmt;
         try {
             Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-            String sql="SELECT * FROM NursingHome.record";
+            String sql = "SELECT * FROM NursingHome.record";
             stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
-            while (rs.next()){
-                Record record=new Record();
+            while (rs.next()) {
+                Record record = new Record();
                 record.setId(rs.getString(1));
                 record.setCustomerId(rs.getString(2));
                 record.setCustomerName(rs.getString(3));

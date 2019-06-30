@@ -16,10 +16,10 @@ public class PersonalInfoUIController implements Initializable {
     private Main application;
 
     @Override
-    public void initialize(URL url, ResourceBundle rb){
-        managerId.setText("用户ID: "+MANAGER_ID);
-        managerName.setText("用户姓名: "+MANAGER_NAME);
-        managerPriv.setText("用户权限: "+MANAGER_PRIV);
+    public void initialize(URL url, ResourceBundle rb) {
+        managerId.setText("用户ID: " + MANAGER_ID);
+        managerName.setText("用户姓名: " + MANAGER_NAME);
+        managerPriv.setText("用户权限: " + MANAGER_PRIV);
     }
 
     @FXML
@@ -32,6 +32,7 @@ public class PersonalInfoUIController implements Initializable {
     public void setApp(Main app) {
         this.application = app;
     }
+
     public void close(ActionEvent actionEvent) {
         application.floatStage.close();
     }

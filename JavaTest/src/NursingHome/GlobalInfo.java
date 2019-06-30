@@ -7,7 +7,7 @@ public class GlobalInfo {
     public static int MANAGER_PRIV = -1;
 
 
-    GlobalInfo(){
+    GlobalInfo() {
         this.MANAGER_ID = "";
         this.MANAGER_NAME = "";
         this.MANAGER_PRIV = -1;

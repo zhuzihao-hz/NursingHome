@@ -21,12 +21,14 @@ public class ChangePasswordUIController implements Initializable {
     public void setApp(Main app) {
         this.application = app;
     }
-    public Main getApp() {return this.application; }
+    public Main getApp() { return this.application; }
 
-    @FXML private PasswordField oldPassword1;
-    @FXML private PasswordField newPassword1;
-    @FXML private PasswordField newPassword2;
-    @FXML private Button confirmBtn;
+    @FXML
+    private PasswordField newPassword1;
+    @FXML
+    private PasswordField newPassword2;
+    @FXML
+    private Button confirmBtn;
     private String oldPassword;
     private static String peopleid;
 
@@ -34,79 +36,49 @@ public class ChangePasswordUIController implements Initializable {
     public static void setPeopleid(String peopleid) { ChangePasswordUIController.peopleid = peopleid; }
 
     @Override
-    public void initialize(URL url, ResourceBundle rb){
-        Connection conn;
-        Statement stmt;
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-            String sql="SELECT manager_password FROM NursingHome.manager WHERE manager_id='"+peopleid+"'";
-            stmt = conn.createStatement();
-            ResultSet rs=stmt.executeQuery(sql);
-            if (rs.next()){
-                oldPassword=rs.getString(1);
-            }
-            stmt.close();
-            conn.close();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-    }
+    public void initialize(URL url, ResourceBundle rb) { }
 
     public void confirm(ActionEvent actionEvent) {
         System.out.println(oldPassword);
         System.out.println(MANAGER_PASSWORD);
-        if(oldPassword.equals(md5(oldPassword1.getText()))){
-            if(newPassword1.getText().equals(newPassword2.getText()))
-            {
-                String reg ="^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$";
+        if (newPassword1.getText().equals(newPassword2.getText())) {
+            String reg = "^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$";
 
-                Pattern pattern = Pattern.compile(reg);
-                Matcher matcher = pattern.matcher(newPassword1.getText());
-                if (newPassword1.getText().equals(oldPassword1.getText())){
-                    showAlert("新密码必须与旧密码不同");
+            Pattern pattern = Pattern.compile(reg);
+            Matcher matcher = pattern.matcher(newPassword1.getText());
+
+            if (matcher.matches()) {
+                // TODO 往数据库中写入新密码
+
+                Connection conn;
+                Statement stmt;
+                try {
+                    Class.forName("com.mysql.jdbc.Driver");
+                    conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
+                    String sql = "UPDATE NursingHome.manager SET manager_password='" + md5(newPassword1.getText()) + "' WHERE manager_id='" + peopleid + "'";
+                    stmt = conn.createStatement();
+                    stmt.executeUpdate(sql);
+                    stmt.close();
+                    conn.close();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                } catch (SQLException e) {
+                    e.printStackTrace();
                 }
-                else if (matcher.matches()) {
-                    // TODO 往数据库中写入新密码
 
-                    Connection conn;
-                    Statement stmt;
-                    try {
-                        Class.forName("com.mysql.jdbc.Driver");
-                        conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-                        String sql="UPDATE NursingHome.manager SET manager_password='"+md5(newPassword1.getText())+"' WHERE manager_id='"+peopleid+"'";
-                        stmt = conn.createStatement();
-                        stmt.executeUpdate(sql);
-                        stmt.close();
-                        conn.close();
-                    } catch (ClassNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-
-                    showAlert("修改成功");
-                    getApp().floatStage.close();
-                }
-                else{
-                    if (newPassword1.getText().length()<6){
-                        showAlert("新密码必须大于6位");
-                    }else if (newPassword1.getText().length()>16){
-                        showAlert("新密码必须小于16位");
-                    }else{
-                        showAlert("新密码必须是数字加字母的组合");
-                    }
+                showAlert("修改成功");
+                getApp().floatStage.close();
+            } else {
+                if (newPassword1.getText().length() < 6) {
+                    showAlert("新密码必须大于6位");
+                } else if (newPassword1.getText().length() > 16) {
+                    showAlert("新密码必须小于16位");
+                } else {
+                    showAlert("新密码必须是数字加字母的组合");
                 }
             }
-            else{
-                showAlert("两次密码输入不同");
-            }
-        }
-        else{
-            showAlert("旧密码输入错误");
+        } else {
+            showAlert("两次密码输入不同");
         }
     }
 }

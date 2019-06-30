@@ -21,7 +21,7 @@ public class Main extends Application {
     private double x0, y0, x_stage, y_stage;
 
     @Override
-    public void start(Stage primaryStage){
+    public void start(Stage primaryStage) {
         stage = primaryStage;
         try {
             gotoAdminLoginUI();
@@ -34,7 +34,7 @@ public class Main extends Application {
         stage = new Stage();
         stage.setResizable(false);
         stage.initStyle(StageStyle.TRANSPARENT);
-        AdminLoginUIController loginUI = (AdminLoginUIController)replaceSceneContent("fxml/AdminLoginUI.fxml");
+        AdminLoginUIController loginUI = (AdminLoginUIController) replaceSceneContent("fxml/AdminLoginUI.fxml");
         loginUI.setApp(this);
         stage.getScene().setOnMouseDragged(event -> {
             stage.setX(x_stage + event.getScreenX() - x0);
@@ -53,7 +53,7 @@ public class Main extends Application {
     public void gotoPeopleAdminUI() throws Exception {
         stage = new Stage();
         stage.setResizable(false);
-        PeopleAdminUIController adminUI = (PeopleAdminUIController)replaceSceneContent("fxml/PeopleAdminUI.fxml");
+        PeopleAdminUIController adminUI = (PeopleAdminUIController) replaceSceneContent("fxml/PeopleAdminUI.fxml");
         adminUI.setApp(this);
         stage.getScene().setOnMouseDragged(event -> {
             stage.setX(x_stage + event.getScreenX() - x0);
@@ -72,7 +72,7 @@ public class Main extends Application {
     public void gotoBusinessAdminUI() throws Exception {
         stage = new Stage();
         stage.setResizable(false);
-        BusinessAdminUIController adminUI = (BusinessAdminUIController)replaceSceneContent("fxml/BusinessAdminUI.fxml");
+        BusinessAdminUIController adminUI = (BusinessAdminUIController) replaceSceneContent("fxml/BusinessAdminUI.fxml");
         adminUI.setApp(this);
         stage.getScene().setOnMouseDragged(event -> {
             stage.setX(x_stage + event.getScreenX() - x0);
@@ -92,7 +92,7 @@ public class Main extends Application {
         stage.close();
         stage = new Stage();
         stage.setTitle("养老院管理系统(管理员) Nursing Home(Admin)");
-        AdminMainUIController adminMainUI = (AdminMainUIController)replaceSceneContent("fxml/AdminMainUI.fxml");
+        AdminMainUIController adminMainUI = (AdminMainUIController) replaceSceneContent("fxml/AdminMainUI.fxml");
         adminMainUI.setApp(this);
         stage.show();
     }
@@ -116,7 +116,7 @@ public class Main extends Application {
 
         floatStage.setScene(scene);
         floatStage.show();
-        PersonalInfoUIController personalInfoUI= loader.getController();
+        PersonalInfoUIController personalInfoUI = loader.getController();
         personalInfoUI.setApp(this);
     }
 
@@ -139,7 +139,7 @@ public class Main extends Application {
 
         floatStage.setScene(scene);
         floatStage.show();
-        ChangePasswordUIController changePAsswordUI= loader.getController();
+        ChangePasswordUIController changePAsswordUI = loader.getController();
         changePAsswordUI.setApp(this);
     }
 
@@ -162,7 +162,7 @@ public class Main extends Application {
 
         floatStage.setScene(scene);
         floatStage.show();
-        PeopleSetInfoUIController peopleSetInfoUI= loader.getController();
+        PeopleSetInfoUIController peopleSetInfoUI = loader.getController();
         peopleSetInfoUI.setApp(this);
     }
 
@@ -185,7 +185,7 @@ public class Main extends Application {
 
         floatStage.setScene(scene);
         floatStage.show();
-        CustomerSetInfoUIController customerSetInfoUI= loader.getController();
+        CustomerSetInfoUIController customerSetInfoUI = loader.getController();
         customerSetInfoUI.setApp(this);
     }
 
@@ -208,7 +208,7 @@ public class Main extends Application {
 
         floatStage.setScene(scene);
         floatStage.show();
-        CustomerInsertInfoUIController customerInsertInfoUI= loader.getController();
+        CustomerInsertInfoUIController customerInsertInfoUI = loader.getController();
         customerInsertInfoUI.setApp(this);
     }
 
@@ -231,7 +231,7 @@ public class Main extends Application {
 
         floatStage.setScene(scene);
         floatStage.show();
-        RecordSetInfoUIController recordSetInfoUI= loader.getController();
+        RecordSetInfoUIController recordSetInfoUI = loader.getController();
         recordSetInfoUI.setApp(this);
     }
 
@@ -254,7 +254,7 @@ public class Main extends Application {
 
         floatStage.setScene(scene);
         floatStage.show();
-        RecordLookInfoUIController recordLookInfoUI= loader.getController();
+        RecordLookInfoUIController recordLookInfoUI = loader.getController();
         recordLookInfoUI.setApp(this);
     }
 
@@ -276,7 +276,7 @@ public class Main extends Application {
         Scene scene = new Scene(page);
         floatStage.setScene(scene);
         floatStage.show();
-        AboutInfoUIController aboutInfoUI= loader.getController();
+        AboutInfoUIController aboutInfoUI = loader.getController();
         aboutInfoUI.setApp(this);
     }
 

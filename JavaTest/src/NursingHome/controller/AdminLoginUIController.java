@@ -77,7 +77,14 @@ public class AdminLoginUIController implements Initializable {
             try {
                 Class.forName("com.mysql.jdbc.Driver");
                 conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-                String sql="SELECT administrator_name FROM NursingHome.administrator WHERE administrator_id='"+id+"'";
+                String sql="";
+                if (id.charAt(0)=='D'){
+                    sql="SELECT doctor_name FROM NursingHome.doctor WHERE doctor_id='"+id+"'";
+                }else if (id.charAt(0)=='A'){
+                    sql="SELECT administrator_name FROM NursingHome.administrator WHERE administrator_id='"+id+"'";
+                }else if (id.charAt(0)=='B'){
+                    sql="SELECT doorboy_name FROM NursingHome.doorboy WHERE doorboy_id='"+id+"'";
+                }
                 stmt = conn.createStatement();
                 ResultSet rs = stmt.executeQuery(sql);
                 if (rs.next()){
