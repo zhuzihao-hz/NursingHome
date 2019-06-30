@@ -120,6 +120,29 @@ public class Main extends Application {
         personalInfoUI.setApp(this);
     }
 
+    public void createChangePasswordUI() {
+        AnchorPane page = new AnchorPane();
+        floatStage = new Stage();
+        floatStage.setAlwaysOnTop(true);
+        floatStage.initModality(Modality.APPLICATION_MODAL);
+        floatStage.setTitle("管理员 - 修改密码 Administrator Change Password");
+        floatStage.setResizable(false);
+        FXMLLoader loader = new FXMLLoader();
+        try (InputStream ignored = Main.class.getResourceAsStream("fxml/ChangePasswordUI.fxml")) {
+            loader.setBuilderFactory(new JavaFXBuilderFactory());
+            loader.setLocation(Main.class.getResource("fxml/ChangePasswordUI.fxml"));
+            page = loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Scene scene = new Scene(page);
+
+        floatStage.setScene(scene);
+        floatStage.show();
+        ChangePasswordUIController changePAsswordUI= loader.getController();
+        changePAsswordUI.setApp(this);
+    }
+
     public void createPeopleSetInfoUI() {
         AnchorPane page = new AnchorPane();
         floatStage = new Stage();

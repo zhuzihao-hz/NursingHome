@@ -15,8 +15,7 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 
-import static NursingHome.ControllerUtils.StringToDate;
-import static NursingHome.ControllerUtils.showAlert;
+import static NursingHome.ControllerUtils.*;
 
 public class CustomerSetInfoUIController implements Initializable {
     private Main application;
@@ -87,7 +86,7 @@ public class CustomerSetInfoUIController implements Initializable {
         Statement stmt;
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306", "root", "12345678");
+            conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
             String sql="UPDATE NursingHome.customer SET customer_name='"+customer.getName()+"', customer_age='"+customer.getAge()+"', customer_entertime='"+customer.getEnterTime()+"', customer_roomid='"+customer.getRoomID()+"', customer_bedid='"+customer.getBedID()+"', customer_phone='"+customer.getPhone()+"', customer_careworker='"+customer.getCareWorker()+"', customer_rank='"+customer.getRank()+"', customer_relationname='"+customer.getRelationName()+"', customer_relation='"+customer.getRelation()+"', customer_relationphone='"+customer.getRelationPhone()+"' WHERE customer_id='"+customer.getId()+"'";
             stmt = conn.createStatement();
             stmt.executeUpdate(sql);

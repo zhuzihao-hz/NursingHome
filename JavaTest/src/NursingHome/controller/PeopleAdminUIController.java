@@ -1,6 +1,5 @@
 package NursingHome.controller;
 
-import NursingHome.GlobalInfo;
 import NursingHome.Main;
 import NursingHome.dataclass.Administrator;
 import NursingHome.dataclass.Doctor;
@@ -20,7 +19,7 @@ import java.sql.*;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import static NursingHome.ControllerUtils.showtime;
+import static NursingHome.ControllerUtils.*;
 import static NursingHome.GlobalInfo.*;
 
 public class PeopleAdminUIController implements Initializable {
@@ -112,144 +111,157 @@ public class PeopleAdminUIController implements Initializable {
 
     public void insertPeople(){
         // TODO 新增员工
-        if (workerTab.isSelected()){
-            PeopleSetInfoUIController.peopleType="护工";
-            application.createPeopleSetInfoUI();
-        }else if (doctorTab.isSelected()){
-            PeopleSetInfoUIController.peopleType="医生";
-            application.createPeopleSetInfoUI();
-        }else if (doorBoyTab.isSelected()){
-            PeopleSetInfoUIController.peopleType="勤杂人员";
-            application.createPeopleSetInfoUI();
-        }else if (adminTab.isSelected()){
-            if (MANAGER_PRIV==0){
-                // TODO 具有更高级的权限时才能新增行政人员
-                //  !!!!!!!!!!!!!!!!!!!!!
-                //  !!!!!!!!!!!!!!!!!!!!!
+        if (MANAGER_PRIV==0){
+            // TODO 只有主管才能新增行政人员
+            if (workerTab.isSelected()){
+                PeopleSetInfoUIController.peopleType="护工";
+                application.createPeopleSetInfoUI();
+            }else if (doctorTab.isSelected()){
+                PeopleSetInfoUIController.peopleType="医生";
+                application.createPeopleSetInfoUI();
+            }else if (doorBoyTab.isSelected()){
+                PeopleSetInfoUIController.peopleType="勤杂人员";
+                application.createPeopleSetInfoUI();
+            }else if (adminTab.isSelected()){
+                PeopleSetInfoUIController.peopleType="行政人员";
                 application.createPeopleSetInfoUI();
             }
+        }else{
+            showAlert("[警告]您没有新增人员的权限！");
         }
     }
 
     public void deletePeople(){
         // TODO 删除员工
-        if (workerTab.isSelected()){
-            List<Worker> workerSelected = workerTableView.getSelectionModel().getSelectedItems();
-            for(int i=0;i<workerSelected.size();i++){
-                // TODO 在数据库中删除护工，并且在历史员工里把状态改为离职（0）
-                Connection conn;
-                Statement stmt;
-                try {
-                    Class.forName("com.mysql.jdbc.Driver");
-                    conn = DriverManager.getConnection("jdbc:mysql://localhost:3306", "root", "12345678");
-                    String sql="DELETE FROM NursingHome.worker WHERE worker_id='"+workerSelected.get(i).getId()+"'";
-                    String sql1="UPDATE NursingHome.historical_staff SET staff_status=0 WHERE staff_id='"+workerSelected.get(i).getId()+"'";
-                    stmt = conn.createStatement();
-                    stmt.executeUpdate(sql);
-                    stmt.executeUpdate(sql1);
-                    stmt.close();
-                    conn.close();
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            // TODO 在tableView中也把员工信息去掉
-            for (int i=0;i<workerSelected.size();i++){
-                for (int j=0;j<workerObservableList.size();j++){
-                    if (workerSelected.get(i).getId().equals(workerObservableList.get(j).getId())){
-                        workerObservableList.remove(j);
-                        break;
+        if (MANAGER_PRIV==0){
+            if (workerTab.isSelected()){
+                List<Worker> workerSelected = workerTableView.getSelectionModel().getSelectedItems();
+                for(int i=0;i<workerSelected.size();i++){
+                    // TODO 在数据库中删除护工，并且在历史员工里把状态改为离职（0）
+                    Connection conn;
+                    Statement stmt;
+                    try {
+                        Class.forName("com.mysql.jdbc.Driver");
+                        conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
+                        String sql="DELETE FROM NursingHome.worker WHERE worker_id='"+workerSelected.get(i).getId()+"'";
+                        String sql1="UPDATE NursingHome.historical_staff SET staff_status=0 WHERE staff_id='"+workerSelected.get(i).getId()+"'";
+                        stmt = conn.createStatement();
+                        stmt.executeUpdate(sql);
+                        stmt.executeUpdate(sql1);
+                        stmt.close();
+                        conn.close();
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
                     }
                 }
-            }
-            System.out.println("解雇Worker成功");
-        }else if (doctorTab.isSelected()) {
-            // TODO 删除医生,并且把历史员工表里的状态改为（0）
-            List<Doctor> doctorSelected = doctorTableView.getSelectionModel().getSelectedItems();
-            for(int i=0;i<doctorSelected.size();i++){
-                Connection conn;
-                Statement stmt;
-                try {
-                    Class.forName("com.mysql.jdbc.Driver");
-                    conn = DriverManager.getConnection("jdbc:mysql://localhost:3306", "root", "12345678");
-                    String sql="DELETE FROM NursingHome.doctor WHERE doctor_id='"+doctorSelected.get(i).getId()+"'";
-                    String sql1="UPDATE NursingHome.historical_staff SET staff_status=0 WHERE staff_id='"+doctorSelected.get(i).getId()+"'";
-                    stmt = conn.createStatement();
-                    stmt.executeUpdate(sql);
-                    stmt.executeUpdate(sql1);
-                    stmt.close();
-                    conn.close();
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            // TODO 在tableView中也把员工信息去掉
-            for (int i=0;i<doctorSelected.size();i++){
-                for (int j=0;j<doctorObservableList.size();j++){
-                    if (doctorSelected.get(i).getId().equals(doctorObservableList.get(j).getId())){
-                        doctorObservableList.remove(j);
-                        break;
+                // TODO 在tableView中也把员工信息去掉
+                for (int i=0;i<workerSelected.size();i++){
+                    for (int j=0;j<workerObservableList.size();j++){
+                        if (workerSelected.get(i).getId().equals(workerObservableList.get(j).getId())){
+                            workerObservableList.remove(j);
+                            break;
+                        }
                     }
                 }
-            }
-            System.out.println("解雇Doctor成功");
-        }else if (doorBoyTab.isSelected()){
-            // TODO 删除勤杂工同时将历史员工表里的状态改为离职（0）
-            List<DoorBoy> doorBoySelected = doorBoyTableView.getSelectionModel().getSelectedItems();
-            for(int i=0;i<doorBoySelected.size();i++){
-                Connection conn;
-                Statement stmt;
-                try {
-                    Class.forName("com.mysql.jdbc.Driver");
-                    conn = DriverManager.getConnection("jdbc:mysql://localhost:3306", "root", "12345678");
-                    String sql="DELETE FROM NursingHome.doorboy WHERE doorboy_id='"+doorBoySelected.get(i).getId()+"'";
-                    String sql1="UPDATE NursingHome.historical_staff SET staff_status=0 WHERE staff_id='"+doorBoySelected.get(i).getId()+"'";
-                    stmt = conn.createStatement();
-                    stmt.executeUpdate(sql);
-                    stmt.executeUpdate(sql1);
-                    stmt.close();
-                    conn.close();
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            // TODO 在tableView中也把员工信息去掉
-            for (int i=0;i<doorBoySelected.size();i++){
-                for (int j=0;j<doorBoyObservableList.size();j++){
-                    if (doorBoySelected.get(i).getId().equals(doorBoyObservableList.get(j).getId())){
-                        doorBoyObservableList.remove(j);
-                        break;
+                System.out.println("解雇Worker成功");
+            }else if (doctorTab.isSelected()) {
+                // TODO 删除医生,并且把历史员工表里的状态改为（0）
+                List<Doctor> doctorSelected = doctorTableView.getSelectionModel().getSelectedItems();
+                for(int i=0;i<doctorSelected.size();i++){
+                    Connection conn;
+                    Statement stmt;
+                    try {
+                        Class.forName("com.mysql.jdbc.Driver");
+                        conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
+                        String sql="DELETE FROM NursingHome.doctor WHERE doctor_id='"+doctorSelected.get(i).getId()+"'";
+                        String sql1="UPDATE NursingHome.historical_staff SET staff_status=0 WHERE staff_id='"+doctorSelected.get(i).getId()+"'";
+                        stmt = conn.createStatement();
+                        stmt.executeUpdate(sql);
+                        stmt.executeUpdate(sql1);
+                        stmt.close();
+                        conn.close();
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
                     }
                 }
+                // TODO 在tableView中也把员工信息去掉
+                for (int i=0;i<doctorSelected.size();i++){
+                    for (int j=0;j<doctorObservableList.size();j++){
+                        if (doctorSelected.get(i).getId().equals(doctorObservableList.get(j).getId())){
+                            doctorObservableList.remove(j);
+                            break;
+                        }
+                    }
+                }
+                System.out.println("解雇Doctor成功");
+            }else if (doorBoyTab.isSelected()){
+                // TODO 删除勤杂工同时将历史员工表里的状态改为离职（0）
+                List<DoorBoy> doorBoySelected = doorBoyTableView.getSelectionModel().getSelectedItems();
+                for(int i=0;i<doorBoySelected.size();i++){
+                    Connection conn;
+                    Statement stmt;
+                    try {
+                        Class.forName("com.mysql.jdbc.Driver");
+                        conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
+                        String sql="DELETE FROM NursingHome.doorboy WHERE doorboy_id='"+doorBoySelected.get(i).getId()+"'";
+                        String sql1="UPDATE NursingHome.historical_staff SET staff_status=0 WHERE staff_id='"+doorBoySelected.get(i).getId()+"'";
+                        stmt = conn.createStatement();
+                        stmt.executeUpdate(sql);
+                        stmt.executeUpdate(sql1);
+                        stmt.close();
+                        conn.close();
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+                // TODO 在tableView中也把员工信息去掉
+                for (int i=0;i<doorBoySelected.size();i++){
+                    for (int j=0;j<doorBoyObservableList.size();j++){
+                        if (doorBoySelected.get(i).getId().equals(doorBoyObservableList.get(j).getId())){
+                            doorBoyObservableList.remove(j);
+                            break;
+                        }
+                    }
+                }
+                System.out.println("解雇DoorBoy成功");
             }
-            System.out.println("解雇DoorBoy成功");
+        }else {
+            showAlert("[警告]您没有删除员工的权限！");
         }
     }
 
     public void setPeopleInfo() {
-        // TODO 设置员工信息
-        if (workerTab.isSelected()){
-            List<Worker> workerSelected = workerTableView.getSelectionModel().getSelectedItems();
-            PeopleSetInfoUIController.setPeople((workerSelected.get(0)));
-            getApp().createPeopleSetInfoUI();
-        }else if (doctorTab.isSelected()){
-            List<Doctor> doctorSelected = doctorTableView.getSelectionModel().getSelectedItems();
-            PeopleSetInfoUIController.setPeople((doctorSelected.get(0)));
-            getApp().createPeopleSetInfoUI();
-        }else if (doorBoyTab.isSelected()){
-            List<DoorBoy> doorBoySelected = doorBoyTableView.getSelectionModel().getSelectedItems();
-            PeopleSetInfoUIController.setPeople((doorBoySelected.get(0)));
-            getApp().createPeopleSetInfoUI();
+        // TODO 查看员工信息，主管和高层（院长、总经理）都能查看，但主管才能修改
+        if (MANAGER_PRIV==0||MANAGER_PRIV==1){
+            if (workerTab.isSelected()){
+                List<Worker> workerSelected = workerTableView.getSelectionModel().getSelectedItems();
+                PeopleSetInfoUIController.setPeople((workerSelected.get(0)));
+                getApp().createPeopleSetInfoUI();
+            }else if (doctorTab.isSelected()){
+                List<Doctor> doctorSelected = doctorTableView.getSelectionModel().getSelectedItems();
+                PeopleSetInfoUIController.setPeople((doctorSelected.get(0)));
+                getApp().createPeopleSetInfoUI();
+            }else if (doorBoyTab.isSelected()){
+                List<DoorBoy> doorBoySelected = doorBoyTableView.getSelectionModel().getSelectedItems();
+                PeopleSetInfoUIController.setPeople((doorBoySelected.get(0)));
+                getApp().createPeopleSetInfoUI();
+            }else if (adminTab.isSelected()){
+                List<Administrator> adminSelected = adminTableView.getSelectionModel().getSelectedItems();
+                PeopleSetInfoUIController.setPeople((adminSelected.get(0)));
+                getApp().createPeopleSetInfoUI();
+            }
+        }else{
+            showAlert("[警告]您没有查看用户信息的权限！");
         }
     }
 
-    public static void setInfoTableView(boolean isInsert,Object people){
+    public static void setInfoTableView(boolean isInsert,Object people,boolean insertFailed){
         // TODO 在新增或者修改完信息后，在TableView中也修改或者新增信息
         if (isInsert){
             if (people.getClass().getName().equals("NursingHome.dataclass.Worker")){
@@ -258,9 +270,15 @@ public class PeopleAdminUIController implements Initializable {
             }else if (people.getClass().getName().equals("NursingHome.dataclass.Doctor")){
                 Doctor doctor=((Doctor)people);
                 doctorObservableList.add(doctor);
-            }else{
+            }else if (people.getClass().getName().equals("NursingHome.dataclass.DoorBoy")){
                 DoorBoy doorBoy=((DoorBoy)people);
                 doorBoyObservableList.add(doorBoy);
+            }else{
+                // TODO 在数据库中已经避免了重复增加的问题，insertFailed为假时代表插入成功，需要插入
+                if (!insertFailed){
+                    Administrator admin=((Administrator)people);
+                    adminObservableList.add(admin);
+                }
             }
         }else{
             if (people.getClass().getName().equals("NursingHome.dataclass.Worker")){
@@ -287,7 +305,7 @@ public class PeopleAdminUIController implements Initializable {
                         break;
                     }
                 }
-            }else{
+            }else if (people.getClass().getName().equals("NursingHome.dataclass.Doorboy")){
                 DoorBoy doorBoy=((DoorBoy)people);
                 for (int i=0;i<doorBoyObservableList.size();i++){
                     if (doorBoyObservableList.get(i).getId().equals(doorBoy.getId())){
@@ -296,6 +314,17 @@ public class PeopleAdminUIController implements Initializable {
                         doorBoyObservableList.get(i).setSalary(doorBoy.getSalary());
                         doorBoyObservableList.get(i).setWorkPlace(doorBoy.getWorkPlace());
                         doorBoyObservableList.get(i).setAge(doorBoy.getAge());
+                        break;
+                    }
+                }
+            }else{
+                Administrator administrator=((Administrator) people);
+                for (int i=0;i<adminObservableList.size();i++){
+                    if (adminObservableList.get(i).getId().equals(administrator.getId())){
+                        adminObservableList.get(i).setName(administrator.getName());
+                        adminObservableList.get(i).setPosition(administrator.getPosition());
+                        adminObservableList.get(i).setAge(administrator.getAge());
+                        adminObservableList.get(i).setSalary(administrator.getAge());
                         break;
                     }
                 }
@@ -313,8 +342,13 @@ public class PeopleAdminUIController implements Initializable {
             workerTableView.setOnMouseClicked(event -> {
                 if (event.getClickCount()==2&&workerSelected.size()==1){
                     try {
-                        PeopleSetInfoUIController.setPeople((workerSelected.get(0)));
-                        getApp().createPeopleSetInfoUI();
+                        if (MANAGER_PRIV==0||MANAGER_PRIV==1){
+                            //TODO 只有主管和院长、总经理能够进入详细信息界面，但是主管才能修改，在详细界面中实现
+                            PeopleSetInfoUIController.setPeople((workerSelected.get(0)));
+                            getApp().createPeopleSetInfoUI();
+                        }else{
+                            showAlert("[警告]您没有查看用户信息的权限！");
+                        }
                     } catch (Exception e){
                         e.printStackTrace();
                     }
@@ -328,8 +362,13 @@ public class PeopleAdminUIController implements Initializable {
             doctorTableView.setOnMouseClicked(event -> {
                 if (event.getClickCount()==2&&doctorSelected.size()==1){
                     try {
-                        PeopleSetInfoUIController.setPeople((doctorSelected.get(0)));
-                        getApp().createPeopleSetInfoUI();
+                        if (MANAGER_PRIV==0||MANAGER_PRIV==1){
+                            //TODO 只有主管和院长、总经理能够进入详细信息界面，但是主管才能修改，在详细界面中实现
+                            PeopleSetInfoUIController.setPeople((doctorSelected.get(0)));
+                            getApp().createPeopleSetInfoUI();
+                        }else{
+                            showAlert("[警告]您没有查看用户信息的权限！");
+                        }
                     } catch (Exception e){
                         e.printStackTrace();
                     }
@@ -343,13 +382,60 @@ public class PeopleAdminUIController implements Initializable {
             doorBoyTableView.setOnMouseClicked(event -> {
                 if (event.getClickCount()==2&&doorBoySelected.size()==1){
                     try {
-                        PeopleSetInfoUIController.setPeople((doorBoySelected.get(0)));
-                        getApp().createPeopleSetInfoUI();
+                        if (MANAGER_PRIV==0||MANAGER_PRIV==1){
+                            //TODO 只有主管和院长、总经理能够进入详细信息界面，但是主管才能修改，在详细界面中实现
+                            PeopleSetInfoUIController.setPeople((doorBoySelected.get(0)));
+                            getApp().createPeopleSetInfoUI();
+                        }else{
+                            showAlert("[警告]您没有查看用户信息的权限！");
+                        }
                     } catch (Exception e){
                         e.printStackTrace();
                     }
                 }
             });
+        }else if (adminTab.isSelected()){
+            // TODO 选中adminTab时，修改
+            adminTableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
+            List<Administrator> adminSelected = adminTableView.getSelectionModel().getSelectedItems();
+            adminTableView.setOnMouseClicked(event -> {
+                if (event.getClickCount()==2&&adminSelected.size()==1){
+                    try {
+                        if (MANAGER_PRIV==0||MANAGER_PRIV==1){
+                            //TODO 只有主管和院长、总经理能够进入详细信息界面，但是主管才能修改，在详细界面中实现
+                            PeopleSetInfoUIController.setPeople((adminSelected.get(0)));
+                            getApp().createPeopleSetInfoUI();
+                        }else{
+                            showAlert("[警告]您没有查看用户信息的权限！");
+                        }
+                    } catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
+    }
+
+    public void changePassword(){
+        if (MANAGER_PRIV==0){
+            if (doctorTab.isSelected()){
+                List<Doctor> doctorSelected = doctorTableView.getSelectionModel().getSelectedItems();
+                ChangePasswordUIController.setPeopleid(doctorSelected.get(0).getId());
+                getApp().createChangePasswordUI();
+            }else if (doorBoyTab.isSelected()){
+                List<DoorBoy> doorBoySelected = doorBoyTableView.getSelectionModel().getSelectedItems();
+                if (doorBoySelected.get(0).getWorkPlace().equals("前台")){
+                    ChangePasswordUIController.setPeopleid(doorBoySelected.get(0).getId());
+                    getApp().createChangePasswordUI();
+                }
+            }else if (adminTab.isSelected()){
+                List<Administrator> adminSelected= adminTableView.getSelectionModel().getSelectedItems();
+                ChangePasswordUIController.setPeopleid(adminSelected.get(0).getId());
+                getApp().createChangePasswordUI();
+            }
+        }else{
+            showAlert("[警告]您没有修改密码的权限");
         }
     }
 
@@ -408,7 +494,7 @@ public class PeopleAdminUIController implements Initializable {
         Statement stmt;
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306", "root", "12345678");
+            conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
             String sql="SELECT * FROM NursingHome.doctor";
             stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
@@ -439,7 +525,7 @@ public class PeopleAdminUIController implements Initializable {
         Statement stmt;
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306", "root", "12345678");
+            conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
             String sql="SELECT * FROM NursingHome.worker";
             stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
@@ -470,7 +556,7 @@ public class PeopleAdminUIController implements Initializable {
         Statement stmt;
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306", "root", "12345678");
+            conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
             String sql="SELECT * FROM NursingHome.doorboy";
             stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
@@ -501,7 +587,7 @@ public class PeopleAdminUIController implements Initializable {
         Statement stmt;
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306", "root", "12345678");
+            conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
             String sql="SELECT * FROM NursingHome.administrator";
             stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
@@ -510,8 +596,8 @@ public class PeopleAdminUIController implements Initializable {
                 administrator.setId(rs.getString(1));
                 administrator.setName(rs.getString(2));
                 administrator.setAge(rs.getInt(3));
-                administrator.setSalary(rs.getDouble(4));
-                administrator.setPosition(rs.getString(5));
+                administrator.setSalary(rs.getDouble(5));
+                administrator.setPosition(rs.getString(4));
                 adminObservableList.add(administrator);
             }
             rs.close();

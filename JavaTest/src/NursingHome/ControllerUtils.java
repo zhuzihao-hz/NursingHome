@@ -19,6 +19,10 @@ import java.time.LocalDate;
 import java.util.Date;
 
 public class ControllerUtils {
+    public static String MYSQL_URL="jdbc:mysql://localhost:3306";
+    public static String MYSQL_USER="root";
+    public static String MYSQL_PASSWORD="12345678";
+
     public static void showAlert(String message) {
         Stage window = new Stage();
         window.setAlwaysOnTop(true);
@@ -89,6 +93,13 @@ public class ControllerUtils {
             peopleOtherComboBox.getItems().add("前台");
             peopleOtherComboBox.setValue("厨房");
         }
+        if (GlobalInfo.MANAGER_PRIV==0){
+            peopleTypeComboBox.getItems().add("行政人员");
+            peopleOtherComboBox.getItems().add("主管");
+            peopleOtherComboBox.getItems().add("总经理");
+            peopleOtherComboBox.getItems().add("院长");
+            peopleOtherComboBox.setValue("主管");
+        }
     }
 
     public static void changeComboBox(String peopleType,ComboBox<String> peopleOtherComboBox){
@@ -105,12 +116,17 @@ public class ControllerUtils {
             peopleOtherComboBox.getItems().add("内科");
             peopleOtherComboBox.getItems().add("实习");
             peopleOtherComboBox.setValue("全科");
-        }else {
+        }else if (peopleType.equals("勤杂人员")){
             peopleOtherComboBox.getItems().add("厨房");
             peopleOtherComboBox.getItems().add("保洁");
             peopleOtherComboBox.getItems().add("门卫");
             peopleOtherComboBox.getItems().add("前台");
             peopleOtherComboBox.setValue("厨房");
+        }else if (peopleType.equals("行政人员")){
+            peopleOtherComboBox.getItems().add("主管");
+            peopleOtherComboBox.getItems().add("总经理");
+            peopleOtherComboBox.getItems().add("院长");
+            peopleOtherComboBox.setValue("主管");
         }
     }
 

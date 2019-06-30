@@ -44,4 +44,10 @@ public class Administrator {
     public double getSalary() { return salary.get(); }
     public DoubleProperty salaryProperty() { return salary; }
     public void setSalary(double salary) { this.salary.set(salary); }
+
+    public String getAdminInfo() {
+        String temp;
+        temp="('"+this.getId()+"','"+this.getName()+"','"+this.getAge()+"','"+this.getPosition()+"','"+this.getSalary()+"')";
+        return temp;
+    }
 }

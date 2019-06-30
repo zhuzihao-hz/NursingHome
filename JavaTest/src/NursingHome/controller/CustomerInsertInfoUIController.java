@@ -14,6 +14,8 @@ import java.net.URL;
 import java.sql.*;
 import java.util.ResourceBundle;
 
+import static NursingHome.ControllerUtils.*;
+
 public class CustomerInsertInfoUIController implements Initializable {
     private Main application;
     @FXML private Label customerIdLabel;
@@ -58,7 +60,7 @@ public class CustomerInsertInfoUIController implements Initializable {
         int N=0;
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306", "root", "12345678");
+            conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
             String sql="SELECT count(*) FROM NursingHome.customer;";
             stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
@@ -77,6 +79,15 @@ public class CustomerInsertInfoUIController implements Initializable {
         return customerId;
     }
 
+    public Customer autoAllocate(Customer customer,int rank,String workerRank,String roomRank){
+        // TODO 自动分配
+
+
+
+
+        return customer;
+    }
+
     public void insertCustomerInfo(){
         Customer customer=new Customer();
         customer.setId(customerIdLabel.getText());
@@ -87,19 +98,22 @@ public class CustomerInsertInfoUIController implements Initializable {
         customer.setRelationName(customerRelationNameTextField.getText());
         customer.setAge(customerAgeComboBox.getValue());
         customer.setRank(customerRankComboBox.getValue());
-        /**
-        * 这里自动分配
-         */
+
         int rank=customerRankComboBox.getValue();
         String workerRank=customerWorkerRankComboBox.getValue();
         String roomRank=customerRoomRankComboBox.getValue();
+
+        /**
+         * 这里自动分配
+         */
+        autoAllocate(customer,rank,workerRank,roomRank);
 
 
         Connection conn;
         Statement stmt;
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306", "root", "12345678");
+            conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
             String sql="INSERT INTO NursingHome.customer VALUES "+customer.getCustomerInfo();
             stmt = conn.createStatement();
             stmt.executeUpdate(sql);

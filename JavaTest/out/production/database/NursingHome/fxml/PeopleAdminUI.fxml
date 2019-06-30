@@ -35,7 +35,8 @@
                   <items>
                     <MenuItem mnemonicParsing="false" onAction="#insertPeople" text="新增员工" />
                         <MenuItem mnemonicParsing="false" onAction="#deletePeople" text="解雇员工" />
-                        <MenuItem mnemonicParsing="false" onAction="#setPeopleInfo" text="修改员工信息" />
+                        <MenuItem mnemonicParsing="false" onAction="#setPeopleInfo" text="查看员工信息" />
+                        <MenuItem mnemonicParsing="false" onAction="#changePassword" text="修改员工密码" />
                   </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="帮助">
@@ -56,7 +57,7 @@
                                     <Image url="@../img/dummy_potrait.jpg" />
                                  </image>
                               </ImageView>
-                              <Label fx:id="nameLabel" alignment="CENTER" layoutX="38.0" layoutY="129.0" prefHeight="40.0" prefWidth="85.0" text="姓名">
+                              <Label fx:id="nameLabel" alignment="CENTER" layoutX="2.0" layoutY="129.0" prefHeight="40.0" prefWidth="158.0" text="姓名">
                                  <font>
                                     <Font size="17.0" />
                                  </font>
@@ -128,6 +129,23 @@
                                  </children>
                               </AnchorPane>
                           </content>
+                        </Tab>
+                        <Tab fx:id="adminTab" text="行政人员">
+                           <content>
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                 <children>
+                                    <TableView fx:id="adminTableView" onMouseReleased="#clickIntoDetail" prefHeight="365.0" prefWidth="459.0">
+                                       <columns>
+                                          <TableColumn fx:id="adminID" prefWidth="75.0" text="工号" />
+                                          <TableColumn fx:id="adminName" prefWidth="75.0" text="姓名" />
+                                          <TableColumn fx:id="adminAge" prefWidth="75.0" text="年龄" />
+                                          <TableColumn fx:id="adminSalary" prefWidth="75.0" text="薪水" />
+                                          <TableColumn fx:id="adminPosition" prefWidth="75.0" text="岗位" />
+                                       </columns>
+                                    </TableView>
+                                 </children>
+                              </AnchorPane>
+                           </content>
                         </Tab>
                     </tabs>
                   </TabPane>

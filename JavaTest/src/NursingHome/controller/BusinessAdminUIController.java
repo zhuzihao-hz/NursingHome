@@ -16,7 +16,7 @@ import java.sql.*;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import static NursingHome.ControllerUtils.showtime;
+import static NursingHome.ControllerUtils.*;
 import static NursingHome.GlobalInfo.*;
 
 public class BusinessAdminUIController implements Initializable {
@@ -114,79 +114,108 @@ public class BusinessAdminUIController implements Initializable {
 
     public void insertBusiness(){
         // TODO 新增客户
-        application.createCustomerInsertInfoUI();
+        if (MANAGER_PRIV==3){
+            // TODO 只有前台工作人员能添加客户
+            application.createCustomerInsertInfoUI();
+        }else{
+            showAlert("[警告]您没有添加客户的权限！");
+        }
     }
 
     public void deleteBusiness(){
         // TODO 删除客户，并且在record表中将该客户的档案记录一起删除
-        List<Customer> customerSelected = customerTableView.getSelectionModel().getSelectedItems();
-        for(int i=0;i<customerSelected.size();i++){
-            Connection conn;
-            Statement stmt;
-            try {
-                Class.forName("com.mysql.jdbc.Driver");
-                conn = DriverManager.getConnection("jdbc:mysql://localhost:3306", "root", "12345678");
-                String sql1="DELETE FROM NursingHome.record WHERE customer_id='"+customerSelected.get(i).getId()+"'";
-                String sql="DELETE FROM NursingHome.customer WHERE customer_id='"+customerSelected.get(i).getId()+"'";
-                stmt = conn.createStatement();
-                stmt.executeUpdate(sql1);
-                stmt.executeUpdate(sql);
-                stmt.close();
-                conn.close();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            } catch (SQLException e) {
-                e.printStackTrace();
+        if (MANAGER_PRIV==3){
+            // TODO 只有前台工作人员能删除客户
+            List<Customer> customerSelected = customerTableView.getSelectionModel().getSelectedItems();
+            for(int i=0;i<customerSelected.size();i++){
+                Connection conn;
+                Statement stmt;
+                try {
+                    Class.forName("com.mysql.jdbc.Driver");
+                    conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
+                    String sql1="DELETE FROM NursingHome.record WHERE customer_id='"+customerSelected.get(i).getId()+"'";
+                    String sql="DELETE FROM NursingHome.customer WHERE customer_id='"+customerSelected.get(i).getId()+"'";
+                    stmt = conn.createStatement();
+                    stmt.executeUpdate(sql1);
+                    stmt.executeUpdate(sql);
+                    stmt.close();
+                    conn.close();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
-        }
-        for (int i=0;i<customerSelected.size();i++){
-            for (int j=0;j<customerObservableList.size();j++){
-                if (customerSelected.get(i).getId().equals(customerObservableList.get(j).getId())){
-                    customerObservableList.remove(j);
-                    // TODO 将该客户的档案记录也删除
-                    for (int k=0;k<recordObservableList.size();k++){
-                        if (recordObservableList.get(k).getCustomerId().equals(customerSelected.get(i).getId())){
-                            recordObservableList.remove(k);
+            for (int i=0;i<customerSelected.size();i++){
+                for (int j=0;j<customerObservableList.size();j++){
+                    if (customerSelected.get(i).getId().equals(customerObservableList.get(j).getId())){
+                        customerObservableList.remove(j);
+                        // TODO 将该客户的档案记录也删除
+                        for (int k=0;k<recordObservableList.size();k++){
+                            if (recordObservableList.get(k).getCustomerId().equals(customerSelected.get(i).getId())){
+                                recordObservableList.remove(k);
+                            }
                         }
                     }
                 }
             }
+            System.out.println("删除Customer成功");
+        }else{
+            showAlert("[警告]您没有删除客户的权限！");
         }
-        System.out.println("删除Customer成功");
     }
 
     public void setBusinessInfo(){
-        // TODO 设置客户信息
+        // TODO 修改客户信息
         //  需要自动生成一些信息，如自动分配空余的床位等
-        List<Customer> customerSelected = customerTableView.getSelectionModel().getSelectedItems();
-        CustomerSetInfoUIController.setCustomer(customerSelected.get(0));
-        application.createCustomerSetInfoUI();
+        if (MANAGER_PRIV==3){
+            // TODO 只有前台工作人员可以修改客户信息
+            List<Customer> customerSelected = customerTableView.getSelectionModel().getSelectedItems();
+            CustomerSetInfoUIController.setCustomer(customerSelected.get(0));
+            application.createCustomerSetInfoUI();
+        }else{
+            showAlert("[警告]您没有修改客户信息的权限！");
+        }
     }
 
     public void insertRecord(){
         // TODO 新增记录
-        application.createRecordSetInfoUI();
-        System.out.println("新增档案记录成功！");
+        if (MANAGER_PRIV==2){
+            // TODO 只有医生可以新增记录
+            application.createRecordSetInfoUI();
+            System.out.println("新增档案记录成功！");
+        }else{
+            showAlert("[警告]您没有添加记录的权限！");
+        }
     }
 
     public void lookRecordInfo(){
-        List<Record> recordSelected = recordTableView.getSelectionModel().getSelectedItems();
-        RecordLookInfoUIController.setRecord(recordSelected.get(0));
-        getApp().createRecordLookInfoUI();
+        if (MANAGER_PRIV==2){
+            // TODO 只有医生可以查看记录信息
+            List<Record> recordSelected = recordTableView.getSelectionModel().getSelectedItems();
+            RecordLookInfoUIController.setRecord(recordSelected.get(0));
+            getApp().createRecordLookInfoUI();
+        }else {
+            showAlert("[警告]您没有查看记录信息的权限！");
+        }
     }
 
     public void clickIntoDetail(){
         // TODO 双击进入修改信息界面
         if (customerTab.isSelected()){
-            // TODO 选中customerTab时，修改
+            // TODO 选中customerTab时，进入修改客户信息界面
             customerTableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
             List<Customer> customerSelected = customerTableView.getSelectionModel().getSelectedItems();
             customerTableView.setOnMouseClicked(event -> {
                 if (event.getClickCount()==2&&customerSelected.size()==1){
                     try {
-                        CustomerSetInfoUIController.setCustomer((customerSelected.get(0)));
-                        getApp().createCustomerSetInfoUI();
+                        if (MANAGER_PRIV==3){
+                            CustomerSetInfoUIController.setCustomer((customerSelected.get(0)));
+                            getApp().createCustomerSetInfoUI();
+                        }else{
+                            showAlert("[警告]您没有修改客户信息的权限！");
+                        }
                     } catch (Exception e){
                         e.printStackTrace();
                     }
@@ -200,8 +229,12 @@ public class BusinessAdminUIController implements Initializable {
             recordTableView.setOnMouseClicked(event -> {
                 if (event.getClickCount()==2&&recordSelected.size()==1){
                     try {
-                        RecordLookInfoUIController.setRecord((recordSelected.get(0)));
-                        getApp().createRecordLookInfoUI();
+                        if (MANAGER_PRIV==2){
+                            RecordLookInfoUIController.setRecord((recordSelected.get(0)));
+                            getApp().createRecordLookInfoUI();
+                        }else{
+                            showAlert("[警告]您没有查看记录信息的权限！");
+                        }
                     } catch (Exception e){
                         e.printStackTrace();
                     }
@@ -301,7 +334,7 @@ public class BusinessAdminUIController implements Initializable {
         Statement stmt;
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306", "root", "12345678");
+            conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
             String sql="SELECT * FROM NursingHome.customer";
             stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
@@ -339,7 +372,7 @@ public class BusinessAdminUIController implements Initializable {
         Statement stmt;
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306", "root", "12345678");
+            conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
             String sql="SELECT * FROM NursingHome.bed";
             stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
@@ -368,7 +401,7 @@ public class BusinessAdminUIController implements Initializable {
         Statement stmt;
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306", "root", "12345678");
+            conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
             String sql="SELECT * FROM NursingHome.room";
             stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
@@ -397,7 +430,7 @@ public class BusinessAdminUIController implements Initializable {
         Statement stmt;
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306", "root", "12345678");
+            conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
             String sql="SELECT * FROM NursingHome.record";
             stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);

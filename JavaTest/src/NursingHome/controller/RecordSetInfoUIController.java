@@ -53,7 +53,7 @@ public class RecordSetInfoUIController implements Initializable {
         Statement stmt;
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306", "root", "12345678");
+            conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
             String sql="SELECT count(*) FROM NursingHome.record;";
             stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
@@ -90,7 +90,7 @@ public class RecordSetInfoUIController implements Initializable {
         Statement stmt;
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306", "root", "12345678");
+            conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
             String sql="INSERT INTO NursingHome.record VALUES "+record.getRecordInfo();
             stmt = conn.createStatement();
             stmt.executeUpdate(sql);

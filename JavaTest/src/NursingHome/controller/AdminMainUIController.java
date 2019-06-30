@@ -8,6 +8,7 @@ import javafx.scene.text.Text;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import static NursingHome.ControllerUtils.showAlert;
 import static NursingHome.ControllerUtils.showtime;
 import static NursingHome.GlobalInfo.*;
 
@@ -46,23 +47,39 @@ public class AdminMainUIController implements Initializable {
     }
 
     public void movePeopleAdmin() throws Exception{
-        application.stage.close();
-        application.gotoPeopleAdminUI();
+        if (MANAGER_PRIV==0||MANAGER_PRIV==1){
+            application.stage.close();
+            application.gotoPeopleAdminUI();
+        }else{
+            showAlert("[警告]您没有进入人事管理的权限！");
+        }
     }
 
     public void moveBusinessAdmin() throws Exception{
-        application.stage.close();
-        application.gotoBusinessAdminUI();
+        if (MANAGER_PRIV==2||MANAGER_PRIV==3){
+            application.stage.close();
+            application.gotoBusinessAdminUI();
+        }else{
+            showAlert("[警告]您没有进入业务管理的权限！");
+        }
     }
 
     public void movePeopleAdminMenu() throws Exception{
-        application.stage.close();
-        application.gotoPeopleAdminUI();
+        if (MANAGER_PRIV==0||MANAGER_PRIV==1){
+            application.stage.close();
+            application.gotoPeopleAdminUI();
+        }else{
+            showAlert("[警告]您没有进入人事管理的权限！");
+        }
     }
 
     public void moveBusinessAdminMenu() throws Exception{
-        application.stage.close();
-        application.gotoBusinessAdminUI();
+        if (MANAGER_PRIV==2||MANAGER_PRIV==3){
+            application.stage.close();
+            application.gotoBusinessAdminUI();
+        }else {
+            showAlert("[警告]您没有进入业务管理的权限！");
+        }
     }
 
     public void aboutInfo() {
