@@ -17,7 +17,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="429.0" prefWidth="628.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="NursingHome.controller.PeopleAdminUIController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="441.0" prefWidth="686.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="NursingHome.controller.PeopleAdminUIController">
    <children>
       <VBox layoutY="2.0" prefHeight="429.0" prefWidth="628.0">
          <children>
@@ -48,7 +48,7 @@
             </MenuBar>
             <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="382.0" prefWidth="628.0">
                <children>
-                  <VBox prefHeight="399.0" prefWidth="165.0">
+                  <VBox prefHeight="411.0" prefWidth="165.0">
                      <children>
                         <AnchorPane prefHeight="403.0" prefWidth="165.0">
                            <children>
@@ -76,20 +76,22 @@
                         </AnchorPane>
                      </children>
                   </VBox>
-                  <Separator layoutX="165.0" layoutY="-1.0" orientation="VERTICAL" prefHeight="399.0" prefWidth="6.0" />
-                  <TabPane layoutX="168.0" prefHeight="399.0" prefWidth="461.0" tabClosingPolicy="UNAVAILABLE">
+                  <Separator layoutX="165.0" layoutY="-1.0" orientation="VERTICAL" prefHeight="411.0" prefWidth="6.0" />
+                  <TabPane layoutX="168.0" prefHeight="411.0" prefWidth="519.0" tabClosingPolicy="UNAVAILABLE">
                     <tabs>
                       <Tab fx:id="workerTab" text="护工">
                         <content>
-                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="369.0" prefWidth="461.0">
+                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="377.0" prefWidth="520.0">
                                  <children>
-                                    <TableView fx:id="workerTableView" onMouseReleased="#clickIntoDetail" prefHeight="367.0" prefWidth="461.0">
+                                    <TableView fx:id="workerTableView" onMouseReleased="#clickIntoDetail" prefHeight="379.0" prefWidth="520.0">
                                       <columns>
-                                        <TableColumn fx:id="workerID" prefWidth="75.0" text="工号" />
+                                        <TableColumn fx:id="workerID" prefWidth="60.0" text="工号" />
                                         <TableColumn fx:id="workerName" prefWidth="75.0" text="姓名" />
-                                          <TableColumn fx:id="workerAge" prefWidth="75.0" text="年龄" />
-                                          <TableColumn fx:id="workerSalary" prefWidth="75.0" text="薪水" />
-                                          <TableColumn fx:id="workerRank" prefWidth="75.0" text="级别" />
+                                          <TableColumn fx:id="workerAge" prefWidth="55.0" text="年龄" />
+                                          <TableColumn fx:id="workerSalary" prefWidth="70.0" text="薪水" />
+                                          <TableColumn fx:id="workerRank" prefWidth="70.0" text="级别" />
+                                          <TableColumn fx:id="workerCustomerRank" prefWidth="89.46194458007812" text="目标护理级别" />
+                                          <TableColumn fx:id="workerCustomerNumber" prefWidth="70.0" text="护理人数" />
                                       </columns>
                                     </TableView>
                                  </children>
@@ -100,7 +102,7 @@
                         <content>
                           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
-                                    <TableView fx:id="doctorTableView" onMouseReleased="#clickIntoDetail" prefHeight="366.0" prefWidth="461.0">
+                                    <TableView fx:id="doctorTableView" onMouseReleased="#clickIntoDetail" prefHeight="378.0" prefWidth="518.0">
                                       <columns>
                                         <TableColumn fx:id="doctorID" prefWidth="75.0" text="工号" />
                                         <TableColumn fx:id="doctorName" prefWidth="75.0" text="姓名" />
@@ -115,9 +117,9 @@
                       </Tab>
                         <Tab fx:id="doorBoyTab" text="勤杂人员">
                           <content>
-                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="378.0" prefWidth="513.0">
                                  <children>
-                                    <TableView fx:id="doorBoyTableView" onMouseReleased="#clickIntoDetail" prefHeight="365.0" prefWidth="459.0">
+                                    <TableView fx:id="doorBoyTableView" onMouseReleased="#clickIntoDetail" prefHeight="378.0" prefWidth="518.0">
                                       <columns>
                                         <TableColumn fx:id="doorBoyID" prefWidth="75.0" text="工号" />
                                         <TableColumn fx:id="doorBoyName" prefWidth="75.0" text="姓名" />
@@ -134,13 +136,13 @@
                            <content>
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
-                                    <TableView fx:id="adminTableView" onMouseReleased="#clickIntoDetail" prefHeight="365.0" prefWidth="459.0">
+                                    <TableView fx:id="adminTableView" onMouseReleased="#clickIntoDetail" prefHeight="379.0" prefWidth="519.0">
                                        <columns>
-                                          <TableColumn fx:id="adminID" prefWidth="75.0" text="工号" />
-                                          <TableColumn fx:id="adminName" prefWidth="75.0" text="姓名" />
+                                          <TableColumn fx:id="adminID" text="工号" />
+                                          <TableColumn fx:id="adminName" prefWidth="100.0" text="姓名" />
                                           <TableColumn fx:id="adminAge" prefWidth="75.0" text="年龄" />
-                                          <TableColumn fx:id="adminSalary" prefWidth="75.0" text="薪水" />
-                                          <TableColumn fx:id="adminPosition" prefWidth="75.0" text="岗位" />
+                                          <TableColumn fx:id="adminSalary" text="薪水" />
+                                          <TableColumn fx:id="adminPosition" text="岗位" />
                                        </columns>
                                     </TableView>
                                  </children>

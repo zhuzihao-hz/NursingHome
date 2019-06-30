@@ -9,20 +9,20 @@ public class Room {
     private StringProperty id;
     private StringProperty rank;
     private IntegerProperty totalBed;
-    private IntegerProperty freeBed;
+    private IntegerProperty usedBed;
 
     public Room() {
         this.id=new SimpleStringProperty("");
         this.rank=new SimpleStringProperty("");
         this.totalBed=new SimpleIntegerProperty(0);
-        this.freeBed=new SimpleIntegerProperty(0);
+        this.usedBed=new SimpleIntegerProperty(0);
     }
 
     public Room(StringProperty id, StringProperty rank, IntegerProperty totalBed, IntegerProperty freeBed) {
         this.id = id;
         this.rank = rank;
         this.totalBed = totalBed;
-        this.freeBed = freeBed;
+        this.usedBed = freeBed;
     }
 
     public String getId() { return id.get(); }
@@ -37,7 +37,7 @@ public class Room {
     public IntegerProperty totalBedProperty() { return totalBed; }
     public void setTotalBed(int totalBed) { this.totalBed.set(totalBed); }
 
-    public int getFreeBed() { return freeBed.get(); }
-    public IntegerProperty freeBedProperty() { return freeBed; }
-    public void setFreeBed(int freeBed) { this.freeBed.set(freeBed); }
+    public int getFreeBed() { return usedBed.get(); }
+    public IntegerProperty freeBedProperty() { return usedBed; }
+    public void setFreeBed(int freeBed) { this.usedBed.set(freeBed); }
 }

@@ -95,9 +95,72 @@ public class CustomerInsertInfoUIController implements Initializable {
         return customerId;
     }
 
-    public Customer autoAllocate(Customer customer, int rank, String workerRank, String roomRank) {
+    public static Customer autoAllocate(Customer customer, int rank, String workerRank, String roomRank) {
         // TODO 自动分配
+        // TODO 获得房间号
+        Connection conn;
+        Statement stmt;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
+            String sql = "SELECT room_id FROM NursingHome.room WHERE room_usedbed<room_totalbed AND room_rank='" + roomRank + "' ORDER BY room_id ASC;";
+            stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            if (rs.next()){
+                customer.setRoomID(rs.getString(1));
+            }
+            stmt.close();
+            conn.close();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
+        // TODO 获得床位号 并且修改床位状态和房间状态
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
+            String sql = "SELECT bed_id FROM NursingHome.bed WHERE bed_roomid='"+customer.getRoomID()+"' AND bed_status=0; ";
+            String sql1="UPDATE NursingHome.bed SET bed_staus=1 WHERE bed_id='"+customer.getBedID()+"' AND bed_roomid='"+customer.getRoomID()+"';";
+            String sql2="UPDATE NursingHome.room SET room_usedbed=room_usedbed+1 WHERE room_id='"+customer.getRoomID()+"';";
+            stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            stmt.executeUpdate(sql1);
+            stmt.executeUpdate(sql2);
+            if (rs.next()){
+                customer.setBedID(rs.getString(1));
+            }
+            stmt.close();
+            conn.close();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        // TODO 获得护工号
+        double room_idDouble=Double.valueOf(customer.getRoomID().substring(1));
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
+            String sql = "SELECT worker_id FROM worker WHERE worker_rank='"+workerRank+"' AND worker_customerrank="+rank+" ORDER BY abs("+room_idDouble+"-worker_vispos) ASC, worker_customernumber ASC";
+            stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            if (rs.next()){
+                customer.setCareWorker(rs.getString(1));
+            }
+            String sql1="UPDATE worker SET worker_customernumber=worker_customernumber+1 WHERE worker_id='"+customer.getCareWorker()+"'";
+            String sql2="UPDATE worker SET worker_vispos=(worker_vispos*(worker_customernember-1)+"+room_idDouble+")/worker_customernumber WHERE worker_id='"+customer.getCareWorker()+"'";
+            stmt.executeUpdate(sql1);
+            stmt.executeUpdate(sql2);
+            stmt.close();
+            conn.close();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         return customer;
     }
@@ -117,11 +180,7 @@ public class CustomerInsertInfoUIController implements Initializable {
         String workerRank = customerWorkerRankComboBox.getValue();
         String roomRank = customerRoomRankComboBox.getValue();
 
-        /**
-         * 这里自动分配
-         */
-        autoAllocate(customer, rank, workerRank, roomRank);
-
+        customer = autoAllocate(customer, rank, workerRank, roomRank);
 
         Connection conn;
         Statement stmt;

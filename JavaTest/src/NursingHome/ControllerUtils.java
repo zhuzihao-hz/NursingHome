@@ -168,7 +168,7 @@ public class ControllerUtils {
     public static String randomPassword() {
         String password = "";
         Random random = new Random();
-        int len = random.nextInt(10) + 6;
+        int len = random.nextInt(10) + 4;
         for (int i = 0; i < len; i++) {
             int temp = random.nextInt(36);
             if (temp < 10) {
@@ -177,6 +177,8 @@ public class ControllerUtils {
                 password = password + (char) (87 + temp);
             }
         }
+        // TODO 防止密码只有数字或者字母，于是在后面加上一个数字和一个字母
+        password = password + random.nextInt(10) + (char) (97 + random.nextInt(26));
         return password;
     }
 }

@@ -168,18 +168,52 @@ public class BusinessAdminUIController implements Initializable {
             // TODO 只有前台工作人员能删除客户
             List<Customer> customerSelected = customerTableView.getSelectionModel().getSelectedItems();
             for (int i = 0; i < customerSelected.size(); i++) {
+                // TODO 删除客户时先改房间
                 Connection conn;
                 Statement stmt;
                 try {
                     Class.forName("com.mysql.jdbc.Driver");
                     conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-                    String sql1 = "DELETE FROM NursingHome.record WHERE customer_id='" + customerSelected.get(i).getId() + "'";
-                    String sql = "DELETE FROM NursingHome.customer WHERE customer_id='" + customerSelected.get(i).getId() + "'";
-                    String sql2 = "UPDATE NursingHome.historical_customer SET customer_status=0 WHERE customer_id='" + customerSelected.get(i).getId() + "'";
+                    String sql = "UPDATE bed SET bed_status=0 WHERE bed_id='"+customerSelected.get(i).getBedID()+"' AND bed_roomid='" + customerSelected.get(i).getRoomID() + "';";
+                    String sql1="UPDATE room SET room_usedbed=room_usedbed-1 WHERE room_id='"+customerSelected.get(i).getRoomID()+"'";
                     stmt = conn.createStatement();
-                    stmt.executeUpdate(sql1);
                     stmt.executeUpdate(sql);
-                    stmt.executeUpdate(sql2);
+                    stmt.executeUpdate(sql1);
+                    stmt.close();
+                    conn.close();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+
+                // TODO 删除客户时再改护工
+                double room_idDouble=Double.valueOf(customerSelected.get(i).getRoomID().substring(1));
+                try {
+                    Class.forName("com.mysql.jdbc.Driver");
+                    conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
+                    String sql = "UPDATE worker SET worker_vispos=(worker_vispos*worker_customernumber-"+room_idDouble+")/(worker_customernumber-1) WHERE worker_id='"+customerSelected.get(i).getCareWorker()+"';";
+                    String sql1 = "UPDATE worker SET worker_customernumber=worker_customernumber-1 WHERE worker_id'"+customerSelected.get(i).getCareWorker()+"'";
+                    stmt = conn.createStatement();
+                    stmt.executeUpdate(sql);
+                    stmt.executeUpdate(sql1);
+                    stmt.close();
+                    conn.close();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+
+                // TODO 删除客户时最后改客户
+                try {
+                    Class.forName("com.mysql.jdbc.Driver");
+                    conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
+                    String sql = "DELETE FROM NursingHome.customer WHERE customer_id='" + customerSelected.get(i).getId() + "'";
+                    String sql1 = "UPDATE NursingHome.historical_customer SET customer_status=0 WHERE customer_id='" + customerSelected.get(i).getId() + "'";
+                    stmt = conn.createStatement();
+                    stmt.executeUpdate(sql);
+                    stmt.executeUpdate(sql1);
                     stmt.close();
                     conn.close();
                 } catch (ClassNotFoundException e) {
@@ -349,7 +383,7 @@ public class BusinessAdminUIController implements Initializable {
         roomID.setCellValueFactory(new PropertyValueFactory<>("id"));
         roomRank.setCellValueFactory(new PropertyValueFactory<>("rank"));
         roomTotalBed.setCellValueFactory(new PropertyValueFactory<>("totalBed"));
-        roomFreeBed.setCellValueFactory(new PropertyValueFactory<>("freeBed"));
+        roomFreeBed.setCellValueFactory(new PropertyValueFactory<>("usedBed"));
         roomTableView.setVisible(true);
         roomTableView.setEditable(false);
         roomTableView.setTableMenuButtonVisible(true);

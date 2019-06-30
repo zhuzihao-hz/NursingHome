@@ -76,7 +76,6 @@ public class RecordSetInfoUIController implements Initializable {
             if (rs.next()) {
                 N = rs.getInt(1);
             }
-            //System.out.println(rs.getInt(0));
             rs.close();
             stmt.close();
             conn.close();
@@ -92,9 +91,7 @@ public class RecordSetInfoUIController implements Initializable {
     public void saveRecordInfo() {
         // TODO 新增记录
         Record record = new Record();
-        //System.out.println(recordIdLabel.getText());
         record.setId(recordIdLabel.getText());
-        //System.out.println(record.getId());
         record.setCustomerId(recordCustomerIdTextField.getText());
         record.setCustomerName(recordCustomerNameTextField.getText());
         record.setDoctorId(recordDoctorIdTextField.getText());
