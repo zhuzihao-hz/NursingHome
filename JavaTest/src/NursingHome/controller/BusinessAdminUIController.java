@@ -143,15 +143,24 @@ public class BusinessAdminUIController implements Initializable {
         getApp().createPersonalInfoUI();
     }
 
-    public void backToMainMenu() throws Exception {
+    /**
+     * 返回主界面
+     */
+    public void backToMainMenu() {
         application.stage.close();
         application.gotoAdminMainUI();
     }
 
+    /**
+     * 帮助信息
+     */
     public void aboutInfo() {
         application.createAboutInfoUI();
     }
 
+    /**
+     * 新增客户
+     */
     public void insertBusiness() {
         // TODO 新增客户
         if (MANAGER_PRIV == 3) {
@@ -162,6 +171,9 @@ public class BusinessAdminUIController implements Initializable {
         }
     }
 
+    /**
+     * 删除客户
+     */
     public void deleteBusiness() {
         // TODO 删除客户，并且在record表中将该客户的档案记录一起删除,最后将历史客户表的状态改为不在(0)
         if (MANAGER_PRIV == 3) {
@@ -241,6 +253,9 @@ public class BusinessAdminUIController implements Initializable {
         }
     }
 
+    /**
+     * 修改业务信息
+     */
     public void setBusinessInfo() {
         // TODO 修改客户信息
         //  需要自动生成一些信息，如自动分配空余的床位等
@@ -254,6 +269,9 @@ public class BusinessAdminUIController implements Initializable {
         }
     }
 
+    /**
+     * 新增记录信息
+     */
     public void insertRecord() {
         // TODO 新增记录
         if (MANAGER_PRIV == 2) {
@@ -265,6 +283,9 @@ public class BusinessAdminUIController implements Initializable {
         }
     }
 
+    /**
+     * 进入查看记录信息界面
+     */
     public void lookRecordInfo() {
         if (MANAGER_PRIV == 2) {
             // TODO 只有医生可以查看记录信息
@@ -276,6 +297,9 @@ public class BusinessAdminUIController implements Initializable {
         }
     }
 
+    /**
+     * 双击修改信息事件
+     */
     public void clickIntoDetail() {
         // TODO 双击进入修改信息界面
         if (customerTab.isSelected()) {
@@ -319,6 +343,12 @@ public class BusinessAdminUIController implements Initializable {
         }
     }
 
+    /**
+     * 在表格中新增、修改信息
+     * @param isRecord 是否是记录信息
+     * @param isInsert 是否是插入信息
+     * @param object 修改或插入信息的对象
+     */
     public static void setInfoTableView(boolean isRecord, boolean isInsert, Object object) {
         if (isRecord) {
             Record record = (Record) object;
@@ -350,6 +380,9 @@ public class BusinessAdminUIController implements Initializable {
         }
     }
 
+    /**
+     * 绑定并显示业务数据
+     */
     public void bindBusiness() {
         businessID.setCellValueFactory(new PropertyValueFactory<>("id"));
         businessName.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -369,6 +402,9 @@ public class BusinessAdminUIController implements Initializable {
         customerTableView.setItems(customerObservableList);
     }
 
+    /**
+     * 绑定并显示床位数据
+     */
     public void bindBed() {
         bedID.setCellValueFactory(new PropertyValueFactory<>("id"));
         bedRoomID.setCellValueFactory(new PropertyValueFactory<>("roomID"));
@@ -379,6 +415,9 @@ public class BusinessAdminUIController implements Initializable {
         bedTableView.setItems(bedObservableList);
     }
 
+    /**
+     * 绑定并显示房间数据
+     */
     public void bindRoom() {
         roomID.setCellValueFactory(new PropertyValueFactory<>("id"));
         roomRank.setCellValueFactory(new PropertyValueFactory<>("rank"));
@@ -390,6 +429,9 @@ public class BusinessAdminUIController implements Initializable {
         roomTableView.setItems(roomObservableList);
     }
 
+    /**
+     * 绑定并显示记录数据
+     */
     public void bindRecord() {
         recordID.setCellValueFactory(new PropertyValueFactory<>("id"));
         recordCustomerID.setCellValueFactory(new PropertyValueFactory<>("customerId"));
@@ -403,6 +445,9 @@ public class BusinessAdminUIController implements Initializable {
         recordTableView.setItems(recordObservableList);
     }
 
+    /**
+     * 加载业务数据
+     */
     public void displayBusiness() {
         customerObservableList.clear();
         // TODO 显示客户信息
@@ -441,6 +486,9 @@ public class BusinessAdminUIController implements Initializable {
         System.out.println("客户数据导入成功！");
     }
 
+    /**
+     * 加载床位数据
+     */
     public void displayBed() {
         bedObservableList.clear();
         // TODO 显示床位信息
@@ -470,6 +518,9 @@ public class BusinessAdminUIController implements Initializable {
         System.out.println("床位数据导入成功！");
     }
 
+    /**
+     * 加载房间数据
+     */
     public void displayRoom() {
         roomObservableList.clear();
         // TODO 显示房间信息
@@ -500,6 +551,9 @@ public class BusinessAdminUIController implements Initializable {
         System.out.println("房间数据导入成功！");
     }
 
+    /**
+     * 加载记录数据
+     */
     public void displayRecord() {
         recordObservableList.clear();
         Connection conn;

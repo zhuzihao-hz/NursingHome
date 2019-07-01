@@ -33,7 +33,7 @@ public class PersonalInfoUIController implements Initializable {
         this.application = app;
     }
 
-    public void close(ActionEvent actionEvent) {
+    public void close() {
         application.floatStage.close();
     }
 }

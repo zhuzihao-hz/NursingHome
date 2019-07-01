@@ -54,18 +54,7 @@ public class CustomerInsertInfoUIController implements Initializable {
         customerRankComboBox.setEditable(false);
         customerRoomRankComboBox.setEditable(false);
         customerWorkerRankComboBox.setEditable(false);
-        ControllerUtils.initCustomerComboBox(customerAgeComboBox, customerRankComboBox);
-
-        customerWorkerRankComboBox.getItems().add("高级护工");
-        customerWorkerRankComboBox.getItems().add("中级护工");
-        customerWorkerRankComboBox.getItems().add("低级护工");
-        customerWorkerRankComboBox.getItems().add("实习护工");
-        customerWorkerRankComboBox.setValue("高级护工");
-
-        customerRoomRankComboBox.getItems().add("1");
-        customerRoomRankComboBox.getItems().add("2");
-        customerRoomRankComboBox.getItems().add("3");
-        customerRoomRankComboBox.setValue("3");
+        ControllerUtils.initCustomerComboBox(customerAgeComboBox, customerRankComboBox,customerWorkerRankComboBox,customerRoomRankComboBox);
     }
 
     public String generateCustomerId() {
@@ -95,7 +84,7 @@ public class CustomerInsertInfoUIController implements Initializable {
         return customerId;
     }
 
-    public static Customer autoAllocate(Customer customer, int rank, String workerRank, String roomRank) {
+    public Customer autoAllocate(Customer customer, int rank, String workerRank, String roomRank) {
         // TODO 自动分配
         // TODO 获得房间号
         Connection conn;

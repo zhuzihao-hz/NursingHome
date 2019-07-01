@@ -57,7 +57,7 @@
                                     <Image url="@../img/dummy_potrait.jpg" />
                                  </image>
                               </ImageView>
-                              <Label fx:id="nameLabel" alignment="CENTER" layoutX="2.0" layoutY="129.0" prefHeight="40.0" prefWidth="158.0" text="姓名">
+                              <Label fx:id="nameLabel" alignment="CENTER" layoutX="2.0" layoutY="129.0" onMouseReleased="#personInfoImage" prefHeight="40.0" prefWidth="158.0" text="姓名">
                                  <font>
                                     <Font size="17.0" />
                                  </font>

@@ -149,7 +149,7 @@ public class ControllerUtils {
         return localDate;
     }
 
-    public static void initCustomerComboBox(ComboBox<Integer> customerAgeComboBox, ComboBox<Integer> customerRankComboBox) {
+    public static void initCustomerComboBox(ComboBox<Integer> customerAgeComboBox, ComboBox<Integer> customerRankComboBox,ComboBox<String> customerWorkerRankComboBox,ComboBox<String> customerRoomRankComboBox) {
         for (int i = 50; i < 120; i++) {
             customerAgeComboBox.getItems().add(i);
         }
@@ -158,6 +158,15 @@ public class ControllerUtils {
             customerRankComboBox.getItems().add(i);
         }
         customerRankComboBox.setValue(3);
+        for (int i=1;i<=3;i++){
+            customerRoomRankComboBox.getItems().add(String.valueOf(i));
+        }
+        customerRoomRankComboBox.setValue("3");
+        customerWorkerRankComboBox.getItems().add("高级护工");
+        customerWorkerRankComboBox.getItems().add("中级护工");
+        customerWorkerRankComboBox.getItems().add("低级护工");
+        customerWorkerRankComboBox.getItems().add("实习护工");
+        customerWorkerRankComboBox.setValue("高级护工");
     }
 
     public static void showtime(Text text) {

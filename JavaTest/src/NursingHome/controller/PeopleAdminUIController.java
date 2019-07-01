@@ -19,7 +19,6 @@ import java.util.ResourceBundle;
 
 import static NursingHome.ControllerUtils.*;
 import static NursingHome.GlobalInfo.*;
-import static NursingHome.controller.CustomerInsertInfoUIController.autoAllocate;
 
 public class PeopleAdminUIController implements Initializable {
     private Main application;
@@ -118,7 +117,7 @@ public class PeopleAdminUIController implements Initializable {
         bindAdministrator();
     }
 
-    public void logout() throws Exception {
+    public void logout() {
         MANAGER_ID = "";
         MANAGER_NAME = "";
         MANAGER_PRIV = -1;
@@ -139,7 +138,7 @@ public class PeopleAdminUIController implements Initializable {
         getApp().createPersonalInfoUI();
     }
 
-    public void backToMainMenu() throws Exception {
+    public void backToMainMenu() {
         quit();
         application.gotoAdminMainUI();
     }
@@ -170,13 +169,20 @@ public class PeopleAdminUIController implements Initializable {
         }
     }
 
-    public Customer autoAllocate(Customer customer, int rank, String workerRank) {
+    /**
+     * 为客户自动分配护工
+     * @param customer 要分配的客户对象
+     * @param rank 客户护理等级
+     * @param workerRank 客户要求等护工的等级
+     * @return 返回分配完等客户对象
+     */
+    public static Customer autoAllocate(Customer customer, int rank, String workerRank) {
         // TODO 自动分配
-        // TODO 获得房间号
         Connection conn;
         Statement stmt;
 
         // TODO 获得护工号
+        // TODO 获得房间号
         double room_idDouble = Double.valueOf(customer.getRoomID().substring(1));
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -601,6 +607,9 @@ public class PeopleAdminUIController implements Initializable {
         }
     }
 
+    /**
+     * 绑定并显示医生数据
+     */
     public void bindDoctor() {
         doctorID.setCellValueFactory(new PropertyValueFactory<>("id"));
         doctorName.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -613,6 +622,9 @@ public class PeopleAdminUIController implements Initializable {
         doctorTableView.setItems(doctorObservableList);
     }
 
+    /**
+     * 绑定并显示护工数据
+     */
     public void bindWorker() {
         workerID.setCellValueFactory(new PropertyValueFactory<>("id"));
         workerName.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -627,6 +639,9 @@ public class PeopleAdminUIController implements Initializable {
         workerTableView.setItems(workerObservableList);
     }
 
+    /**
+     * 绑定并显示勤杂人员数据
+     */
     public void bindDoorBoy() {
         doorBoyID.setCellValueFactory(new PropertyValueFactory<>("id"));
         doorBoyName.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -639,6 +654,9 @@ public class PeopleAdminUIController implements Initializable {
         doorBoyTableView.setItems(doorBoyObservableList);
     }
 
+    /**
+     * 绑定并显示行政人员数据
+     */
     public void bindAdministrator() {
         adminID.setCellValueFactory(new PropertyValueFactory<>("id"));
         adminName.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -651,6 +669,9 @@ public class PeopleAdminUIController implements Initializable {
         adminTableView.setItems(adminObservableList);
     }
 
+    /**
+     * 加载医生数据
+     */
     public void displayDoctor() {
         // TODO 显示医生信息
         doctorObservableList.clear();
@@ -682,6 +703,9 @@ public class PeopleAdminUIController implements Initializable {
         System.out.println("医生数据导入成功！");
     }
 
+    /**
+     * 加载护工数据
+     */
     public void displayWorker() {
         // TODO 显示护工信息
         workerObservableList.clear();
@@ -715,6 +739,9 @@ public class PeopleAdminUIController implements Initializable {
         System.out.println("护工数据导入成功！");
     }
 
+    /**
+     * 加载勤杂人员数据
+     */
     public void displayDoorBoy() {
         // TODO 显示勤杂人员信息
         doorBoyObservableList.clear();
@@ -746,6 +773,9 @@ public class PeopleAdminUIController implements Initializable {
         System.out.println("勤杂人员数据导入成功！");
     }
 
+    /**
+     * 加载行政人员数据
+     */
     public void displayAdministrator() {
         // TODO 显示勤杂人员信息
         adminObservableList.clear();

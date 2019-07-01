@@ -30,7 +30,7 @@ public class Main extends Application {
         }
     }
 
-    public void gotoAdminLoginUI() throws Exception {
+    public void gotoAdminLoginUI() {
         stage = new Stage();
         stage.setResizable(false);
         stage.initStyle(StageStyle.TRANSPARENT);
@@ -50,7 +50,7 @@ public class Main extends Application {
         stage.show();
     }
 
-    public void gotoPeopleAdminUI() throws Exception {
+    public void gotoPeopleAdminUI() {
         stage = new Stage();
         stage.setResizable(false);
         PeopleAdminUIController adminUI = (PeopleAdminUIController) replaceSceneContent("fxml/PeopleAdminUI.fxml");
@@ -69,7 +69,7 @@ public class Main extends Application {
         stage.show();
     }
 
-    public void gotoBusinessAdminUI() throws Exception {
+    public void gotoBusinessAdminUI() {
         stage = new Stage();
         stage.setResizable(false);
         BusinessAdminUIController adminUI = (BusinessAdminUIController) replaceSceneContent("fxml/BusinessAdminUI.fxml");
@@ -88,7 +88,7 @@ public class Main extends Application {
         stage.show();
     }
 
-    public void gotoAdminMainUI() throws Exception {
+    public void gotoAdminMainUI() {
         stage.close();
         stage = new Stage();
         stage.setTitle("养老院管理系统(管理员) Nursing Home(Admin)");

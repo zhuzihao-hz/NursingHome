@@ -46,7 +46,7 @@ public class AdminMainUIController implements Initializable {
         application.stage.close();
     }
 
-    public void logout() throws Exception {
+    public void logout() {
         MANAGER_ID = "";
         MANAGER_NAME = "";
         MANAGER_PRIV = -1;
@@ -55,7 +55,7 @@ public class AdminMainUIController implements Initializable {
         application.gotoAdminLoginUI();
     }
 
-    public void movePeopleAdmin() throws Exception {
+    public void movePeopleAdmin() {
         if (MANAGER_PRIV == 0 || MANAGER_PRIV == 1) {
             application.stage.close();
             application.gotoPeopleAdminUI();
@@ -64,7 +64,7 @@ public class AdminMainUIController implements Initializable {
         }
     }
 
-    public void moveBusinessAdmin() throws Exception {
+    public void moveBusinessAdmin() {
         if (MANAGER_PRIV == 2 || MANAGER_PRIV == 3) {
             application.stage.close();
             application.gotoBusinessAdminUI();
@@ -73,7 +73,7 @@ public class AdminMainUIController implements Initializable {
         }
     }
 
-    public void movePeopleAdminMenu() throws Exception {
+    public void movePeopleAdminMenu() {
         if (MANAGER_PRIV == 0 || MANAGER_PRIV == 1) {
             application.stage.close();
             application.gotoPeopleAdminUI();
@@ -82,7 +82,7 @@ public class AdminMainUIController implements Initializable {
         }
     }
 
-    public void moveBusinessAdminMenu() throws Exception {
+    public void moveBusinessAdminMenu() {
         if (MANAGER_PRIV == 2 || MANAGER_PRIV == 3) {
             application.stage.close();
             application.gotoBusinessAdminUI();
