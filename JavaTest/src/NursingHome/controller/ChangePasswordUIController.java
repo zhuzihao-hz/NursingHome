@@ -1,10 +1,8 @@
 package NursingHome.controller;
 
 import NursingHome.Main;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 
 import java.net.URL;
@@ -18,29 +16,37 @@ import static NursingHome.GlobalInfo.MANAGER_PASSWORD;
 
 public class ChangePasswordUIController implements Initializable {
     private Main application;
+
     public void setApp(Main app) {
         this.application = app;
     }
-    public Main getApp() { return this.application; }
+
+    public Main getApp() {
+        return this.application;
+    }
 
     @FXML
     private PasswordField newPassword1;
     @FXML
     private PasswordField newPassword2;
-    @FXML
-    private Button confirmBtn;
-    private String oldPassword;
     private static String peopleid;
 
-    public static String getPeopleid() { return peopleid; }
-    public static void setPeopleid(String peopleid) { ChangePasswordUIController.peopleid = peopleid; }
+    public static String getPeopleid() {
+        return peopleid;
+    }
+
+    public static void setPeopleid(String peopleid) {
+        ChangePasswordUIController.peopleid = peopleid;
+    }
 
     @Override
-    public void initialize(URL url, ResourceBundle rb) { }
+    public void initialize(URL url, ResourceBundle rb) {
+    }
 
-    public void confirm(ActionEvent actionEvent) {
-        System.out.println(oldPassword);
-        System.out.println(MANAGER_PASSWORD);
+    /**
+     * 保存新设置的密码
+     */
+    public void confirm() {
         if (newPassword1.getText().equals(newPassword2.getText())) {
             String reg = "^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$";
 

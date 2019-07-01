@@ -121,6 +121,9 @@ public class PeopleSetInfoUIController implements Initializable {
         }
     }
 
+    /**
+     * 选择不同类型的员工时下拉框进行调整
+     */
     public void selectPeopleType() {
         peopleType = peopleTypeComboBox.getValue();
         if (peopleTypeComboBox.getValue().equals("护工")) {
@@ -139,6 +142,12 @@ public class PeopleSetInfoUIController implements Initializable {
         ControllerUtils.changeComboBox(peopleType, peopleOtherComboBox);
     }
 
+    /**
+     * 生成新的员工的编号
+     *
+     * @param object 员工对象
+     * @return 新员工编号
+     */
     public String getPeopleId(Object object) {
         String peopleId = "";
         // TODO 从历史员工表获取people(不同类型的职工)数量，加一得到新员工的ID
@@ -179,6 +188,9 @@ public class PeopleSetInfoUIController implements Initializable {
         return peopleId;
     }
 
+    /**
+     * 保存员工信息
+     */
     public void savePeopleInfo() {
         // TODO 获取信息并保存
         if (MANAGER_PRIV == 0) {
@@ -536,6 +548,9 @@ public class PeopleSetInfoUIController implements Initializable {
         getApp().floatStage.close();
     }
 
+    /**
+     * 返回人事管理界面
+     */
     public void backToPeopleAdmin() {
         getApp().floatStage.close();
         people = new Object();

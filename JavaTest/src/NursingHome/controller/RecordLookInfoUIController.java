@@ -62,6 +62,9 @@ public class RecordLookInfoUIController implements Initializable {
         recordContext.setEditable(false);
     }
 
+    /**
+     * 返回业务管理界面
+     */
     public void backToBusinessAdmin() {
         record = new Record();
         getApp().floatStage.close();

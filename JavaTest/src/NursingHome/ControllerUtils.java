@@ -28,6 +28,11 @@ public class ControllerUtils {
     public static String MYSQL_USER = "root";
     public static String MYSQL_PASSWORD = "12345678";
 
+    /**
+     * 显示提示框
+     *
+     * @param message 提示信息
+     */
     public static void showAlert(String message) {
         Stage window = new Stage();
         window.setAlwaysOnTop(true);
@@ -47,6 +52,12 @@ public class ControllerUtils {
         window.showAndWait();
     }
 
+    /**
+     * md5码加密算法
+     *
+     * @param plainText 要加密的字符串
+     * @return 加密后的字符串
+     */
     public static String md5(String plainText) {
         //定义一个字节数组
         byte[] secretBytes = null;
@@ -69,6 +80,14 @@ public class ControllerUtils {
         return md5code;
     }
 
+    /**
+     * 人事管理信息界面初始化下拉框
+     *
+     * @param peopleTypeComboBox  员工类型下拉框
+     * @param peopleType          员工类型
+     * @param peopleAgeComboBox   员工年龄下拉框
+     * @param peopleOtherComboBox 员工岗位（职位）下拉框
+     */
     public static void initPeopleComboBox(ComboBox<String> peopleTypeComboBox, String peopleType, ComboBox<Integer> peopleAgeComboBox, ComboBox<String> peopleOtherComboBox) {
         peopleTypeComboBox.getItems().add("护工");
         peopleTypeComboBox.getItems().add("医生");
@@ -108,6 +127,12 @@ public class ControllerUtils {
         }
     }
 
+    /**
+     * 人事管理信息界面更改员工类型时更改下拉框内容
+     *
+     * @param peopleType          员工类型
+     * @param peopleOtherComboBox 员工职位（岗位）下拉框
+     */
     public static void changeComboBox(String peopleType, ComboBox<String> peopleOtherComboBox) {
         peopleOtherComboBox.getItems().clear();
         if (peopleType.equals("护工")) {
@@ -136,10 +161,22 @@ public class ControllerUtils {
         }
     }
 
+    /**
+     * 日期转字符串
+     *
+     * @param localDate 日期
+     * @return 字符串
+     */
     public static String localDateToString(LocalDate localDate) {
         return String.valueOf(localDate);
     }
 
+    /**
+     * 字符串转日期
+     *
+     * @param string 字符串，格式为"yyyy-mm-dd"
+     * @return 日期
+     */
     public static LocalDate StringToDate(String string) {
         int year, month, day;
         year = Integer.parseInt(string.substring(0, 4));
@@ -149,7 +186,15 @@ public class ControllerUtils {
         return localDate;
     }
 
-    public static void initCustomerComboBox(ComboBox<Integer> customerAgeComboBox, ComboBox<Integer> customerRankComboBox,ComboBox<String> customerWorkerRankComboBox,ComboBox<String> customerRoomRankComboBox) {
+    /**
+     * 在客户信息界面初始化下拉框
+     *
+     * @param customerAgeComboBox        客户年龄下拉框
+     * @param customerRankComboBox       客户护理等级下拉框
+     * @param customerWorkerRankComboBox 客户要求的护工的等级下拉框
+     * @param customerRoomRankComboBox   客户要求的房间等级下拉框
+     */
+    public static void initCustomerComboBox(ComboBox<Integer> customerAgeComboBox, ComboBox<Integer> customerRankComboBox, ComboBox<String> customerWorkerRankComboBox, ComboBox<String> customerRoomRankComboBox) {
         for (int i = 50; i < 120; i++) {
             customerAgeComboBox.getItems().add(i);
         }
@@ -158,7 +203,7 @@ public class ControllerUtils {
             customerRankComboBox.getItems().add(i);
         }
         customerRankComboBox.setValue(3);
-        for (int i=1;i<=3;i++){
+        for (int i = 1; i <= 3; i++) {
             customerRoomRankComboBox.getItems().add(String.valueOf(i));
         }
         customerRoomRankComboBox.setValue("3");
@@ -169,11 +214,21 @@ public class ControllerUtils {
         customerWorkerRankComboBox.setValue("高级护工");
     }
 
+    /**
+     * 显示日期
+     *
+     * @param text 文本框对象
+     */
     public static void showtime(Text text) {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         text.setText(df.format(new Date()));
     }
 
+    /**
+     * 生成新的用户时随机生成密码
+     *
+     * @return 新密码
+     */
     public static String randomPassword() {
         String password = "";
         Random random = new Random();

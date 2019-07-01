@@ -30,6 +30,9 @@ public class Main extends Application {
         }
     }
 
+    /**
+     * 跳转到登陆界面
+     */
     public void gotoAdminLoginUI() {
         stage = new Stage();
         stage.setResizable(false);
@@ -50,6 +53,9 @@ public class Main extends Application {
         stage.show();
     }
 
+    /**
+     * 跳转到人事管理界面
+     */
     public void gotoPeopleAdminUI() {
         stage = new Stage();
         stage.setResizable(false);
@@ -69,6 +75,9 @@ public class Main extends Application {
         stage.show();
     }
 
+    /**
+     * 跳转到业务管理界面
+     */
     public void gotoBusinessAdminUI() {
         stage = new Stage();
         stage.setResizable(false);
@@ -88,6 +97,9 @@ public class Main extends Application {
         stage.show();
     }
 
+    /**
+     * 跳转到主界面
+     */
     public void gotoAdminMainUI() {
         stage.close();
         stage = new Stage();
@@ -97,6 +109,9 @@ public class Main extends Application {
         stage.show();
     }
 
+    /**
+     * 创建用户信息窗口
+     */
     public void createPersonalInfoUI() {
         AnchorPane page = new AnchorPane();
         floatStage = new Stage();
@@ -120,6 +135,9 @@ public class Main extends Application {
         personalInfoUI.setApp(this);
     }
 
+    /**
+     * 创建更改密码窗口
+     */
     public void createChangePasswordUI() {
         AnchorPane page = new AnchorPane();
         floatStage = new Stage();
@@ -143,6 +161,9 @@ public class Main extends Application {
         changePAsswordUI.setApp(this);
     }
 
+    /**
+     * 创建员工详细信息窗口
+     */
     public void createPeopleSetInfoUI() {
         AnchorPane page = new AnchorPane();
         floatStage = new Stage();
@@ -166,6 +187,9 @@ public class Main extends Application {
         peopleSetInfoUI.setApp(this);
     }
 
+    /**
+     * 创建客户详细信息窗口
+     */
     public void createCustomerSetInfoUI() {
         AnchorPane page = new AnchorPane();
         floatStage = new Stage();
@@ -189,6 +213,9 @@ public class Main extends Application {
         customerSetInfoUI.setApp(this);
     }
 
+    /**
+     * 创建新增客户的窗口
+     */
     public void createCustomerInsertInfoUI() {
         AnchorPane page = new AnchorPane();
         floatStage = new Stage();
@@ -212,6 +239,9 @@ public class Main extends Application {
         customerInsertInfoUI.setApp(this);
     }
 
+    /**
+     * 创建新增记录的窗口
+     */
     public void createRecordSetInfoUI() {
         AnchorPane page = new AnchorPane();
         floatStage = new Stage();
@@ -235,6 +265,9 @@ public class Main extends Application {
         recordSetInfoUI.setApp(this);
     }
 
+    /**
+     * 创建查看记录详细信息的窗口
+     */
     public void createRecordLookInfoUI() {
         AnchorPane page = new AnchorPane();
         floatStage = new Stage();
@@ -258,6 +291,9 @@ public class Main extends Application {
         recordLookInfoUI.setApp(this);
     }
 
+    /**
+     * 创建帮助信息的窗口
+     */
     public void createAboutInfoUI() {
         AnchorPane page = new AnchorPane();
         floatStage = new Stage();

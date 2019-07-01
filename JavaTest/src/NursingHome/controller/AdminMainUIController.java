@@ -34,18 +34,30 @@ public class AdminMainUIController implements Initializable {
         showtime(dateText);
     }
 
+    /**
+     * 查看员工信息
+     */
     public void personalInfo() {
         getApp().createPersonalInfoUI();
     }
 
+    /**
+     * 查看员工信息
+     */
     public void personInfoImage() {
         getApp().createPersonalInfoUI();
     }
 
+    /**
+     * 退出
+     */
     public void quit() {
         application.stage.close();
     }
 
+    /**
+     * 登出
+     */
     public void logout() {
         MANAGER_ID = "";
         MANAGER_NAME = "";
@@ -55,6 +67,9 @@ public class AdminMainUIController implements Initializable {
         application.gotoAdminLoginUI();
     }
 
+    /**
+     * 进入人事管理界面
+     */
     public void movePeopleAdmin() {
         if (MANAGER_PRIV == 0 || MANAGER_PRIV == 1) {
             application.stage.close();
@@ -64,6 +79,9 @@ public class AdminMainUIController implements Initializable {
         }
     }
 
+    /**
+     * 进入业务管理界面
+     */
     public void moveBusinessAdmin() {
         if (MANAGER_PRIV == 2 || MANAGER_PRIV == 3) {
             application.stage.close();
@@ -73,6 +91,9 @@ public class AdminMainUIController implements Initializable {
         }
     }
 
+    /**
+     * 进入人事管理界面
+     */
     public void movePeopleAdminMenu() {
         if (MANAGER_PRIV == 0 || MANAGER_PRIV == 1) {
             application.stage.close();
@@ -82,6 +103,9 @@ public class AdminMainUIController implements Initializable {
         }
     }
 
+    /**
+     * 进入业务管理界面
+     */
     public void moveBusinessAdminMenu() {
         if (MANAGER_PRIV == 2 || MANAGER_PRIV == 3) {
             application.stage.close();
@@ -91,6 +115,9 @@ public class AdminMainUIController implements Initializable {
         }
     }
 
+    /**
+     * 帮助信息
+     */
     public void aboutInfo() {
         application.createAboutInfoUI();
     }

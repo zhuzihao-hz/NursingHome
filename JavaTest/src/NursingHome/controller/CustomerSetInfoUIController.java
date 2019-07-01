@@ -15,7 +15,6 @@ import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 import static NursingHome.ControllerUtils.*;
-import static NursingHome.controller.PeopleAdminUIController.autoAllocate;
 
 public class CustomerSetInfoUIController implements Initializable {
     private Main application;
@@ -88,6 +87,15 @@ public class CustomerSetInfoUIController implements Initializable {
         customerBedIdTextField.setEditable(false);
     }
 
+    /**
+     * 为修改信息的客户再分配护工和房间
+     *
+     * @param customer   客户对象
+     * @param rank       客户的护理等级
+     * @param workerRank 客户原来的护工的等级
+     * @param roomRank   客户原来房间的等级
+     * @return 再分配完毕后的客户对象
+     */
     public Customer autoAllocate(Customer customer, int rank, String workerRank, String roomRank) {
         // TODO 自动再分配
         //  参数为原来的护理等级(新)、护工等级（旧）、房间等级（旧）
@@ -180,7 +188,7 @@ public class CustomerSetInfoUIController implements Initializable {
 
             // TODO 获得新的护工，更改新的护工的位置
             double room_idDouble = Double.valueOf(customer.getRoomID().substring(1));
-            String workerIdNew="";
+            String workerIdNew = "";
             try {
                 Class.forName("com.mysql.jdbc.Driver");
                 conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
@@ -188,11 +196,11 @@ public class CustomerSetInfoUIController implements Initializable {
                 stmt = conn.createStatement();
                 ResultSet rs = stmt.executeQuery(sql);
                 if (rs.next()) {
-                    workerIdNew=rs.getString(1);
+                    workerIdNew = rs.getString(1);
                 }
                 String sql1 = "UPDATE NursingHome.worker SET worker_customernumber=worker_customernumber+1 WHERE worker_id='" + workerIdNew + "'";
                 String sql2 = "UPDATE NursingHome.worker SET worker_vispos=(worker_vispos*(worker_customernember-1)+" + room_idDouble + ")/worker_customernumber WHERE worker_id='" + workerIdNew + "'";
-                String sql3 = "UPDATE NursingHome.customer SET customer_careworker='"+workerIdNew+"' WHERE customer_id='"+customer.getId()+"'";
+                String sql3 = "UPDATE NursingHome.customer SET customer_careworker='" + workerIdNew + "' WHERE customer_id='" + customer.getId() + "'";
                 stmt.executeUpdate(sql1);
                 stmt.executeUpdate(sql2);
                 stmt.executeUpdate(sql3);
@@ -209,6 +217,9 @@ public class CustomerSetInfoUIController implements Initializable {
         return customer;
     }
 
+    /**
+     * 保存修改的员工信息
+     */
     public void saveCustomerInfo() {
         // TODO 保存修改的客户信息
         customer.setId(customerIdTextField.getText());
@@ -260,7 +271,7 @@ public class CustomerSetInfoUIController implements Initializable {
 
         // TODO 将该客户重新分配一个护工
         autoAllocate(customer, customer.getRank(), workerRankOld, roomRankOld);
-        
+
         // TODO 保存修改的信息
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -279,6 +290,9 @@ public class CustomerSetInfoUIController implements Initializable {
         getApp().floatStage.close();
     }
 
+    /**
+     * 返回人事管理界面
+     */
     public void backToPeopleAdmin() {
         getApp().floatStage.close();
     }

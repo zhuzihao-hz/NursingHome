@@ -2,7 +2,6 @@ package NursingHome.controller;
 
 
 import NursingHome.Main;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;

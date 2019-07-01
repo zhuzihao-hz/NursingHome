@@ -18,141 +18,156 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="769.0" prefWidth="1077.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="NursingHome.controller.BusinessAdminUIController">
-   <children>
-      <VBox layoutY="1.0" prefHeight="768.0" prefWidth="1095.0">
-        <children>
-          <MenuBar VBox.vgrow="NEVER">
-            <menus>
-              <Menu mnemonicParsing="false" text="个人">
-                <items>
-                  <MenuItem fx:id="personInfoMenu" mnemonicParsing="false" onAction="#personalInfo" text="个人信息" />
-                  <MenuItem fx:id="logoutMenu" mnemonicParsing="false" onAction="#logout" text="注销" />
-                        <MenuItem mnemonicParsing="false" onAction="#backToMainMenu" text="返回" />
-                  <MenuItem fx:id="quitMenu" mnemonicParsing="false" onAction="#quit" text="退出" />
-                </items>
-              </Menu>
-              <Menu mnemonicParsing="false" text="管理">
-                <items>
-                        <Menu mnemonicParsing="false" text="客户管理">
-                          <items>
-                        <MenuItem mnemonicParsing="false" onAction="#insertBusiness" text="新增客户" />
-                              <MenuItem mnemonicParsing="false" onAction="#deleteBusiness" text="删除客户" />
-                              <MenuItem mnemonicParsing="false" onAction="#setBusinessInfo" text="修改客户信息" />
-                          </items>
+<AnchorPane prefHeight="769.0" prefWidth="1077.0" xmlns="http://javafx.com/javafx/11.0.1"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="NursingHome.controller.BusinessAdminUIController">
+    <children>
+        <VBox layoutY="1.0" prefHeight="768.0" prefWidth="1095.0">
+            <children>
+                <MenuBar VBox.vgrow="NEVER">
+                    <menus>
+                        <Menu mnemonicParsing="false" text="个人">
+                            <items>
+                                <MenuItem fx:id="personInfoMenu" mnemonicParsing="false" onAction="#personalInfo"
+                                          text="个人信息"/>
+                                <MenuItem fx:id="logoutMenu" mnemonicParsing="false" onAction="#logout" text="注销"/>
+                                <MenuItem mnemonicParsing="false" onAction="#backToMainMenu" text="返回"/>
+                                <MenuItem fx:id="quitMenu" mnemonicParsing="false" onAction="#quit" text="退出"/>
+                            </items>
                         </Menu>
-                        <Menu mnemonicParsing="false" text="档案管理">
-                           <items>
-                              <MenuItem mnemonicParsing="false" onAction="#insertRecord" text="新增档案" />
-                              <MenuItem mnemonicParsing="false" onAction="#lookRecordInfo" text="查看档案信息" />
-                           </items>
+                        <Menu mnemonicParsing="false" text="管理">
+                            <items>
+                                <Menu mnemonicParsing="false" text="客户管理">
+                                    <items>
+                                        <MenuItem mnemonicParsing="false" onAction="#insertBusiness" text="新增客户"/>
+                                        <MenuItem mnemonicParsing="false" onAction="#deleteBusiness" text="删除客户"/>
+                                        <MenuItem mnemonicParsing="false" onAction="#setBusinessInfo" text="修改客户信息"/>
+                                    </items>
+                                </Menu>
+                                <Menu mnemonicParsing="false" text="档案管理">
+                                    <items>
+                                        <MenuItem mnemonicParsing="false" onAction="#insertRecord" text="新增档案"/>
+                                        <MenuItem mnemonicParsing="false" onAction="#lookRecordInfo" text="查看档案信息"/>
+                                    </items>
+                                </Menu>
+                            </items>
                         </Menu>
-                </items>
-              </Menu>
-              <Menu mnemonicParsing="false" text="帮助">
-                <items>
-                  <MenuItem mnemonicParsing="false" onAction="#aboutInfo" text="关于" />
-                </items>
-              </Menu>
-            </menus>
-          </MenuBar>
-          <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="739.0" prefWidth="1091.0" VBox.vgrow="ALWAYS">
-               <children>
-                  <VBox prefHeight="739.0" prefWidth="169.0">
-                     <children>
-                        <AnchorPane prefHeight="740.0" prefWidth="169.0">
-                           <children>
-                              <ImageView fitHeight="82.0" fitWidth="85.0" layoutX="44.0" layoutY="27.0" onMouseReleased="#personInfoImage" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../img/dummy_potrait.jpg" />
-                                 </image></ImageView>
-                              <Label fx:id="nameLabel" alignment="CENTER" layoutX="5.0" layoutY="129.0" onMouseReleased="#personInfoImage" prefHeight="40.0" prefWidth="158.0" text="姓名">
-                                 <font>
-                                    <Font size="17.0" />
-                                 </font>
-                              </Label>
-                              <JFXButton layoutX="30.0" layoutY="206.0" onAction="#backToMainMenu" prefHeight="40.0" prefWidth="102.0" text="返回主界面">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </JFXButton>
-                              <Text fx:id="dateText" layoutX="3.0" layoutY="703.0" strokeType="OUTSIDE" strokeWidth="0.0" text="时间" textAlignment="CENTER" wrappingWidth="164.0">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Text>
-                           </children>
-                        </AnchorPane>
-                     </children>
-                  </VBox>
-                  <Separator layoutX="165.0" layoutY="3.0" orientation="VERTICAL" prefHeight="736.0" prefWidth="6.0" />
-                  <TabPane layoutX="168.0" prefHeight="739.0" prefWidth="930.0">
-                     <tabs>
-                        <Tab fx:id="customerTab" closable="false" text="业务管理">
-                           <content>
-                              <TableView fx:id="customerTableView" onMouseReleased="#clickIntoDetail" prefHeight="706.0" prefWidth="973.0">
-                                <columns>
-                                  <TableColumn fx:id="businessID" prefWidth="75.0" text="编号" />
-                                  <TableColumn fx:id="businessName" prefWidth="67.0" text="姓名" />
-                                    <TableColumn fx:id="businessAge" prefWidth="58.0" text="年龄" />
-                                    <TableColumn fx:id="businessEnterTime" prefWidth="107.0" text="入院时间" />
-                                    <TableColumn fx:id="businessRoomID" prefWidth="59.0" text="房号" />
-                                    <TableColumn fx:id="businessBedID" prefWidth="52.0" text="床号" />
-                                    <TableColumn fx:id="businessPhone" prefWidth="106.0" text="电话" />
-                                    <TableColumn fx:id="businessCareWorkerID" prefWidth="71.0" text="护工编号" />
-                                    <TableColumn fx:id="businessCareType" prefWidth="67.0" text="护理等级" />
-                                    <TableColumn fx:id="businessRelationName" prefWidth="68.0" text="亲属姓名" />
-                                    <TableColumn fx:id="businessRelation" prefWidth="63.0" text="亲属关系" />
-                                    <TableColumn fx:id="businessRelationPhone" prefWidth="105.0" text="亲属电话" />
-                                </columns>
-                              </TableView>
-                           </content>
-                        </Tab>
-                        <Tab fx:id="bedTab" closable="false" text="床位管理">
-                           <content>
-                              <TableView fx:id="bedTableView" onMouseReleased="#clickIntoDetail" prefHeight="706.0" prefWidth="973.0">
-                                 <columns>
-                                    <TableColumn fx:id="bedID" prefWidth="75.0" text="床位号" />
-                                    <TableColumn fx:id="bedRoomID" prefWidth="75.0" text="所在房间" />
-                                    <TableColumn fx:id="bedStatus" prefWidth="75.0" text="是否使用" />
-                                 </columns>
-                              </TableView>
-                           </content>
-                        </Tab>
-                        <Tab fx:id="roomTab" closable="false" text="房间管理">
-                           <content>
-                              <TableView fx:id="roomTableView" onMouseReleased="#clickIntoDetail" prefHeight="706.0" prefWidth="973.0">
-                                 <columns>
-                                    <TableColumn fx:id="roomID" prefWidth="75.0" text="房间号" />
-                                    <TableColumn fx:id="roomRank" prefWidth="75.0" text="房间等级" />
-                                    <TableColumn fx:id="roomTotalBed" prefWidth="75.0" text="床位总数" />
-                                    <TableColumn fx:id="roomFreeBed" prefWidth="75.0" text="空余床数" />
-                                 </columns>
-                              </TableView>
-                           </content>
-                        </Tab>
-                        <Tab fx:id="recordTab" closable="false" text="档案管理">
-                           <content>
-                              <TableView fx:id="recordTableView" onMouseReleased="#clickIntoDetail" prefHeight="706.0" prefWidth="973.0">
-                                 <columns>
-                                    <TableColumn fx:id="recordID" prefWidth="75.0" text="档案编号" />
-                                    <TableColumn fx:id="recordCustomerID" prefWidth="75.0" text="客户编号" />
-                                    <TableColumn fx:id="recordCustomerName" prefWidth="75.0" text="客户姓名" />
-                                    <TableColumn fx:id="recordDoctorID" prefWidth="75.0" text="医生编号" />
-                                    <TableColumn fx:id="recordDate" prefWidth="117.0" text="记录日期" />
-                                    <TableColumn fx:id="recordContext" prefWidth="68.0" text="记录内容" />
-                                 </columns>
-                              </TableView>
-                           </content>
-                        </Tab>
-                     </tabs>
-                  </TabPane>
-               </children>
-          </AnchorPane>
-        </children>
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
-      </VBox>
-   </children>
+                        <Menu mnemonicParsing="false" text="帮助">
+                            <items>
+                                <MenuItem mnemonicParsing="false" onAction="#aboutInfo" text="关于"/>
+                            </items>
+                        </Menu>
+                    </menus>
+                </MenuBar>
+                <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="739.0" prefWidth="1091.0" VBox.vgrow="ALWAYS">
+                    <children>
+                        <VBox prefHeight="739.0" prefWidth="169.0">
+                            <children>
+                                <AnchorPane prefHeight="740.0" prefWidth="169.0">
+                                    <children>
+                                        <ImageView fitHeight="82.0" fitWidth="85.0" layoutX="44.0" layoutY="27.0"
+                                                   onMouseReleased="#personInfoImage" pickOnBounds="true"
+                                                   preserveRatio="true">
+                                            <image>
+                                                <Image url="@../img/dummy_potrait.jpg"/>
+                                            </image>
+                                        </ImageView>
+                                        <Label fx:id="nameLabel" alignment="CENTER" layoutX="5.0" layoutY="129.0"
+                                               onMouseReleased="#personInfoImage" prefHeight="40.0" prefWidth="158.0"
+                                               text="姓名">
+                                            <font>
+                                                <Font size="17.0"/>
+                                            </font>
+                                        </Label>
+                                        <JFXButton layoutX="30.0" layoutY="206.0" onAction="#backToMainMenu"
+                                                   prefHeight="40.0" prefWidth="102.0" text="返回主界面">
+                                            <font>
+                                                <Font size="14.0"/>
+                                            </font>
+                                        </JFXButton>
+                                        <Text fx:id="dateText" layoutX="3.0" layoutY="703.0" strokeType="OUTSIDE"
+                                              strokeWidth="0.0" text="时间" textAlignment="CENTER" wrappingWidth="164.0">
+                                            <font>
+                                                <Font size="18.0"/>
+                                            </font>
+                                        </Text>
+                                    </children>
+                                </AnchorPane>
+                            </children>
+                        </VBox>
+                        <Separator layoutX="165.0" layoutY="3.0" orientation="VERTICAL" prefHeight="736.0"
+                                   prefWidth="6.0"/>
+                        <TabPane layoutX="168.0" prefHeight="739.0" prefWidth="930.0">
+                            <tabs>
+                                <Tab fx:id="customerTab" closable="false" text="业务管理">
+                                    <content>
+                                        <TableView fx:id="customerTableView" onMouseReleased="#clickIntoDetail"
+                                                   prefHeight="706.0" prefWidth="973.0">
+                                            <columns>
+                                                <TableColumn fx:id="businessID" prefWidth="75.0" text="编号"/>
+                                                <TableColumn fx:id="businessName" prefWidth="67.0" text="姓名"/>
+                                                <TableColumn fx:id="businessAge" prefWidth="58.0" text="年龄"/>
+                                                <TableColumn fx:id="businessEnterTime" prefWidth="107.0" text="入院时间"/>
+                                                <TableColumn fx:id="businessRoomID" prefWidth="59.0" text="房号"/>
+                                                <TableColumn fx:id="businessBedID" prefWidth="52.0" text="床号"/>
+                                                <TableColumn fx:id="businessPhone" prefWidth="106.0" text="电话"/>
+                                                <TableColumn fx:id="businessCareWorkerID" prefWidth="71.0" text="护工编号"/>
+                                                <TableColumn fx:id="businessCareType" prefWidth="67.0" text="护理等级"/>
+                                                <TableColumn fx:id="businessRelationName" prefWidth="68.0" text="亲属姓名"/>
+                                                <TableColumn fx:id="businessRelation" prefWidth="63.0" text="亲属关系"/>
+                                                <TableColumn fx:id="businessRelationPhone" prefWidth="105.0"
+                                                             text="亲属电话"/>
+                                            </columns>
+                                        </TableView>
+                                    </content>
+                                </Tab>
+                                <Tab fx:id="bedTab" closable="false" text="床位管理">
+                                    <content>
+                                        <TableView fx:id="bedTableView" onMouseReleased="#clickIntoDetail"
+                                                   prefHeight="706.0" prefWidth="973.0">
+                                            <columns>
+                                                <TableColumn fx:id="bedID" prefWidth="75.0" text="床位号"/>
+                                                <TableColumn fx:id="bedRoomID" prefWidth="75.0" text="所在房间"/>
+                                                <TableColumn fx:id="bedStatus" prefWidth="75.0" text="是否使用"/>
+                                            </columns>
+                                        </TableView>
+                                    </content>
+                                </Tab>
+                                <Tab fx:id="roomTab" closable="false" text="房间管理">
+                                    <content>
+                                        <TableView fx:id="roomTableView" onMouseReleased="#clickIntoDetail"
+                                                   prefHeight="706.0" prefWidth="973.0">
+                                            <columns>
+                                                <TableColumn fx:id="roomID" prefWidth="75.0" text="房间号"/>
+                                                <TableColumn fx:id="roomRank" prefWidth="75.0" text="房间等级"/>
+                                                <TableColumn fx:id="roomTotalBed" prefWidth="75.0" text="床位总数"/>
+                                                <TableColumn fx:id="roomFreeBed" prefWidth="75.0" text="空余床数"/>
+                                            </columns>
+                                        </TableView>
+                                    </content>
+                                </Tab>
+                                <Tab fx:id="recordTab" closable="false" text="档案管理">
+                                    <content>
+                                        <TableView fx:id="recordTableView" onMouseReleased="#clickIntoDetail"
+                                                   prefHeight="706.0" prefWidth="973.0">
+                                            <columns>
+                                                <TableColumn fx:id="recordID" prefWidth="75.0" text="档案编号"/>
+                                                <TableColumn fx:id="recordCustomerID" prefWidth="75.0" text="客户编号"/>
+                                                <TableColumn fx:id="recordCustomerName" prefWidth="75.0" text="客户姓名"/>
+                                                <TableColumn fx:id="recordDoctorID" prefWidth="75.0" text="医生编号"/>
+                                                <TableColumn fx:id="recordDate" prefWidth="117.0" text="记录日期"/>
+                                                <TableColumn fx:id="recordContext" prefWidth="68.0" text="记录内容"/>
+                                            </columns>
+                                        </TableView>
+                                    </content>
+                                </Tab>
+                            </tabs>
+                        </TabPane>
+                    </children>
+                </AnchorPane>
+            </children>
+            <opaqueInsets>
+                <Insets/>
+            </opaqueInsets>
+        </VBox>
+    </children>
 </AnchorPane>

@@ -62,6 +62,11 @@ public class RecordSetInfoUIController implements Initializable {
         recordContext.setText("");
     }
 
+    /**
+     * 生成新的记录编号
+     *
+     * @return 新记录编号
+     */
     public int getRecordNumber() {
         int N = 0;
         // TODO 获取记录条数加1
@@ -88,6 +93,9 @@ public class RecordSetInfoUIController implements Initializable {
         return N + 1;
     }
 
+    /**
+     * 保存新记录的信息
+     */
     public void saveRecordInfo() {
         // TODO 新增记录
         Record record = new Record();
@@ -118,6 +126,9 @@ public class RecordSetInfoUIController implements Initializable {
         backToBusinessAdmin();
     }
 
+    /**
+     * 返回业务管理界面
+     */
     public void backToBusinessAdmin() {
         record = new Record();
         getApp().floatStage.close();

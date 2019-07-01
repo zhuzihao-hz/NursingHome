@@ -3,7 +3,6 @@ package NursingHome.controller;
 import NursingHome.ControllerUtils;
 import NursingHome.Main;
 import NursingHome.dataclass.Customer;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
@@ -54,9 +53,14 @@ public class CustomerInsertInfoUIController implements Initializable {
         customerRankComboBox.setEditable(false);
         customerRoomRankComboBox.setEditable(false);
         customerWorkerRankComboBox.setEditable(false);
-        ControllerUtils.initCustomerComboBox(customerAgeComboBox, customerRankComboBox,customerWorkerRankComboBox,customerRoomRankComboBox);
+        ControllerUtils.initCustomerComboBox(customerAgeComboBox, customerRankComboBox, customerWorkerRankComboBox, customerRoomRankComboBox);
     }
 
+    /**
+     * 生成新的客户的编号
+     *
+     * @return 新的客户编号
+     */
     public String generateCustomerId() {
         String customerId = "";
         // TODO 自动获得客户Id,从Customer表中
@@ -84,6 +88,15 @@ public class CustomerInsertInfoUIController implements Initializable {
         return customerId;
     }
 
+    /**
+     * 为新增的客户分配护工和房间
+     *
+     * @param customer   客户对象
+     * @param rank       客户要求的护理等级
+     * @param workerRank 客户要求的护工等级
+     * @param roomRank   客户要求的房间等级
+     * @return 分配完成的客户对象
+     */
     public Customer autoAllocate(Customer customer, int rank, String workerRank, String roomRank) {
         // TODO 自动分配
         // TODO 获得房间号
@@ -95,7 +108,7 @@ public class CustomerInsertInfoUIController implements Initializable {
             String sql = "SELECT room_id FROM NursingHome.room WHERE room_usedbed<room_totalbed AND room_rank='" + roomRank + "' ORDER BY room_id ASC;";
             stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
-            if (rs.next()){
+            if (rs.next()) {
                 customer.setRoomID(rs.getString(1));
             }
             stmt.close();
@@ -110,14 +123,14 @@ public class CustomerInsertInfoUIController implements Initializable {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-            String sql = "SELECT bed_id FROM NursingHome.bed WHERE bed_roomid='"+customer.getRoomID()+"' AND bed_status=0; ";
-            String sql1="UPDATE NursingHome.bed SET bed_staus=1 WHERE bed_id='"+customer.getBedID()+"' AND bed_roomid='"+customer.getRoomID()+"';";
-            String sql2="UPDATE NursingHome.room SET room_usedbed=room_usedbed+1 WHERE room_id='"+customer.getRoomID()+"';";
+            String sql = "SELECT bed_id FROM NursingHome.bed WHERE bed_roomid='" + customer.getRoomID() + "' AND bed_status=0; ";
+            String sql1 = "UPDATE NursingHome.bed SET bed_staus=1 WHERE bed_id='" + customer.getBedID() + "' AND bed_roomid='" + customer.getRoomID() + "';";
+            String sql2 = "UPDATE NursingHome.room SET room_usedbed=room_usedbed+1 WHERE room_id='" + customer.getRoomID() + "';";
             stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
             stmt.executeUpdate(sql1);
             stmt.executeUpdate(sql2);
-            if (rs.next()){
+            if (rs.next()) {
                 customer.setBedID(rs.getString(1));
             }
             stmt.close();
@@ -129,18 +142,18 @@ public class CustomerInsertInfoUIController implements Initializable {
         }
 
         // TODO 获得护工号
-        double room_idDouble=Double.valueOf(customer.getRoomID().substring(1));
+        double room_idDouble = Double.valueOf(customer.getRoomID().substring(1));
         try {
             Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-            String sql = "SELECT worker_id FROM worker WHERE worker_rank='"+workerRank+"' AND worker_customerrank="+rank+" ORDER BY abs("+room_idDouble+"-worker_vispos) ASC, worker_customernumber ASC";
+            String sql = "SELECT worker_id FROM worker WHERE worker_rank='" + workerRank + "' AND worker_customerrank=" + rank + " ORDER BY abs(" + room_idDouble + "-worker_vispos) ASC, worker_customernumber ASC";
             stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
-            if (rs.next()){
+            if (rs.next()) {
                 customer.setCareWorker(rs.getString(1));
             }
-            String sql1="UPDATE worker SET worker_customernumber=worker_customernumber+1 WHERE worker_id='"+customer.getCareWorker()+"'";
-            String sql2="UPDATE worker SET worker_vispos=(worker_vispos*(worker_customernember-1)+"+room_idDouble+")/worker_customernumber WHERE worker_id='"+customer.getCareWorker()+"'";
+            String sql1 = "UPDATE worker SET worker_customernumber=worker_customernumber+1 WHERE worker_id='" + customer.getCareWorker() + "'";
+            String sql2 = "UPDATE worker SET worker_vispos=(worker_vispos*(worker_customernember-1)+" + room_idDouble + ")/worker_customernumber WHERE worker_id='" + customer.getCareWorker() + "'";
             stmt.executeUpdate(sql1);
             stmt.executeUpdate(sql2);
             stmt.close();
@@ -154,6 +167,9 @@ public class CustomerInsertInfoUIController implements Initializable {
         return customer;
     }
 
+    /**
+     * 保存插入的客户信息
+     */
     public void insertCustomerInfo() {
         Customer customer = new Customer();
         customer.setId(customerIdLabel.getText());
@@ -192,7 +208,10 @@ public class CustomerInsertInfoUIController implements Initializable {
         getApp().floatStage.close();
     }
 
-    public void backToBusinessMenu(ActionEvent actionEvent) {
+    /**
+     * 返回业务管理界面
+     */
+    public void backToBusinessMenu() {
         getApp().floatStage.close();
     }
 }

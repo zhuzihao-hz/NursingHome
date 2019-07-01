@@ -117,6 +117,9 @@ public class PeopleAdminUIController implements Initializable {
         bindAdministrator();
     }
 
+    /**
+     * 登出
+     */
     public void logout() {
         MANAGER_ID = "";
         MANAGER_NAME = "";
@@ -126,27 +129,45 @@ public class PeopleAdminUIController implements Initializable {
         application.gotoAdminLoginUI();
     }
 
+    /**
+     * 退出
+     */
     public void quit() {
         application.stage.close();
     }
 
+    /**
+     * 查看用户信息
+     */
     public void personInfo() {
         getApp().createPersonalInfoUI();
     }
 
+    /**
+     * 查看用户信息
+     */
     public void personInfoImage() {
         getApp().createPersonalInfoUI();
     }
 
+    /**
+     * 返回主界面
+     */
     public void backToMainMenu() {
         quit();
         application.gotoAdminMainUI();
     }
 
+    /**
+     * 帮助信息
+     */
     public void aboutInfo() {
         application.createAboutInfoUI();
     }
 
+    /**
+     * 插入员工
+     */
     public void insertPeople() {
         // TODO 新增员工
         if (MANAGER_PRIV == 0) {
@@ -171,12 +192,13 @@ public class PeopleAdminUIController implements Initializable {
 
     /**
      * 为客户自动分配护工
-     * @param customer 要分配的客户对象
-     * @param rank 客户护理等级
+     *
+     * @param customer   要分配的客户对象
+     * @param rank       客户护理等级
      * @param workerRank 客户要求等护工的等级
      * @return 返回分配完等客户对象
      */
-    public static Customer autoAllocate(Customer customer, int rank, String workerRank) {
+    public Customer autoAllocate(Customer customer, int rank, String workerRank) {
         // TODO 自动分配
         Connection conn;
         Statement stmt;
@@ -208,6 +230,9 @@ public class PeopleAdminUIController implements Initializable {
         return customer;
     }
 
+    /**
+     * 删除员工信息
+     */
     public void deletePeople() {
         // TODO 删除员工
         //  其中删除前台、行政人员、医生时还得把密码删掉
@@ -404,6 +429,9 @@ public class PeopleAdminUIController implements Initializable {
         }
     }
 
+    /**
+     * 进入设置员工信息界面
+     */
     public void setPeopleInfo() {
         // TODO 查看员工信息，主管和高层（院长、总经理）都能查看，但主管才能修改
         if (MANAGER_PRIV == 0 || MANAGER_PRIV == 1) {
@@ -429,6 +457,13 @@ public class PeopleAdminUIController implements Initializable {
         }
     }
 
+    /**
+     * 在表格中修改或插入员工信息
+     *
+     * @param isInsert     是否是插入
+     * @param people       修改或插入的员工对象
+     * @param insertFailed 是否插入失败
+     */
     public static void setInfoTableView(boolean isInsert, Object people, boolean insertFailed) {
         // TODO 在新增或者修改完信息后，在TableView中也修改或者新增信息
         if (isInsert) {
@@ -500,6 +535,9 @@ public class PeopleAdminUIController implements Initializable {
         }
     }
 
+    /**
+     * 双击进入详细信息界面
+     */
     public void clickIntoDetail() {
         // TODO 双击进入修改信息界面
         if (workerTab.isSelected()) {
@@ -585,6 +623,9 @@ public class PeopleAdminUIController implements Initializable {
         }
     }
 
+    /**
+     * 修改密码
+     */
     public void changePassword() {
         if (MANAGER_PRIV == 0) {
             if (doctorTab.isSelected()) {

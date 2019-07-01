@@ -122,7 +122,10 @@ public class BusinessAdminUIController implements Initializable {
         bindRecord();
     }
 
-    public void logout() throws Exception {
+    /**
+     * 登出
+     */
+    public void logout() {
         MANAGER_ID = "";
         MANAGER_NAME = "";
         MANAGER_PRIV = -1;
@@ -131,14 +134,23 @@ public class BusinessAdminUIController implements Initializable {
         application.gotoAdminLoginUI();
     }
 
+    /**
+     * 退出
+     */
     public void quit() {
         application.stage.close();
     }
 
+    /**
+     * 查看员工信息
+     */
     public void personalInfo() {
         getApp().createPersonalInfoUI();
     }
 
+    /**
+     * 查看员工信息
+     */
     public void personInfoImage() {
         getApp().createPersonalInfoUI();
     }
@@ -186,8 +198,8 @@ public class BusinessAdminUIController implements Initializable {
                 try {
                     Class.forName("com.mysql.jdbc.Driver");
                     conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-                    String sql = "UPDATE bed SET bed_status=0 WHERE bed_id='"+customerSelected.get(i).getBedID()+"' AND bed_roomid='" + customerSelected.get(i).getRoomID() + "';";
-                    String sql1="UPDATE room SET room_usedbed=room_usedbed-1 WHERE room_id='"+customerSelected.get(i).getRoomID()+"'";
+                    String sql = "UPDATE bed SET bed_status=0 WHERE bed_id='" + customerSelected.get(i).getBedID() + "' AND bed_roomid='" + customerSelected.get(i).getRoomID() + "';";
+                    String sql1 = "UPDATE room SET room_usedbed=room_usedbed-1 WHERE room_id='" + customerSelected.get(i).getRoomID() + "'";
                     stmt = conn.createStatement();
                     stmt.executeUpdate(sql);
                     stmt.executeUpdate(sql1);
@@ -200,12 +212,12 @@ public class BusinessAdminUIController implements Initializable {
                 }
 
                 // TODO 删除客户时再改护工
-                double room_idDouble=Double.valueOf(customerSelected.get(i).getRoomID().substring(1));
+                double room_idDouble = Double.valueOf(customerSelected.get(i).getRoomID().substring(1));
                 try {
                     Class.forName("com.mysql.jdbc.Driver");
                     conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-                    String sql = "UPDATE worker SET worker_vispos=(worker_vispos*worker_customernumber-"+room_idDouble+")/(worker_customernumber-1) WHERE worker_id='"+customerSelected.get(i).getCareWorker()+"';";
-                    String sql1 = "UPDATE worker SET worker_customernumber=worker_customernumber-1 WHERE worker_id'"+customerSelected.get(i).getCareWorker()+"'";
+                    String sql = "UPDATE worker SET worker_vispos=(worker_vispos*worker_customernumber-" + room_idDouble + ")/(worker_customernumber-1) WHERE worker_id='" + customerSelected.get(i).getCareWorker() + "';";
+                    String sql1 = "UPDATE worker SET worker_customernumber=worker_customernumber-1 WHERE worker_id'" + customerSelected.get(i).getCareWorker() + "'";
                     stmt = conn.createStatement();
                     stmt.executeUpdate(sql);
                     stmt.executeUpdate(sql1);
@@ -345,9 +357,10 @@ public class BusinessAdminUIController implements Initializable {
 
     /**
      * 在表格中新增、修改信息
+     *
      * @param isRecord 是否是记录信息
      * @param isInsert 是否是插入信息
-     * @param object 修改或插入信息的对象
+     * @param object   修改或插入信息的对象
      */
     public static void setInfoTableView(boolean isRecord, boolean isInsert, Object object) {
         if (isRecord) {
