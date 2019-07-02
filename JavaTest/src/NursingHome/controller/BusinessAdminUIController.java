@@ -2,6 +2,7 @@ package NursingHome.controller;
 
 import NursingHome.Main;
 import NursingHome.dataclass.*;
+import com.jfoenix.controls.JFXComboBox;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -26,7 +27,7 @@ public class BusinessAdminUIController implements Initializable {
     @FXML
     private TableColumn<StringProperty, String> businessName;
     @FXML
-    private TableColumn<StringProperty, Integer> businessAge;
+    private TableColumn<StringProperty, String> businessBirth;
     @FXML
     private TableColumn<StringProperty, String> businessEnterTime;
     @FXML
@@ -96,9 +97,13 @@ public class BusinessAdminUIController implements Initializable {
     private Tab recordTab;
 
     @FXML
-    Text dateText;
+    private Text dateText;
     @FXML
     private Label nameLabel;
+    @FXML
+    private TextField searchText;
+    @FXML
+    private JFXComboBox<String> contextComboBox = new JFXComboBox<>();
 
     public void setApp(Main app) {
         this.application = app;
@@ -112,6 +117,7 @@ public class BusinessAdminUIController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         nameLabel.setText(MANAGER_NAME);
         showtime(dateText);
+        businessSelected();
         displayBusiness();
         bindBusiness();
         displayBed();
@@ -168,6 +174,97 @@ public class BusinessAdminUIController implements Initializable {
      */
     public void aboutInfo() {
         application.createAboutInfoUI();
+    }
+
+    /**
+     * 选中businessTab时更改下拉框
+     */
+    public void businessSelected() {
+        contextComboBox.getItems().clear();
+        contextComboBox.getItems().add("--无--");
+        contextComboBox.getItems().add("编号");
+        contextComboBox.getItems().add("姓名");
+        contextComboBox.getItems().add("年龄");
+        contextComboBox.getItems().add("入院时间");
+        contextComboBox.getItems().add("房号");
+        contextComboBox.getItems().add("床号");
+        contextComboBox.getItems().add("电话");
+        contextComboBox.getItems().add("护工编号");
+        contextComboBox.getItems().add("护理等级");
+        contextComboBox.getItems().add("亲属姓名");
+        contextComboBox.getItems().add("亲属关系");
+        contextComboBox.getItems().add("亲属电话");
+        contextComboBox.setValue("--无--");
+        contextComboBox.setEditable(false);
+    }
+
+    /**
+     * 选中bedTab时更改下拉框
+     */
+    public void bedSelected() {
+        displayBed();
+        bindBed();
+        contextComboBox.getItems().clear();
+        contextComboBox.getItems().add("--无--");
+        contextComboBox.getItems().add("床位号");
+        contextComboBox.getItems().add("所在房间");
+        contextComboBox.getItems().add("是否使用");
+        contextComboBox.setValue("--无--");
+        contextComboBox.setEditable(false);
+    }
+
+    /**
+     * 选中roomTab时更改下拉框
+     */
+    public void roomSelected() {
+        displayRoom();
+        bindRoom();
+        contextComboBox.getItems().clear();
+        contextComboBox.getItems().add("--无--");
+        contextComboBox.getItems().add("房间号");
+        contextComboBox.getItems().add("房间等级");
+        contextComboBox.getItems().add("床位总数");
+        contextComboBox.getItems().add("空余床数");
+        contextComboBox.setValue("--无--");
+        contextComboBox.setEditable(false);
+    }
+
+    /**
+     * 选中recordTab时更改下拉框
+     */
+    public void recordSelected() {
+        contextComboBox.getItems().clear();
+        contextComboBox.getItems().add("--无--");
+        contextComboBox.getItems().add("档案编号");
+        contextComboBox.getItems().add("客户编号");
+        contextComboBox.getItems().add("客户姓名");
+        contextComboBox.getItems().add("医生编号");
+        contextComboBox.getItems().add("记录日期");
+        contextComboBox.getItems().add("记录内容");
+        contextComboBox.setValue("--无--");
+        contextComboBox.setEditable(false);
+    }
+
+    /**
+     * 搜索
+     * <p>用于搜索TableView中的内容</p>
+     * 客户表中可以搜索客户编号、客户姓名、客户房间号、客户护工号
+     * 记录表中可以搜索记录编号、客户编号、客户姓名、医生编号
+     */
+    public void search() {
+        if (customerTab.isSelected()) {
+            displayBusiness();
+            bindBusiness();
+        } else if (recordTab.isSelected()) {
+            displayRecord();
+            bindRecord();
+        } else if (bedTab.isSelected()) {
+            displayBed();
+            bindBed();
+        } else {
+            displayRoom();
+            bindRoom();
+        }
     }
 
     /**
@@ -371,12 +468,11 @@ public class BusinessAdminUIController implements Initializable {
         } else {
             Customer customer = (Customer) object;
             if (isInsert) {
-                System.out.println("Test");
                 customerObservableList.add(customer);
             } else {
                 for (int i = 0; i < customerObservableList.size(); i++) {
                     if (customerObservableList.get(i).getId().equals(customer.getId())) {
-                        customerObservableList.get(i).setAge(customer.getAge());
+                        customerObservableList.get(i).setDate(customer.getDate());
                         customerObservableList.get(i).setBedID(customer.getBedID());
                         customerObservableList.get(i).setRank(customer.getRank());
                         customerObservableList.get(i).setCareWorker(customer.getCareWorker());
@@ -399,7 +495,7 @@ public class BusinessAdminUIController implements Initializable {
     public void bindBusiness() {
         businessID.setCellValueFactory(new PropertyValueFactory<>("id"));
         businessName.setCellValueFactory(new PropertyValueFactory<>("name"));
-        businessAge.setCellValueFactory(new PropertyValueFactory<>("age"));
+        businessBirth.setCellValueFactory(new PropertyValueFactory<>("date"));
         businessBedID.setCellValueFactory(new PropertyValueFactory<>("bedID"));
         businessCareType.setCellValueFactory(new PropertyValueFactory<>("rank"));
         businessEnterTime.setCellValueFactory(new PropertyValueFactory<>("enterTime"));
@@ -469,14 +565,43 @@ public class BusinessAdminUIController implements Initializable {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-            String sql = "SELECT * FROM NursingHome.customer";
+            String sql;
+            if (contextComboBox.getValue().equals("--无--")) {
+                sql = "SELECT * FROM NursingHome.customer";
+            } else if (contextComboBox.getValue().equals("编号")) {
+                sql = "SELECT * FROM NursingHome.customer WHERE customer_id LIKE '" + searchText.getText() + "%'";
+            } else if (contextComboBox.getValue().equals("姓名")) {
+                sql = "SELECT * FROM NursingHome.customer WHERE customer_name LIKE '%" + searchText.getText() + "%'";
+            } else if (contextComboBox.getValue().equals("年龄")) {
+                sql = "SELECT * FROM NursingHome.customer WHERE customer_date = '" + searchText.getText() + "';";
+            } else if (contextComboBox.getValue().equals("入院时间")) {
+                sql = "SELECT * FROM NursingHome.customer WHERE customer_entertime LIKE '" + searchText.getText() + "'";
+            } else if (contextComboBox.getValue().equals("房号")) {
+                sql = "SELECT * FROM NursingHome.customer WHERE customer_roomid LIKE '" + searchText.getText() + "%'";
+            } else if (contextComboBox.getValue().equals("床号")) {
+                sql = "SELECT * FROM NursingHome.customer WHERE customer_bedid LIKE '" + searchText.getText() + "'";
+            } else if (contextComboBox.getValue().equals("电话")) {
+                sql = "SELECT * FROM NursingHome.customer WHERE customer_phone LIKE '" + searchText.getText() + "%'";
+            } else if (contextComboBox.getValue().equals("护工编号")) {
+                sql = "SELECT * FROM NursingHome.customer WHERE customer_careworker LIKE '" + searchText.getText() + "'";
+            } else if (contextComboBox.getValue().equals("护理等级")) {
+                sql = "SELECT * FROM NursingHome.customer WHERE customer_rank = '" + searchText.getText() + "'";
+            } else if (contextComboBox.getValue().equals("亲属姓名")) {
+                sql = "SELECT * FROM NursingHome.customer WHERE customer_relationname LIKE '%" + searchText.getText() + "%'";
+            } else if (contextComboBox.getValue().equals("亲属关系")) {
+                sql = "SELECT * FROM NursingHome.customer WHERE customer_relation LIKE '%" + searchText.getText() + "%'";
+            } else if (contextComboBox.getValue().equals("亲属电话")) {
+                sql = "SELECT * FROM NursingHome.customer WHERE customer_relationphone LIKE '" + searchText.getText() + "%'";
+            } else {
+                sql = "SELECT * FROM NursingHome.customer";
+            }
             stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()) {
                 Customer customer = new Customer();
                 customer.setId(rs.getString(1));
                 customer.setName(rs.getString(2));
-                customer.setAge(rs.getInt(3));
+                customer.setDate(rs.getString(3));
                 customer.setEnterTime(rs.getString(4));
                 customer.setRoomID(rs.getString(5));
                 customer.setBedID(rs.getString(6));
@@ -510,7 +635,18 @@ public class BusinessAdminUIController implements Initializable {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-            String sql = "SELECT * FROM NursingHome.bed";
+            String sql;
+            if (contextComboBox.getValue().equals("--无--")) {
+                sql = "SELECT * FROM NursingHome.bed";
+            } else if (contextComboBox.getValue().equals("床位号")) {
+                sql = "SELECT * FROM NursingHome.bed WHERE bed_id LIKE '" + searchText.getText() + "'";
+            } else if (contextComboBox.getValue().equals("所在房间")) {
+                sql = "SELECT * FROM NursingHome.bed WHERE bed_roomid LIKE '" + searchText.getText() + "%'";
+            } else if (contextComboBox.getValue().equals("是否使用")) {
+                sql = "SELECT * FROM NursingHome.bed WHERE bed_status = '" + searchText.getText() + "'";
+            } else {
+                sql = "SELECT * FROM NursingHome.bed";
+            }
             stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()) {
@@ -542,7 +678,20 @@ public class BusinessAdminUIController implements Initializable {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-            String sql = "SELECT * FROM NursingHome.room";
+            String sql;
+            if (contextComboBox.getValue().equals("--无--")) {
+                sql = "SELECT * FROM NursingHome.room";
+            } else if (contextComboBox.getValue().equals("房间号")) {
+                sql = "SELECT * FROM NursingHome.room WHERE room_id LIKE '" + searchText.getText() + "%'";
+            } else if (contextComboBox.getValue().equals("房间等级")) {
+                sql = "SELECT * FROM NursingHome.room WHERE room_rank LIKE '" + searchText.getText() + "'";
+            } else if (contextComboBox.getValue().equals("床位总数")) {
+                sql = "SELECT * FROM NursingHome.room WHERE room_totalbed = '" + searchText.getText() + "'";
+            } else if (contextComboBox.getValue().equals("空余床数")) {
+                sql = "SELECT * FROM NursingHome.room WHERE room_usedbed = '" + searchText.getText() + "'";
+            } else {
+                sql = "SELECT * FROM NursingHome.room";
+            }
             stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()) {
@@ -550,7 +699,7 @@ public class BusinessAdminUIController implements Initializable {
                 room.setId(rs.getString(1));
                 room.setRank(rs.getString(2));
                 room.setTotalBed(rs.getInt(3));
-                room.setFreeBed(rs.getInt(4));
+                room.setUsedBed(rs.getInt(4));
                 roomObservableList.add(room);
             }
             rs.close();
@@ -574,7 +723,24 @@ public class BusinessAdminUIController implements Initializable {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-            String sql = "SELECT * FROM NursingHome.record";
+            String sql;
+            if (contextComboBox.getValue().equals("--无--")) {
+                sql = "SELECT * FROM NursingHome.record";
+            } else if (contextComboBox.getValue().equals("档案编号")) {
+                sql = "SELECT * FROM NursingHome.record WHERE record_id LIKE '" + searchText.getText() + "%'";
+            } else if (contextComboBox.getValue().equals("客户编号")) {
+                sql = "SELECT * FROM NursingHome.record WHERE customer_id LIKE '" + searchText.getText() + "%'";
+            } else if (contextComboBox.getValue().equals("客户姓名")) {
+                sql = "SELECT * FROM NursingHome.record WHERE customer_name LIKE '%" + searchText.getText() + "%'";
+            } else if (contextComboBox.getValue().equals("医生编号")) {
+                sql = "SELECT * FROM NursingHome.record WHERE doctor_id LIKE '" + searchText.getText() + "%'";
+            } else if (contextComboBox.getValue().equals("记录日期")) {
+                sql = "SELECT * FROM NursingHome.record WHERE record_time LIKE '" + searchText.getText() + "'";
+            } else if (contextComboBox.getValue().equals("记录内容")) {
+                sql = "SELECT * FROM NursingHome.record WHERE record_context LIKE '%" + searchText.getText() + "%'";
+            } else {
+                sql = "SELECT * FROM NursingHome.record";
+            }
             stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()) {

@@ -19,6 +19,7 @@ import static NursingHome.ControllerUtils.*;
 public class CustomerSetInfoUIController implements Initializable {
     private Main application;
     private static Customer customer;
+    private boolean available = false;
     @FXML
     private TextField customerIdTextField;
     @FXML
@@ -38,7 +39,7 @@ public class CustomerSetInfoUIController implements Initializable {
     @FXML
     private TextField customerRelationPhoneTextField;
     @FXML
-    private ComboBox<Integer> customerAgeComboBox;
+    private JFXDatePicker customerBirthDatePicker;
     @FXML
     private ComboBox<Integer> customerCareTypeComboBox;
     @FXML
@@ -66,10 +67,33 @@ public class CustomerSetInfoUIController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        ControllerUtils.initCustomerComboBox(customerAgeComboBox, customerCareTypeComboBox, customerWorkerRankComboBox, customerRoomRankComboBox);
+        ControllerUtils.initCustomerComboBox(customerCareTypeComboBox, customerWorkerRankComboBox, customerRoomRankComboBox);
+        // TODO 读取房间等级
+        Connection conn;
+        Statement stmt;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
+            String sql = "SELECT room_rank FROM NursingHome.room WHERE room_id = '" + customer.getRoomID() + "'";
+            stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            if (rs.first()) {
+                customerRoomRankComboBox.setValue(rs.getString(1));
+            }
+            String sql2 = "SELECT worker_rank FROM NursingHome.worker WHERE worker_id = '" + customer.getCareWorker() + "'";
+            rs = stmt.executeQuery(sql2);
+            if (rs.next()) {
+                customerWorkerRankComboBox.setValue(rs.getString(1));
+            }
+            stmt.close();
+            conn.close();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        customerBirthDatePicker.setValue(StringToDate(customer.getDate()));
         customerIdTextField.setText(customer.getId());
-        customerIdTextField.setEditable(false);
-        customerAgeComboBox.setValue(customer.getAge());
         customerNameTextField.setText(customer.getName());
         customerCareTypeComboBox.setValue(customer.getRank());
         customerRoomIdTextField.setText(String.valueOf(customer.getRoomID()));
@@ -81,6 +105,8 @@ public class CustomerSetInfoUIController implements Initializable {
         customerRelationPhoneTextField.setText(customer.getRelationPhone());
         LocalDate localDate = StringToDate(customer.getEnterTime());
         customerEnterTimeDatePicker.setValue(localDate);
+        // TODO 客户编号、入院时间不能修改，房间号床号护工号不能直接修改
+        customerIdTextField.setEditable(false);
         customerEnterTimeDatePicker.setDisable(true);
         customerCareWorkerIdTextField.setEditable(false);
         customerRoomIdTextField.setEditable(false);
@@ -91,7 +117,7 @@ public class CustomerSetInfoUIController implements Initializable {
      * 为修改信息的客户再分配护工和房间
      *
      * @param customer   客户对象
-     * @param rank       客户的护理等级
+     * @param rank       客户的原来的护理等级
      * @param workerRank 客户原来的护工的等级
      * @param roomRank   客户原来房间的等级
      * @return 再分配完毕后的客户对象
@@ -102,12 +128,40 @@ public class CustomerSetInfoUIController implements Initializable {
 
         // TODO 检查是否需要换房间
         double roomOldDouble = 0;
+        String roomIdOld = customer.getRoomID(); //原来的房间号
         if (!roomRank.equals(customerRoomRankComboBox.getValue())) {
             // TODO 需要换房间
 
-            // TODO 修改原来房间和床位的信息
             Connection conn;
             Statement stmt;
+            String roomIdNew = ""; //新房间编号
+            // TODO 重新分配新的房间和床位，先检查是否有满足需要的房间，没有的话退出，有的话记录房间
+            try {
+                Class.forName("com.mysql.jdbc.Driver");
+                conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
+                String sql = "SELECT room_id FROM NursingHome.room WHERE room_usedbed<room_totalbed AND room_rank='" + customerRoomRankComboBox.getValue() + "' ORDER BY room_id ASC;";
+                stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(sql);
+                if (rs.first()) {
+                    roomIdNew = rs.getString(1);
+                } else {
+                    // TODO 如果没有满足需求的房间，则返回，并且不能修改掉
+                    showAlert("[警告]没有满足需求的房间！");
+                    available = false;
+                    rs.close();
+                    stmt.close();
+                    conn.close();
+                    return customer;
+                }
+                stmt.close();
+                conn.close();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            // TODO 此时有满足需求的房间，修改原来房间和床位的信息，并且修改新的房间的信息
             try {
                 Class.forName("com.mysql.jdbc.Driver");
                 conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
@@ -124,18 +178,22 @@ public class CustomerSetInfoUIController implements Initializable {
                 e.printStackTrace();
             }
 
-
-            String roomIdNew = "";
-            // TODO 重新分配新的房间和床位
+            String bedIdNew = ""; //新床位编号
+            // TODO 搜索新的房间床位并且修改新的房间的信息
             try {
                 Class.forName("com.mysql.jdbc.Driver");
                 conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-                String sql = "SELECT room_id FROM NursingHome.room WHERE room_usedbed<room_totalbed AND room_rank='" + customerRoomRankComboBox.getValue() + "' ORDER BY room_id ASC;";
+
+                String sql = "SELECT bed_id FROM NursingHome.bed WHERE bed_roomid = '" + roomIdNew + "' AND bed_status = 0;";
                 stmt = conn.createStatement();
                 ResultSet rs = stmt.executeQuery(sql);
-                if (rs.next()) {
-                    roomIdNew = rs.getString(1);
+                if (rs.first()) {
+                    bedIdNew = rs.getString(1);
                 }
+                String sql1 = "UPDATE NursingHome.bed SET bed_status=1 WHERE bed_id='" + bedIdNew + "' AND bed_roomid='" + roomIdNew + "';";
+                String sql2 = "UPDATE Nursinghome.room SET room_usedbed=room_usedbed+1 WHERE room_id='" + roomIdNew + "';";
+                stmt.executeUpdate(sql1);
+                stmt.executeUpdate(sql2);
                 stmt.close();
                 conn.close();
             } catch (ClassNotFoundException e) {
@@ -162,22 +220,39 @@ public class CustomerSetInfoUIController implements Initializable {
             }
 
             customer.setRoomID(roomIdNew);
+            customer.setBedID(bedIdNew);
 
         }
 
         // TODO 检查是否需要更改护工
         if (!workerRank.equals(customerWorkerRankComboBox.getValue())) {
-            // TODO 更改原来护工位置
+            // TODO 需要更改新的护工
             Connection conn;
             Statement stmt;
+            // TODO 查询是否有符合要求的新的护工，若有则更改原来护工的位置，没有则返回退出
+            double room_idDouble = Double.valueOf(customer.getRoomID().substring(1));  //房间号，可能是换过的房间
+            String workerIdNew = "";
             try {
                 Class.forName("com.mysql.jdbc.Driver");
                 conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-                String sql = "UPDATE NursingHome.worker SET worker_vispos=(worker_vispos*worker_customernumber-" + roomOldDouble + ")/(worker_customernumber-1) WHERE worker_id='" + customer.getCareWorker() + "'";
-                String sql1 = "UPDATE NursingHome.worker SET worker_customernumber=worker_customernumber-1 WHERE worker_id='" + customer.getCareWorker() + "';";
+                String sql = "SELECT worker_id FROM worker WHERE worker_rank='" + customerWorkerRankComboBox.getValue() + "' AND worker_customerrank=" + customerCareTypeComboBox.getValue() + " ORDER BY abs(" + room_idDouble + "-worker_vispos) ASC, worker_customernumber ASC";
                 stmt = conn.createStatement();
-                stmt.executeUpdate(sql);
+                ResultSet rs = stmt.executeQuery(sql);
+                if (rs.next()) {
+                    workerIdNew = rs.getString(1);
+                }else{
+                    showAlert("[警告]没有满足需求的护工！");
+                    available=false;
+                    rs.close();
+                    stmt.close();
+                    conn.close();
+                    return customer;
+                }
+                // TODO 更改原来护工的位置
+                String sql1 = "UPDATE NursingHome.worker SET worker_vispos=(worker_vispos*worker_customernumber-" + Double.valueOf(roomIdOld.substring(1)) + ")/(worker_customernumber-1) WHERE worker_id='" + customer.getCareWorker() + "'";
+                String sql2 = "UPDATE NursingHome.worker SET worker_customernumber=worker_customernumber-1 WHERE worker_id='" + customer.getCareWorker() + "';";
                 stmt.executeUpdate(sql1);
+                stmt.executeUpdate(sql2);
                 stmt.close();
                 conn.close();
             } catch (ClassNotFoundException e) {
@@ -186,23 +261,18 @@ public class CustomerSetInfoUIController implements Initializable {
                 e.printStackTrace();
             }
 
-            // TODO 获得新的护工，更改新的护工的位置
-            double room_idDouble = Double.valueOf(customer.getRoomID().substring(1));
-            String workerIdNew = "";
+
+            // TODO 更改新的护工位置信息
             try {
                 Class.forName("com.mysql.jdbc.Driver");
                 conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-                String sql = "SELECT worker_id FROM worker WHERE worker_rank='" + customerWorkerRankComboBox.getValue() + "' AND worker_customerrank=" + rank + " ORDER BY abs(" + room_idDouble + "-worker_vispos) ASC, worker_customernumber ASC";
-                stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery(sql);
-                if (rs.next()) {
-                    workerIdNew = rs.getString(1);
-                }
                 String sql1 = "UPDATE NursingHome.worker SET worker_customernumber=worker_customernumber+1 WHERE worker_id='" + workerIdNew + "'";
                 String sql2 = "UPDATE NursingHome.worker SET worker_vispos=(worker_vispos*(worker_customernember-1)+" + room_idDouble + ")/worker_customernumber WHERE worker_id='" + workerIdNew + "'";
-                String sql3 = "UPDATE NursingHome.customer SET customer_careworker='" + workerIdNew + "' WHERE customer_id='" + customer.getId() + "'";
+
+                stmt = conn.createStatement();
                 stmt.executeUpdate(sql1);
                 stmt.executeUpdate(sql2);
+                String sql3 = "UPDATE NursingHome.customer SET customer_careworker='" + workerIdNew + "' WHERE customer_id='" + customer.getId() + "'";
                 stmt.executeUpdate(sql3);
                 stmt.close();
                 conn.close();
@@ -211,9 +281,11 @@ public class CustomerSetInfoUIController implements Initializable {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+
             customer.setCareWorker(workerIdNew);
         }
 
+        available = true;
         return customer;
     }
 
@@ -224,7 +296,7 @@ public class CustomerSetInfoUIController implements Initializable {
         // TODO 保存修改的客户信息
         customer.setId(customerIdTextField.getText());
         customer.setName(customerNameTextField.getText());
-        customer.setAge(customerAgeComboBox.getValue());
+        customer.setDate(localDateToString(customerBirthDatePicker.getValue()));
         customer.setRoomID(customerRoomIdTextField.getText());
         customer.setBedID(customerBedIdTextField.getText());
         try {
@@ -237,14 +309,14 @@ public class CustomerSetInfoUIController implements Initializable {
         customer.setRelation(customerRelationTextField.getText());
         customer.setRelationName(customerRelationNameTextField.getText());
         customer.setEnterTime(ControllerUtils.localDateToString(customerEnterTimeDatePicker.getValue()));
-        customer.setRank(customerCareTypeComboBox.getValue());
+        //customer.setRank(customerCareTypeComboBox.getValue());
 
         // TODO 如果客户改变护理等级、护工等级、房间等级，需要重新分配
 
         // TODO 先查询该客户的房间等级、护工等级、护理等级（已知）
         String workerId = customer.getCareWorker();  //当前护工编号
-        String workerRankOld = "";
-        String roomRankOld = "";
+        String workerRankOld = "";  //当前护工等级
+        String roomRankOld = "";    //当前房间等级
         Connection conn;
         Statement stmt;
         try {
@@ -270,24 +342,26 @@ public class CustomerSetInfoUIController implements Initializable {
         }
 
         // TODO 将该客户重新分配一个护工
-        autoAllocate(customer, customer.getRank(), workerRankOld, roomRankOld);
+        customer = autoAllocate(customer, customer.getRank(), workerRankOld, roomRankOld);
 
-        // TODO 保存修改的信息
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-            String sql = "UPDATE NursingHome.customer SET customer_name='" + customer.getName() + "', customer_age='" + customer.getAge() + "', customer_entertime='" + customer.getEnterTime() + "', customer_roomid='" + customer.getRoomID() + "', customer_bedid='" + customer.getBedID() + "', customer_phone='" + customer.getPhone() + "', customer_careworker='" + customer.getCareWorker() + "', customer_rank='" + customer.getRank() + "', customer_relationname='" + customer.getRelationName() + "', customer_relation='" + customer.getRelation() + "', customer_relationphone='" + customer.getRelationPhone() + "' WHERE customer_id='" + customer.getId() + "'";
-            stmt = conn.createStatement();
-            stmt.executeUpdate(sql);
-            stmt.close();
-            conn.close();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        if (available) {
+            // TODO 保存修改的信息
+            try {
+                Class.forName("com.mysql.jdbc.Driver");
+                conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
+                String sql = "UPDATE NursingHome.customer SET customer_name='" + customer.getName() + "', customer_date='" + customer.getDate() + "', customer_entertime='" + customer.getEnterTime() + "', customer_roomid='" + customer.getRoomID() + "', customer_bedid='" + customer.getBedID() + "', customer_phone='" + customer.getPhone() + "', customer_careworker='" + customer.getCareWorker() + "', customer_rank='" + customer.getRank() + "', customer_relationname='" + customer.getRelationName() + "', customer_relation='" + customer.getRelation() + "', customer_relationphone='" + customer.getRelationPhone() + "' WHERE customer_id='" + customer.getId() + "'";
+                stmt = conn.createStatement();
+                stmt.executeUpdate(sql);
+                stmt.close();
+                conn.close();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            BusinessAdminUIController.setInfoTableView(false, false, customer);
+            getApp().floatStage.close();
         }
-        BusinessAdminUIController.setInfoTableView(false, false, customer);
-        getApp().floatStage.close();
     }
 
     /**

@@ -13,7 +13,7 @@ public class Doctor extends WorkerBase{
 
     public String getDoctorInfo() {
         String temp;
-        temp="('"+this.getId()+"','"+this.getName()+"','"+this.getAge()+"','"+this.getSalary()+"','"+this.getMajor()+"')";
+        temp="('"+this.getId()+"','"+this.getName()+"','"+this.getDate()+"','"+this.getSalary()+"','"+this.getMajor()+"')";
         return temp;
     }
 

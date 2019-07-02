@@ -37,7 +37,7 @@ public class Room {
     public IntegerProperty totalBedProperty() { return totalBed; }
     public void setTotalBed(int totalBed) { this.totalBed.set(totalBed); }
 
-    public int getFreeBed() { return usedBed.get(); }
-    public IntegerProperty freeBedProperty() { return usedBed; }
-    public void setFreeBed(int freeBed) { this.usedBed.set(freeBed); }
+    public int getUsedBed() { return usedBed.get(); }
+    public IntegerProperty usedBedProperty() { return usedBed; }
+    public void setUsedBed(int freeBed) { this.usedBed.set(freeBed); }
 }

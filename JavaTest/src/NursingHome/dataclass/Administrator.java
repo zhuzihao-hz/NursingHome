@@ -5,22 +5,22 @@ import javafx.beans.property.*;
 public class Administrator {
     private StringProperty id;
     private StringProperty name;
-    private IntegerProperty age;
+    private StringProperty date;
     private StringProperty position;
     private DoubleProperty salary;
 
     public Administrator() {
         this.id=new SimpleStringProperty("");
         this.name=new SimpleStringProperty("");
-        this.age=new SimpleIntegerProperty(0);
+        this.date=new SimpleStringProperty("");
         this.position=new SimpleStringProperty("");
         this.salary=new SimpleDoubleProperty(0.0);
     }
 
-    public Administrator(StringProperty id, StringProperty name, IntegerProperty age, StringProperty position, DoubleProperty salary) {
+    public Administrator(StringProperty id, StringProperty name, StringProperty date, StringProperty position, DoubleProperty salary) {
         this.id = id;
         this.name = name;
-        this.age = age;
+        this.date = date;
         this.position = position;
         this.salary = salary;
     }
@@ -33,9 +33,9 @@ public class Administrator {
     public StringProperty nameProperty() { return name; }
     public void setName(String name) { this.name.set(name); }
 
-    public int getAge() { return age.get(); }
-    public IntegerProperty ageProperty() { return age; }
-    public void setAge(int age) { this.age.set(age); }
+    public String getDate() { return date.get(); }
+    public StringProperty DateProperty() { return date; }
+    public void setDate(String age) { this.date.set(age); }
 
     public String getPosition() { return position.get(); }
     public StringProperty positionProperty() { return position; }
@@ -47,7 +47,7 @@ public class Administrator {
 
     public String getAdminInfo() {
         String temp;
-        temp="('"+this.getId()+"','"+this.getName()+"','"+this.getAge()+"','"+this.getPosition()+"','"+this.getSalary()+"')";
+        temp="('"+this.getId()+"','"+this.getName()+"','"+this.getDate()+"','"+this.getPosition()+"','"+this.getSalary()+"')";
         return temp;
     }
 }

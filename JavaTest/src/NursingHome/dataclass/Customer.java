@@ -5,7 +5,7 @@ import javafx.beans.property.*;
 public class Customer {
     private StringProperty id;
     private StringProperty name;
-    private IntegerProperty age;
+    private StringProperty date;
     private StringProperty enterTime;
     private StringProperty roomID;
     private StringProperty bedID;
@@ -16,10 +16,10 @@ public class Customer {
     private StringProperty relation;
     private StringProperty relationPhone;
 
-    public Customer(StringProperty id, StringProperty name, IntegerProperty age, StringProperty enterTime, StringProperty roomID, StringProperty bedID, StringProperty phone, StringProperty careWorker, IntegerProperty rank, StringProperty relationName, StringProperty relation, StringProperty relationPhone) {
+    public Customer(StringProperty id, StringProperty name, StringProperty date, StringProperty enterTime, StringProperty roomID, StringProperty bedID, StringProperty phone, StringProperty careWorker, IntegerProperty rank, StringProperty relationName, StringProperty relation, StringProperty relationPhone) {
         this.id = id;
         this.name = name;
-        this.age = age;
+        this.date = date;
         this.enterTime = enterTime;
         this.roomID = roomID;
         this.bedID = bedID;
@@ -34,7 +34,7 @@ public class Customer {
     public Customer() {
         this.id = new SimpleStringProperty("");
         this.name = new SimpleStringProperty("");
-        this.age = new SimpleIntegerProperty(0);
+        this.date = new SimpleStringProperty("");
         this.enterTime = new SimpleStringProperty("");
         this.roomID = new SimpleStringProperty("");
         this.bedID = new SimpleStringProperty("");
@@ -54,9 +54,9 @@ public class Customer {
     public StringProperty nameProperty() { return name; }
     public void setName(String name) { this.name.set(name); }
 
-    public int getAge() { return age.get(); }
-    public IntegerProperty ageProperty() { return age; }
-    public void setAge(int age) { this.age.set(age); }
+    public String getDate() { return date.get(); }
+    public StringProperty dateProperty() { return date; }
+    public void setDate(String date) { this.date.set(date); }
 
     public String getEnterTime() { return enterTime.get(); }
     public StringProperty enterTimeProperty() { return enterTime; }
@@ -96,7 +96,7 @@ public class Customer {
 
     public String getCustomerInfo() {
         String temp;
-        temp="('"+this.getId()+"','"+this.getName()+"','"+this.getAge()+"','"+this.getEnterTime()+"','"+this.getRoomID()+"','"+this.getBedID()+"','"+this.getPhone()+"','"+this.getCareWorker()+"','"+this.getRank()+"','"+this.getRelationName()+"','"+this.getRelation()+"','"+this.getRelationPhone()+"')";
+        temp="('"+this.getId()+"','"+this.getName()+"','"+this.getDate()+"','"+this.getEnterTime()+"','"+this.getRoomID()+"','"+this.getBedID()+"','"+this.getPhone()+"','"+this.getCareWorker()+"','"+this.getRank()+"','"+this.getRelationName()+"','"+this.getRelation()+"','"+this.getRelationPhone()+"')";
         return temp;
     }
 }

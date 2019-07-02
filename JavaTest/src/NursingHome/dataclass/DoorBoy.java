@@ -13,7 +13,7 @@ public class DoorBoy extends WorkerBase {
 
     public String getDoorBoyInfo(){
         String temp;
-        temp="('"+this.getId()+"','"+this.getName()+"','"+this.getAge()+"','"+this.getSalary()+"','"+this.getWorkPlace()+"')";
+        temp="('"+this.getId()+"','"+this.getName()+"','"+this.getDate()+"','"+this.getSalary()+"','"+this.getWorkPlace()+"')";
         return temp;
     }
 

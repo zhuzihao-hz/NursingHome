@@ -18,7 +18,7 @@ public class Worker extends WorkerBase {
 
     public String getWorkerInfo(){
         String temp;
-        temp="('"+this.getId()+"','"+this.getName()+"','"+this.getAge()+"','"+this.getSalary()+"','"+this.getRank()+"','"+this.getCustomerRank()+"','"+this.getCustomerNumber()+"','"+this.getCustomerVisPos()+"')";
+        temp="('"+this.getId()+"','"+this.getName()+"','"+this.getDate()+"','"+this.getSalary()+"','"+this.getRank()+"','"+this.getCustomerRank()+"','"+this.getCustomerNumber()+"','"+this.getCustomerVisPos()+"')";
         return temp;
     }
 

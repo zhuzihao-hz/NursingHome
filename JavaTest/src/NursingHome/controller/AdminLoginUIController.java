@@ -71,7 +71,6 @@ public class AdminLoginUIController implements Initializable {
             String sql = "SELECT * FROM NursingHome.manager WHERE manager_id='" + id + "'";
             stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
-            ;
             if (rs.next()) {
                 tempPri = rs.getInt(2);
                 password1 = rs.getString(3);

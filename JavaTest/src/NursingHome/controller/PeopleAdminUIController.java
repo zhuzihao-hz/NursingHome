@@ -2,6 +2,7 @@ package NursingHome.controller;
 
 import NursingHome.Main;
 import NursingHome.dataclass.*;
+import com.jfoenix.controls.JFXComboBox;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -27,7 +28,7 @@ public class PeopleAdminUIController implements Initializable {
     @FXML
     private TableColumn<StringProperty, String> workerName;
     @FXML
-    private TableColumn<StringProperty, String> workerAge;
+    private TableColumn<StringProperty, String> workerBirth;
     @FXML
     private TableColumn<StringProperty, Integer> workerSalary;
     @FXML
@@ -47,7 +48,7 @@ public class PeopleAdminUIController implements Initializable {
     @FXML
     private TableColumn<StringProperty, String> doctorName;
     @FXML
-    private TableColumn<StringProperty, String> doctorAge;
+    private TableColumn<StringProperty, String> doctorBirth;
     @FXML
     private TableColumn<StringProperty, String> doctorMajor;
     @FXML
@@ -63,7 +64,7 @@ public class PeopleAdminUIController implements Initializable {
     @FXML
     private TableColumn<StringProperty, String> doorBoyName;
     @FXML
-    private TableColumn<StringProperty, String> doorBoyAge;
+    private TableColumn<StringProperty, String> doorBoyBirth;
     @FXML
     private TableColumn<StringProperty, String> doorBoyWorkPlace;
     @FXML
@@ -79,7 +80,7 @@ public class PeopleAdminUIController implements Initializable {
     @FXML
     private TableColumn<StringProperty, String> adminName;
     @FXML
-    private TableColumn<StringProperty, String> adminAge;
+    private TableColumn<StringProperty, String> adminBirth;
     @FXML
     private TableColumn<StringProperty, String> adminPosition;
     @FXML
@@ -91,9 +92,13 @@ public class PeopleAdminUIController implements Initializable {
     private static ObservableList<Administrator> adminObservableList = FXCollections.observableArrayList();
 
     @FXML
-    Text dateText;
+    private Text dateText;
     @FXML
     private Label nameLabel;
+    @FXML
+    private TextField searchText;
+    @FXML
+    private JFXComboBox<String> contextComboBox = new JFXComboBox<>();
 
     public void setApp(Main app) {
         this.application = app;
@@ -107,6 +112,7 @@ public class PeopleAdminUIController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         nameLabel.setText(MANAGER_NAME);
         showtime(dateText);
+        workerSelected();
         displayDoctor();
         bindDoctor();
         displayDoorBoy();
@@ -166,12 +172,99 @@ public class PeopleAdminUIController implements Initializable {
     }
 
     /**
+     * 选中workerTab时更改下拉框
+     */
+    public void workerSelected() {
+        contextComboBox.getItems().clear();
+        contextComboBox.getItems().add("--无--");
+        contextComboBox.getItems().add("工号");
+        contextComboBox.getItems().add("姓名");
+        contextComboBox.getItems().add("年龄");
+        contextComboBox.getItems().add("薪水");
+        contextComboBox.getItems().add("级别");
+        contextComboBox.getItems().add("目标护理级别");
+        contextComboBox.getItems().add("护理人数");
+        contextComboBox.setValue("--无--");
+        contextComboBox.setEditable(false);
+    }
+
+    /**
+     * 选中doctorTab时更改下拉框
+     */
+    public void doctorSelected() {
+        contextComboBox.getItems().clear();
+        contextComboBox.getItems().add("--无--");
+        contextComboBox.getItems().add("工号");
+        contextComboBox.getItems().add("姓名");
+        contextComboBox.getItems().add("年龄");
+        contextComboBox.getItems().add("科室");
+        contextComboBox.getItems().add("薪水");
+        contextComboBox.setValue("--无--");
+        contextComboBox.setEditable(false);
+    }
+
+    /**
+     * 选中doorboyTab时更改下拉框
+     */
+    public void doorBoySelected() {
+        contextComboBox.getItems().clear();
+        contextComboBox.getItems().add("--无--");
+        contextComboBox.getItems().add("工号");
+        contextComboBox.getItems().add("姓名");
+        contextComboBox.getItems().add("年龄");
+        contextComboBox.getItems().add("岗位");
+        contextComboBox.getItems().add("薪水");
+        contextComboBox.setValue("--无--");
+        contextComboBox.setEditable(false);
+    }
+
+    /**
+     * 选中administratorTab时更改下拉框
+     */
+    public void administratorSelected() {
+        contextComboBox.getItems().clear();
+        contextComboBox.getItems().add("--无--");
+        contextComboBox.getItems().add("工号");
+        contextComboBox.getItems().add("姓名");
+        contextComboBox.getItems().add("年龄");
+        contextComboBox.getItems().add("薪水");
+        contextComboBox.getItems().add("岗位");
+        contextComboBox.setValue("--无--");
+        contextComboBox.setEditable(false);
+    }
+
+    /**
+     * 搜索
+     * <p>用于搜索TableView中的内容</p>
+     * 护工表可以搜索护工编号、护工姓名
+     * 医生表可以搜索医生编号、医生姓名
+     * 勤杂人员表可以搜索勤杂人员编号、勤杂人员姓名
+     * 行政人员表可以搜索行政人员标号、行政人员姓名
+     */
+    public void search() {
+        if (workerTab.isSelected()) {
+            displayWorker();
+            bindWorker();
+        } else if (doctorTab.isSelected()) {
+            displayDoctor();
+            bindDoctor();
+        } else if (doorBoyTab.isSelected()) {
+            displayDoorBoy();
+            bindDoorBoy();
+        } else {
+            displayAdministrator();
+            bindAdministrator();
+        }
+    }
+
+    /**
      * 插入员工
      */
     public void insertPeople() {
         // TODO 新增员工
         if (MANAGER_PRIV == 0) {
             // TODO 只有主管才能新增行政人员
+            PeopleSetInfoUIController.setPeople(new Object());
             if (workerTab.isSelected()) {
                 PeopleSetInfoUIController.peopleType = "护工";
                 application.createPeopleSetInfoUI();
@@ -273,7 +366,7 @@ public class PeopleAdminUIController implements Initializable {
                             Customer customer = new Customer();
                             customer.setId(rs.getString(1));
                             customer.setName(rs.getString(2));
-                            customer.setAge(rs.getInt(3));
+                            customer.setDate(rs.getString(3));
                             customer.setEnterTime(rs.getString(4));
                             customer.setRoomID(rs.getString(5));
                             customer.setBedID(rs.getString(6));
@@ -289,7 +382,7 @@ public class PeopleAdminUIController implements Initializable {
                             try {
                                 Class.forName("com.mysql.jdbc.Driver");
                                 conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-                                String sql1 = "UPDATE NursingHome.customer SET customer_name='" + customer.getName() + "', customer_age='" + customer.getAge() + "', customer_entertime='" + customer.getEnterTime() + "', customer_roomid='" + customer.getRoomID() + "', customer_bedid='" + customer.getBedID() + "', customer_phone='" + customer.getPhone() + "', customer_careworker='" + customer.getCareWorker() + "', customer_rank='" + customer.getRank() + "', customer_relationname='" + customer.getRelationName() + "', customer_relation='" + customer.getRelation() + "', customer_relationphone='" + customer.getRelationPhone() + "' WHERE customer_id='" + customer.getId() + "'";
+                                String sql1 = "UPDATE NursingHome.customer SET customer_name='" + customer.getName() + "', customer_date='" + customer.getDate() + "', customer_entertime='" + customer.getEnterTime() + "', customer_roomid='" + customer.getRoomID() + "', customer_bedid='" + customer.getBedID() + "', customer_phone='" + customer.getPhone() + "', customer_careworker='" + customer.getCareWorker() + "', customer_rank='" + customer.getRank() + "', customer_relationname='" + customer.getRelationName() + "', customer_relation='" + customer.getRelation() + "', customer_relationphone='" + customer.getRelationPhone() + "' WHERE customer_id='" + customer.getId() + "'";
                                 stmt = conn.createStatement();
                                 stmt.executeUpdate(sql1);
                                 stmt.close();
@@ -492,7 +585,7 @@ public class PeopleAdminUIController implements Initializable {
                         workerObservableList.get(i).setName(worker.getName());
                         workerObservableList.get(i).setSalary(worker.getSalary());
                         workerObservableList.get(i).setRank(worker.getRank());
-                        workerObservableList.get(i).setAge(worker.getAge());
+                        workerObservableList.get(i).setDate(worker.getDate());
                         break;
                     }
                 }
@@ -504,11 +597,11 @@ public class PeopleAdminUIController implements Initializable {
                         doctorObservableList.get(i).setName(doctor.getName());
                         doctorObservableList.get(i).setSalary(doctor.getSalary());
                         doctorObservableList.get(i).setMajor(doctor.getMajor());
-                        doctorObservableList.get(i).setAge(doctor.getAge());
+                        doctorObservableList.get(i).setDate(doctor.getDate());
                         break;
                     }
                 }
-            } else if (people.getClass().getName().equals("NursingHome.dataclass.Doorboy")) {
+            } else if (people.getClass().getName().equals("NursingHome.dataclass.DoorBoy")) {
                 DoorBoy doorBoy = ((DoorBoy) people);
                 for (int i = 0; i < doorBoyObservableList.size(); i++) {
                     if (doorBoyObservableList.get(i).getId().equals(doorBoy.getId())) {
@@ -516,7 +609,7 @@ public class PeopleAdminUIController implements Initializable {
                         doorBoyObservableList.get(i).setName(doorBoy.getName());
                         doorBoyObservableList.get(i).setSalary(doorBoy.getSalary());
                         doorBoyObservableList.get(i).setWorkPlace(doorBoy.getWorkPlace());
-                        doorBoyObservableList.get(i).setAge(doorBoy.getAge());
+                        doorBoyObservableList.get(i).setDate(doorBoy.getDate());
                         break;
                     }
                 }
@@ -526,8 +619,8 @@ public class PeopleAdminUIController implements Initializable {
                     if (adminObservableList.get(i).getId().equals(administrator.getId())) {
                         adminObservableList.get(i).setName(administrator.getName());
                         adminObservableList.get(i).setPosition(administrator.getPosition());
-                        adminObservableList.get(i).setAge(administrator.getAge());
-                        adminObservableList.get(i).setSalary(administrator.getAge());
+                        adminObservableList.get(i).setDate(administrator.getDate());
+                        adminObservableList.get(i).setSalary(administrator.getSalary());
                         break;
                     }
                 }
@@ -637,30 +730,19 @@ public class PeopleAdminUIController implements Initializable {
                 if (doorBoySelected.get(0).getWorkPlace().equals("前台")) {
                     ChangePasswordUIController.setPeopleid(doorBoySelected.get(0).getId());
                     getApp().createChangePasswordUI();
+                } else {
+                    showAlert("[警告]该员工没有账户！");
                 }
             } else if (adminTab.isSelected()) {
                 List<Administrator> adminSelected = adminTableView.getSelectionModel().getSelectedItems();
                 ChangePasswordUIController.setPeopleid(adminSelected.get(0).getId());
                 getApp().createChangePasswordUI();
+            } else {
+                showAlert("[警告]该员工没有账户！");
             }
         } else {
-            showAlert("[警告]您没有修改密码的权限");
+            showAlert("[警告]您没有修改密码的权限！");
         }
-    }
-
-    /**
-     * 绑定并显示医生数据
-     */
-    public void bindDoctor() {
-        doctorID.setCellValueFactory(new PropertyValueFactory<>("id"));
-        doctorName.setCellValueFactory(new PropertyValueFactory<>("name"));
-        doctorAge.setCellValueFactory(new PropertyValueFactory<>("age"));
-        doctorSalary.setCellValueFactory(new PropertyValueFactory<>("salary"));
-        doctorMajor.setCellValueFactory(new PropertyValueFactory<>("major"));
-        doctorTableView.setVisible(true);
-        doctorTableView.setEditable(false);
-        doctorTableView.setTableMenuButtonVisible(true);
-        doctorTableView.setItems(doctorObservableList);
     }
 
     /**
@@ -669,7 +751,7 @@ public class PeopleAdminUIController implements Initializable {
     public void bindWorker() {
         workerID.setCellValueFactory(new PropertyValueFactory<>("id"));
         workerName.setCellValueFactory(new PropertyValueFactory<>("name"));
-        workerAge.setCellValueFactory(new PropertyValueFactory<>("age"));
+        workerBirth.setCellValueFactory(new PropertyValueFactory<>("date"));
         workerSalary.setCellValueFactory(new PropertyValueFactory<>("salary"));
         workerRank.setCellValueFactory(new PropertyValueFactory<>("rank"));
         workerCustomerRank.setCellValueFactory(new PropertyValueFactory<>("customerRank"));
@@ -681,12 +763,27 @@ public class PeopleAdminUIController implements Initializable {
     }
 
     /**
+     * 绑定并显示医生数据
+     */
+    public void bindDoctor() {
+        doctorID.setCellValueFactory(new PropertyValueFactory<>("id"));
+        doctorName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        doctorBirth.setCellValueFactory(new PropertyValueFactory<>("date"));
+        doctorSalary.setCellValueFactory(new PropertyValueFactory<>("salary"));
+        doctorMajor.setCellValueFactory(new PropertyValueFactory<>("major"));
+        doctorTableView.setVisible(true);
+        doctorTableView.setEditable(false);
+        doctorTableView.setTableMenuButtonVisible(true);
+        doctorTableView.setItems(doctorObservableList);
+    }
+
+    /**
      * 绑定并显示勤杂人员数据
      */
     public void bindDoorBoy() {
         doorBoyID.setCellValueFactory(new PropertyValueFactory<>("id"));
         doorBoyName.setCellValueFactory(new PropertyValueFactory<>("name"));
-        doorBoyAge.setCellValueFactory(new PropertyValueFactory<>("age"));
+        doorBoyBirth.setCellValueFactory(new PropertyValueFactory<>("date"));
         doorBoySalary.setCellValueFactory(new PropertyValueFactory<>("salary"));
         doorBoyWorkPlace.setCellValueFactory(new PropertyValueFactory<>("workPlace"));
         doorBoyTableView.setVisible(true);
@@ -701,47 +798,13 @@ public class PeopleAdminUIController implements Initializable {
     public void bindAdministrator() {
         adminID.setCellValueFactory(new PropertyValueFactory<>("id"));
         adminName.setCellValueFactory(new PropertyValueFactory<>("name"));
-        adminAge.setCellValueFactory(new PropertyValueFactory<>("age"));
+        adminBirth.setCellValueFactory(new PropertyValueFactory<>("date"));
         adminSalary.setCellValueFactory(new PropertyValueFactory<>("salary"));
         adminPosition.setCellValueFactory(new PropertyValueFactory<>("position"));
         adminTableView.setVisible(true);
         adminTableView.setEditable(false);
         adminTableView.setTableMenuButtonVisible(true);
         adminTableView.setItems(adminObservableList);
-    }
-
-    /**
-     * 加载医生数据
-     */
-    public void displayDoctor() {
-        // TODO 显示医生信息
-        doctorObservableList.clear();
-        Connection conn;
-        Statement stmt;
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-            String sql = "SELECT * FROM NursingHome.doctor";
-            stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
-            while (rs.next()) {
-                Doctor doctor = new Doctor();
-                doctor.setId(rs.getString(1));
-                doctor.setName(rs.getString(2));
-                doctor.setAge(rs.getInt(3));
-                doctor.setMajor(rs.getString(5));
-                doctor.setSalary(rs.getDouble(4));
-                doctorObservableList.add(doctor);
-            }
-            rs.close();
-            stmt.close();
-            conn.close();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        System.out.println("医生数据导入成功！");
     }
 
     /**
@@ -755,14 +818,33 @@ public class PeopleAdminUIController implements Initializable {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-            String sql = "SELECT * FROM NursingHome.worker";
+            String sql;
+            if (contextComboBox.getValue().equals("--无--")) {
+                sql = "SELECT * FROM NursingHome.worker";
+            } else if (contextComboBox.getValue().equals("工号")) {
+                sql = "SELECT * FROM NursingHome.worker WHERE worker_id LIKE '" + searchText.getText() + "%'";
+            } else if (contextComboBox.getValue().equals("姓名")) {
+                sql = "SELECT * FROM NursingHome.worker WHERE worker_name LIKE '%" + searchText.getText() + "%'";
+            } else if (contextComboBox.getValue().equals("年龄")) {
+                sql = "SELECT * FROM NursingHome.worker WHERE worker_date = '" + searchText.getText() + "'";
+            } else if (contextComboBox.getValue().equals("薪水")) {
+                sql = "SELECT * FROM NursingHome.worker WHERE worker_salary = '" + searchText.getText() + "'";
+            } else if (contextComboBox.getValue().equals("级别")) {
+                sql = "SELECT * FROM NursingHome.worker WHERE worker_rank LIKE '" + searchText.getText() + "'";
+            } else if (contextComboBox.getValue().equals("目标护理级别")) {
+                sql = "SELECT * FROM NursingHome.worker WHERE worker_customerrank = '" + searchText.getText() + "'";
+            } else if (contextComboBox.getValue().equals("护理人数")) {
+                sql = "SELECT * FROM NursingHome.worker WHERE worker_customernumber = '" + searchText.getText() + "'";
+            } else {
+                sql = "SELECT * FROM NursingHome.worker";
+            }
             stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()) {
                 Worker worker = new Worker();
                 worker.setId(rs.getString(1));
                 worker.setName(rs.getString(2));
-                worker.setAge(rs.getInt(3));
+                worker.setDate(rs.getString(3));
                 worker.setSalary(rs.getDouble(4));
                 worker.setRank(rs.getString(5));
                 worker.setCustomerRank(rs.getInt(6));
@@ -781,6 +863,55 @@ public class PeopleAdminUIController implements Initializable {
     }
 
     /**
+     * 加载医生数据
+     */
+    public void displayDoctor() {
+        // TODO 显示医生信息
+        doctorObservableList.clear();
+        Connection conn;
+        Statement stmt;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
+            String sql;
+            if (contextComboBox.getValue().equals("--无--")) {
+                sql = "SELECT * FROM NursingHome.doctor";
+            } else if (contextComboBox.getValue().equals("工号")) {
+                sql = "SELECT * FROM NursingHome.doctor WHERE doctor_id LIKE '" + searchText.getText() + "%'";
+            } else if (contextComboBox.getValue().equals("姓名")) {
+                sql = "SELECT * FROM NursingHome.doctor WHERE doctor_name LIKE '%" + searchText.getText() + "%'";
+            } else if (contextComboBox.getValue().equals("年龄")) {
+                sql = "SELECT * FROM NursingHome.doctor WHERE doctor_date = '" + searchText.getText() + "'";
+            } else if (contextComboBox.getValue().equals("科室")) {
+                sql = "SELECT * FROM NursingHome.doctor WHERE doctor_major LIKE '%" + searchText.getText() + "%'";
+            } else if (contextComboBox.getValue().equals("薪水")) {
+                sql = "SELECT * FROM NursingHome.doctor WHERE doctor_salary = '" + searchText.getText() + "'";
+            } else {
+                sql = "SELECT * FROM NursingHome.doctor";
+            }
+            stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                Doctor doctor = new Doctor();
+                doctor.setId(rs.getString(1));
+                doctor.setName(rs.getString(2));
+                doctor.setDate(rs.getString(3));
+                doctor.setMajor(rs.getString(5));
+                doctor.setSalary(rs.getDouble(4));
+                doctorObservableList.add(doctor);
+            }
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        System.out.println("医生数据导入成功！");
+    }
+
+    /**
      * 加载勤杂人员数据
      */
     public void displayDoorBoy() {
@@ -791,14 +922,29 @@ public class PeopleAdminUIController implements Initializable {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-            String sql = "SELECT * FROM NursingHome.doorboy";
+            String sql;
+            if (contextComboBox.getValue().equals("--无--")) {
+                sql = "SELECT * FROM NursingHome.doorboy";
+            } else if (contextComboBox.getValue().equals("工号")) {
+                sql = "SELECT * FROM NursingHome.doorboy WHERE doorboy_id LIKE '" + searchText.getText() + "%'";
+            } else if (contextComboBox.getValue().equals("姓名")) {
+                sql = "SELECT * FROM NursingHome.doorboy WHERE doorboy_name LIKE '%" + searchText.getText() + "%'";
+            } else if (contextComboBox.getValue().equals("年龄")) {
+                sql = "SELECT * FROM NursingHome.doorboy WHERE doorboy_date = '" + searchText.getText() + "'";
+            } else if (contextComboBox.getValue().equals("岗位")) {
+                sql = "SELECT * FROM NursingHome.doorboy WHERE doorboy_workplace LIKE '%" + searchText.getText() + "%'";
+            } else if (contextComboBox.getValue().equals("薪水")) {
+                sql = "SELECT * FROM NursingHome.doorboy WHERE doorboy_salary = '" + searchText.getText() + "'";
+            } else {
+                sql = "SELECT * FROM NursingHome.doorboy";
+            }
             stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()) {
                 DoorBoy doorBoy = new DoorBoy();
                 doorBoy.setId(rs.getString(1));
                 doorBoy.setName(rs.getString(2));
-                doorBoy.setAge(rs.getInt(3));
+                doorBoy.setDate(rs.getString(3));
                 doorBoy.setSalary(rs.getDouble(4));
                 doorBoy.setWorkPlace(rs.getString(5));
                 doorBoyObservableList.add(doorBoy);
@@ -825,14 +971,29 @@ public class PeopleAdminUIController implements Initializable {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-            String sql = "SELECT * FROM NursingHome.administrator";
+            String sql;
+            if (contextComboBox.getValue().equals("--无--")) {
+                sql = "SELECT * FROM NursingHome.administrator";
+            } else if (contextComboBox.getValue().equals("工号")) {
+                sql = "SELECT * FROM NursingHome.administrator WHERE administrator_id LIKE '" + searchText.getText() + "%'";
+            } else if (contextComboBox.getValue().equals("姓名")) {
+                sql = "SELECT * FROM NursingHome.administrator WHERE administrator_name LIKE '%" + searchText.getText() + "%'";
+            } else if (contextComboBox.getValue().equals("年龄")) {
+                sql = "SELECT * FROM NursingHome.administrator WHERE administrator_date = '" + searchText.getText() + "'";
+            } else if (contextComboBox.getValue().equals("岗位")) {
+                sql = "SELECT * FROM NursingHome.administrator WHERE administrator_position LIKE '%" + searchText.getText() + "%'";
+            } else if (contextComboBox.getValue().equals("薪水")) {
+                sql = "SELECT * FROM NursingHome.administrator WHERE administrator_salary = '" + searchText.getText() + "'";
+            } else {
+                sql = "SELECT * FROM NursingHome.administrator";
+            }
             stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()) {
                 Administrator administrator = new Administrator();
                 administrator.setId(rs.getString(1));
                 administrator.setName(rs.getString(2));
-                administrator.setAge(rs.getInt(3));
+                administrator.setDate(rs.getString(3));
                 administrator.setSalary(rs.getDouble(5));
                 administrator.setPosition(rs.getString(4));
                 adminObservableList.add(administrator);

@@ -85,10 +85,9 @@ public class ControllerUtils {
      *
      * @param peopleTypeComboBox  员工类型下拉框
      * @param peopleType          员工类型
-     * @param peopleAgeComboBox   员工年龄下拉框
      * @param peopleOtherComboBox 员工岗位（职位）下拉框
      */
-    public static void initPeopleComboBox(ComboBox<String> peopleTypeComboBox, String peopleType, ComboBox<Integer> peopleAgeComboBox, ComboBox<String> peopleOtherComboBox) {
+    public static void initPeopleComboBox(ComboBox<String> peopleTypeComboBox, String peopleType, ComboBox<String> peopleOtherComboBox,ComboBox<Integer> customerRankComboBox) {
         peopleTypeComboBox.getItems().add("护工");
         peopleTypeComboBox.getItems().add("医生");
         peopleTypeComboBox.getItems().add("勤杂人员");
@@ -97,10 +96,6 @@ public class ControllerUtils {
         }
         peopleTypeComboBox.setValue(peopleType);
         peopleTypeComboBox.setEditable(false);
-        for (int i = 18; i < 61; i++) {
-            peopleAgeComboBox.getItems().add(i);
-        }
-        peopleAgeComboBox.setValue(30);
         if (PeopleSetInfoUIController.peopleType.equals("护工")) {
             peopleOtherComboBox.getItems().add("高级护工");
             peopleOtherComboBox.getItems().add("中级护工");
@@ -125,6 +120,10 @@ public class ControllerUtils {
             peopleOtherComboBox.getItems().add("院长");
             peopleOtherComboBox.setValue("主管");
         }
+        for (int i=1;i<=3;i++){
+            customerRankComboBox.getItems().add(i);
+        }
+        customerRankComboBox.setValue(3);
     }
 
     /**
@@ -189,16 +188,11 @@ public class ControllerUtils {
     /**
      * 在客户信息界面初始化下拉框
      *
-     * @param customerAgeComboBox        客户年龄下拉框
      * @param customerRankComboBox       客户护理等级下拉框
      * @param customerWorkerRankComboBox 客户要求的护工的等级下拉框
      * @param customerRoomRankComboBox   客户要求的房间等级下拉框
      */
-    public static void initCustomerComboBox(ComboBox<Integer> customerAgeComboBox, ComboBox<Integer> customerRankComboBox, ComboBox<String> customerWorkerRankComboBox, ComboBox<String> customerRoomRankComboBox) {
-        for (int i = 50; i < 120; i++) {
-            customerAgeComboBox.getItems().add(i);
-        }
-        customerAgeComboBox.setValue(60);
+    public static void initCustomerComboBox(ComboBox<Integer> customerRankComboBox, ComboBox<String> customerWorkerRankComboBox, ComboBox<String> customerRoomRankComboBox) {
         for (int i = 1; i <= 3; i++) {
             customerRankComboBox.getItems().add(i);
         }
