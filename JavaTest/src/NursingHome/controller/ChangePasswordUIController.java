@@ -12,7 +12,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static NursingHome.ControllerUtils.*;
-import static NursingHome.GlobalInfo.MANAGER_PASSWORD;
+import static NursingHome.SQLMethod.*;
 
 public class ChangePasswordUIController implements Initializable {
     private Main application;
@@ -29,14 +29,14 @@ public class ChangePasswordUIController implements Initializable {
     private PasswordField newPassword1;
     @FXML
     private PasswordField newPassword2;
-    private static String peopleid;
+    private static String peopleId;
 
-    public static String getPeopleid() {
-        return peopleid;
+    public static String getPeopleId() {
+        return peopleId;
     }
 
-    public static void setPeopleid(String peopleid) {
-        ChangePasswordUIController.peopleid = peopleid;
+    public static void setPeopleId(String peopleid) {
+        ChangePasswordUIController.peopleId = peopleid;
     }
 
     @Override
@@ -61,7 +61,7 @@ public class ChangePasswordUIController implements Initializable {
                 try {
                     Class.forName("com.mysql.jdbc.Driver");
                     conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-                    String sql = "UPDATE NursingHome.manager SET manager_password='" + md5(newPassword1.getText()) + "' WHERE manager_id='" + peopleid + "'";
+                    String sql = "UPDATE NursingHome.manager SET manager_password='" + md5(newPassword1.getText()) + "' WHERE manager_id='" + getPeopleId() + "'";
                     stmt = conn.createStatement();
                     stmt.executeUpdate(sql);
                     stmt.close();

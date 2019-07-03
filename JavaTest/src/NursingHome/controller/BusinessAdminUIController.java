@@ -19,6 +19,7 @@ import java.util.ResourceBundle;
 
 import static NursingHome.ControllerUtils.*;
 import static NursingHome.GlobalInfo.*;
+import static NursingHome.SQLMethod.*;
 
 public class BusinessAdminUIController implements Initializable {
     private Main application;
@@ -295,8 +296,8 @@ public class BusinessAdminUIController implements Initializable {
                 try {
                     Class.forName("com.mysql.jdbc.Driver");
                     conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-                    String sql = "UPDATE bed SET bed_status=0 WHERE bed_id='" + customerSelected.get(i).getBedID() + "' AND bed_roomid='" + customerSelected.get(i).getRoomID() + "';";
-                    String sql1 = "UPDATE room SET room_usedbed=room_usedbed-1 WHERE room_id='" + customerSelected.get(i).getRoomID() + "'";
+                    String sql = "UPDATE NursingHome.bed SET bed_status=0 WHERE bed_id='" + customerSelected.get(i).getBedID() + "' AND bed_roomid='" + customerSelected.get(i).getRoomID() + "';";
+                    String sql1 = "UPDATE NursingHome.room SET room_usedbed=room_usedbed-1 WHERE room_id='" + customerSelected.get(i).getRoomID() + "'";
                     stmt = conn.createStatement();
                     stmt.executeUpdate(sql);
                     stmt.executeUpdate(sql1);
@@ -308,23 +309,8 @@ public class BusinessAdminUIController implements Initializable {
                     e.printStackTrace();
                 }
 
-                // TODO 删除客户时再改护工
-                double room_idDouble = Double.valueOf(customerSelected.get(i).getRoomID().substring(1));
-                try {
-                    Class.forName("com.mysql.jdbc.Driver");
-                    conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-                    String sql = "UPDATE worker SET worker_vispos=(worker_vispos*worker_customernumber-" + room_idDouble + ")/(worker_customernumber-1) WHERE worker_id='" + customerSelected.get(i).getCareWorker() + "';";
-                    String sql1 = "UPDATE worker SET worker_customernumber=worker_customernumber-1 WHERE worker_id'" + customerSelected.get(i).getCareWorker() + "'";
-                    stmt = conn.createStatement();
-                    stmt.executeUpdate(sql);
-                    stmt.executeUpdate(sql1);
-                    stmt.close();
-                    conn.close();
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+                // TODO 删除客户时再改护工位置信息
+                changeWorkerPos(false, customerSelected.get(0).getCareWorker(), customerSelected.get(i).getRoomID());
 
                 // TODO 删除客户时最后改客户
                 try {
@@ -343,19 +329,8 @@ public class BusinessAdminUIController implements Initializable {
                     e.printStackTrace();
                 }
             }
-            for (int i = 0; i < customerSelected.size(); i++) {
-                for (int j = 0; j < customerObservableList.size(); j++) {
-                    if (customerSelected.get(i).getId().equals(customerObservableList.get(j).getId())) {
-                        customerObservableList.remove(j);
-                        // TODO 将该客户的档案记录也删除
-                        for (int k = 0; k < recordObservableList.size(); k++) {
-                            if (recordObservableList.get(k).getCustomerId().equals(customerSelected.get(i).getId())) {
-                                recordObservableList.remove(k);
-                            }
-                        }
-                    }
-                }
-            }
+            displayBusiness();
+            bindBusiness();
             System.out.println("删除Customer成功");
         } else {
             showAlert("[警告]您没有删除客户的权限！");

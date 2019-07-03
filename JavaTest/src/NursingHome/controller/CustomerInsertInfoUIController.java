@@ -17,6 +17,7 @@ import java.util.ResourceBundle;
 import java.util.Date;
 
 import static NursingHome.ControllerUtils.*;
+import static NursingHome.SQLMethod.*;
 
 public class CustomerInsertInfoUIController implements Initializable {
     private Main application;
@@ -52,44 +53,12 @@ public class CustomerInsertInfoUIController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        customerIdLabel.setText(generateCustomerId());
+        customerIdLabel.setText(generateId('C'));
         customerBirthDatePicker.setEditable(false);
         customerRankComboBox.setEditable(false);
         customerRoomRankComboBox.setEditable(false);
         customerWorkerRankComboBox.setEditable(false);
         ControllerUtils.initCustomerComboBox(customerRankComboBox, customerWorkerRankComboBox, customerRoomRankComboBox);
-    }
-
-    /**
-     * 生成新的客户的编号
-     *
-     * @return 新的客户编号
-     */
-    public String generateCustomerId() {
-        String customerId = "";
-        // TODO 自动获得客户Id,从Customer表中
-        Connection conn;
-        Statement stmt;
-        int N = 0;
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-            String sql = "SELECT count(*) FROM NursingHome.historical_customer;";
-            stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
-            if (rs.next()) {
-                N = rs.getInt(1);
-            }
-            rs.close();
-            stmt.close();
-            conn.close();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        customerId = "C" + (N + 1);
-        return customerId;
     }
 
     /**

@@ -34,15 +34,15 @@
                 <Label text="编号" />
                 <Label prefHeight="28.0" prefWidth="76.0" text="出生日期" GridPane.rowIndex="4" />
                 <Label prefHeight="28.0" prefWidth="76.0" text="房间号" GridPane.rowIndex="1" />
-                <TextField fx:id="customerRoomIdTextField" promptText="请输入房间号" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                <TextField fx:id="customerBedIdTextField" promptText="请输入床号" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                <TextField fx:id="customerIdTextField" promptText="请输入编号" GridPane.columnIndex="1" />
                 <JFXDatePicker fx:id="customerEnterTimeDatePicker" prefHeight="29.0" prefWidth="216.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                <TextField fx:id="customerCareWorkerIdTextField" promptText="请输入护工编号" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                 <Label prefHeight="28.0" prefWidth="76.0" text="护工编号" GridPane.rowIndex="5" />
                 <JFXComboBox fx:id="customerWorkerRankComboBox" prefHeight="27.0" prefWidth="342.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                 <Label prefHeight="28.0" prefWidth="76.0" text="护工等级" GridPane.rowIndex="6" />
-            <JFXDatePicker fx:id="customerBirthDatePicker" prefHeight="29.0" prefWidth="216.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                <JFXDatePicker fx:id="customerBirthDatePicker" prefHeight="29.0" prefWidth="216.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                <Label fx:id="customerIdLabel" prefHeight="28.0" prefWidth="204.0" text="客户编号" GridPane.columnIndex="1" />
+            <Label fx:id="customerCareWorkerLabel" prefHeight="28.0" prefWidth="203.0" text="护工编号" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <Label fx:id="customerRoomIdLabel" prefHeight="26.0" prefWidth="204.0" text="客户房间号" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label fx:id="customerBedIdLabel" prefHeight="28.0" prefWidth="204.0" text="客户床号" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             </children>
         </GridPane>
         <GridPane layoutX="350.0" layoutY="54.0" prefHeight="272.0" prefWidth="266.0">

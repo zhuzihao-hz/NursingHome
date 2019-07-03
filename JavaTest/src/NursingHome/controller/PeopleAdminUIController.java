@@ -20,6 +20,7 @@ import java.util.ResourceBundle;
 
 import static NursingHome.ControllerUtils.*;
 import static NursingHome.GlobalInfo.*;
+import static NursingHome.SQLMethod.*;
 
 public class PeopleAdminUIController implements Initializable {
     private Main application;
@@ -302,14 +303,14 @@ public class PeopleAdminUIController implements Initializable {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-            String sql = "SELECT worker_id FROM worker WHERE worker_rank='" + workerRank + "' AND worker_customerrank=" + rank + " ORDER BY abs(" + room_idDouble + "-worker_vispos) ASC, worker_customernumber ASC";
+            String sql = "SELECT worker_id FROM NursingHome.worker WHERE worker_rank='" + workerRank + "' AND worker_customerrank=" + rank + " ORDER BY abs(" + room_idDouble + "-worker_vispos) ASC, worker_customernumber ASC";
             stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
             if (rs.next()) {
                 customer.setCareWorker(rs.getString(1));
             }
-            String sql1 = "UPDATE worker SET worker_customernumber=worker_customernumber+1 WHERE worker_id='" + customer.getCareWorker() + "'";
-            String sql2 = "UPDATE worker SET worker_vispos=(worker_vispos*(worker_customernember-1)+" + room_idDouble + ")/worker_customernumber WHERE worker_id='" + customer.getCareWorker() + "'";
+            String sql1 = "UPDATE NursingHome.worker SET worker_customernumber=worker_customernumber+1 WHERE worker_id='" + customer.getCareWorker() + "'";
+            String sql2 = "UPDATE NursingHome.worker SET worker_vispos=(worker_vispos*(worker_customernumber-1)+" + room_idDouble + ")/worker_customernumber WHERE worker_id='" + customer.getCareWorker() + "'";
             stmt.executeUpdate(sql1);
             stmt.executeUpdate(sql2);
             stmt.close();
@@ -332,66 +333,25 @@ public class PeopleAdminUIController implements Initializable {
         if (MANAGER_PRIV == 0) {
             if (workerTab.isSelected()) {
                 List<Worker> workerSelected = workerTableView.getSelectionModel().getSelectedItems();
+                int N;
                 for (int i = 0; i < workerSelected.size(); i++) {
                     // TODO 在数据库中删除护工，并且在历史员工里把状态改为离职（0）
 
                     String workerRank = workerSelected.get(i).getRank();
                     String workerId = workerSelected.get(i).getId();
+
+                    // TODO 先搜索是否有该需求的其他护工，没有的话不能解雇
+                    N = 0;
                     Connection conn;
                     Statement stmt;
                     try {
                         Class.forName("com.mysql.jdbc.Driver");
                         conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-                        String sql = "DELETE FROM NursingHome.worker WHERE worker_id='" + workerSelected.get(i).getId() + "'";
-                        String sql1 = "UPDATE NursingHome.historical_staff SET staff_status=0 WHERE staff_id='" + workerSelected.get(i).getId() + "'";
-                        stmt = conn.createStatement();
-                        stmt.executeUpdate(sql);
-                        stmt.executeUpdate(sql1);
-                        stmt.close();
-                        conn.close();
-                    } catch (ClassNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-
-                    // TODO 在删除护工之后，重新分配
-                    try {
-                        Class.forName("com.mysql.jdbc.Driver");
-                        conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-                        String sql = "SELECT * FROM NursingHome.customer WHERE customer_careworker='" + workerId + "'";
+                        String sql = "SELECT count(*) FROM NursingHome.worker WHERE worker_rank = '" + workerSelected.get(i).getRank() + "' AND worker_customerrank = '" + workerSelected.get(i).getCustomerRank() + "';";
                         stmt = conn.createStatement();
                         ResultSet rs = stmt.executeQuery(sql);
-                        while (rs.next()) {
-                            Customer customer = new Customer();
-                            customer.setId(rs.getString(1));
-                            customer.setName(rs.getString(2));
-                            customer.setDate(rs.getString(3));
-                            customer.setEnterTime(rs.getString(4));
-                            customer.setRoomID(rs.getString(5));
-                            customer.setBedID(rs.getString(6));
-                            customer.setPhone(rs.getString(7));
-                            customer.setCareWorker(rs.getString(8));
-                            customer.setRank(rs.getInt(9));
-                            customer.setRelationName(rs.getString(10));
-                            customer.setRelation(rs.getString(11));
-                            customer.setRelationPhone(rs.getString(12));
-                            customer = autoAllocate(customer, customer.getRank(), workerRank);
-
-                            // TODO 重新分配后更改数据库中的客户表
-                            try {
-                                Class.forName("com.mysql.jdbc.Driver");
-                                conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-                                String sql1 = "UPDATE NursingHome.customer SET customer_name='" + customer.getName() + "', customer_date='" + customer.getDate() + "', customer_entertime='" + customer.getEnterTime() + "', customer_roomid='" + customer.getRoomID() + "', customer_bedid='" + customer.getBedID() + "', customer_phone='" + customer.getPhone() + "', customer_careworker='" + customer.getCareWorker() + "', customer_rank='" + customer.getRank() + "', customer_relationname='" + customer.getRelationName() + "', customer_relation='" + customer.getRelation() + "', customer_relationphone='" + customer.getRelationPhone() + "' WHERE customer_id='" + customer.getId() + "'";
-                                stmt = conn.createStatement();
-                                stmt.executeUpdate(sql1);
-                                stmt.close();
-                                conn.close();
-                            } catch (ClassNotFoundException e) {
-                                e.printStackTrace();
-                            } catch (SQLException e) {
-                                e.printStackTrace();
-                            }
+                        if (rs.first()) {
+                            N = rs.getInt(1);
                         }
                         stmt.close();
                         conn.close();
@@ -401,17 +361,77 @@ public class PeopleAdminUIController implements Initializable {
                         e.printStackTrace();
                     }
 
-                }
-                // TODO 在tableView中也把员工信息去掉
-                for (int i = 0; i < workerSelected.size(); i++) {
-                    for (int j = 0; j < workerObservableList.size(); j++) {
-                        if (workerSelected.get(i).getId().equals(workerObservableList.get(j).getId())) {
-                            workerObservableList.remove(j);
-                            break;
+                    if (N == 1) {
+                        showAlert("[警告]该类型护工只有一个了，不能解雇！");
+                    } else {
+                        // TODO 相同需求的护工不止一个，可以删除该护工
+                        try {
+                            Class.forName("com.mysql.jdbc.Driver");
+                            conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
+                            String sql = "DELETE FROM NursingHome.worker WHERE worker_id='" + workerSelected.get(i).getId() + "'";
+                            String sql1 = "UPDATE NursingHome.historical_staff SET staff_status=0 WHERE staff_id='" + workerSelected.get(i).getId() + "'";
+                            stmt = conn.createStatement();
+                            stmt.executeUpdate(sql);
+                            stmt.executeUpdate(sql1);
+                            stmt.close();
+                            conn.close();
+                        } catch (ClassNotFoundException e) {
+                            e.printStackTrace();
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+
+                        // TODO 在删除护工之后，重新分配
+                        try {
+                            Class.forName("com.mysql.jdbc.Driver");
+                            conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
+                            String sql = "SELECT * FROM NursingHome.customer WHERE customer_careworker='" + workerId + "'";
+                            stmt = conn.createStatement();
+                            ResultSet rs = stmt.executeQuery(sql);
+                            while (rs.next()) {
+                                Customer customer = new Customer();
+                                customer.setId(rs.getString(1));
+                                customer.setName(rs.getString(2));
+                                customer.setDate(rs.getString(3));
+                                customer.setEnterTime(rs.getString(4));
+                                customer.setRoomID(rs.getString(5));
+                                customer.setBedID(rs.getString(6));
+                                customer.setPhone(rs.getString(7));
+                                customer.setCareWorker(rs.getString(8));
+                                customer.setRank(rs.getInt(9));
+                                customer.setRelationName(rs.getString(10));
+                                customer.setRelation(rs.getString(11));
+                                customer.setRelationPhone(rs.getString(12));
+                                customer = autoAllocate(customer, customer.getRank(), workerRank);
+
+                                // TODO 重新分配后更改数据库中的客户表
+                                try {
+                                    Class.forName("com.mysql.jdbc.Driver");
+                                    conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
+                                    String sql1 = "UPDATE NursingHome.customer SET customer_name='" + customer.getName() + "', customer_date='" + customer.getDate() + "', customer_entertime='" + customer.getEnterTime() + "', customer_roomid='" + customer.getRoomID() + "', customer_bedid='" + customer.getBedID() + "', customer_phone='" + customer.getPhone() + "', customer_careworker='" + customer.getCareWorker() + "', customer_rank='" + customer.getRank() + "', customer_relationname='" + customer.getRelationName() + "', customer_relation='" + customer.getRelation() + "', customer_relationphone='" + customer.getRelationPhone() + "' WHERE customer_id='" + customer.getId() + "'";
+                                    stmt = conn.createStatement();
+                                    stmt.executeUpdate(sql1);
+                                    stmt.close();
+                                    conn.close();
+                                } catch (ClassNotFoundException e) {
+                                    e.printStackTrace();
+                                } catch (SQLException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                            stmt.close();
+                            conn.close();
+                        } catch (ClassNotFoundException e) {
+                            e.printStackTrace();
+                        } catch (SQLException e) {
+                            e.printStackTrace();
                         }
                     }
                 }
                 System.out.println("解雇Worker成功");
+                displayWorker();
+                bindWorker();
             } else if (doctorTab.isSelected()) {
                 // TODO 删除医生,并且把历史员工表里的状态改为（0）
                 List<Doctor> doctorSelected = doctorTableView.getSelectionModel().getSelectedItems();
@@ -436,15 +456,8 @@ public class PeopleAdminUIController implements Initializable {
                         e.printStackTrace();
                     }
                 }
-                // TODO 在tableView中也把员工信息去掉
-                for (int i = 0; i < doctorSelected.size(); i++) {
-                    for (int j = 0; j < doctorObservableList.size(); j++) {
-                        if (doctorSelected.get(i).getId().equals(doctorObservableList.get(j).getId())) {
-                            doctorObservableList.remove(j);
-                            break;
-                        }
-                    }
-                }
+                displayDoctor();
+                bindDoctor();
                 System.out.println("解雇Doctor成功");
             } else if (doorBoyTab.isSelected()) {
                 // TODO 删除勤杂工同时将历史员工表里的状态改为离职（0）
@@ -472,15 +485,8 @@ public class PeopleAdminUIController implements Initializable {
                         e.printStackTrace();
                     }
                 }
-                // TODO 在tableView中也把员工信息去掉
-                for (int i = 0; i < doorBoySelected.size(); i++) {
-                    for (int j = 0; j < doorBoyObservableList.size(); j++) {
-                        if (doorBoySelected.get(i).getId().equals(doorBoyObservableList.get(j).getId())) {
-                            doorBoyObservableList.remove(j);
-                            break;
-                        }
-                    }
-                }
+                displayDoorBoy();
+                bindDoorBoy();
                 System.out.println("解雇DoorBoy成功");
             } else if (adminTab.isSelected()) {
                 // TODO 删除行政人员同时将历史员工表里的状态改为离职（0）
@@ -506,15 +512,8 @@ public class PeopleAdminUIController implements Initializable {
                         e.printStackTrace();
                     }
                 }
-                // TODO 在tableView中也把员工信息去掉
-                for (int i = 0; i < adminSelected.size(); i++) {
-                    for (int j = 0; j < adminObservableList.size(); j++) {
-                        if (adminSelected.get(i).getId().equals(adminObservableList.get(j).getId())) {
-                            adminObservableList.remove(j);
-                            break;
-                        }
-                    }
-                }
+                displayAdministrator();
+                bindAdministrator();
                 System.out.println("解雇Administrator成功");
             }
         } else {
@@ -581,11 +580,11 @@ public class PeopleAdminUIController implements Initializable {
                 Worker worker = ((Worker) people);
                 for (int i = 0; i < workerObservableList.size(); i++) {
                     if (workerObservableList.get(i).getId().equals(worker.getId())) {
-                        workerObservableList.get(i).setId(worker.getId());
                         workerObservableList.get(i).setName(worker.getName());
                         workerObservableList.get(i).setSalary(worker.getSalary());
                         workerObservableList.get(i).setRank(worker.getRank());
                         workerObservableList.get(i).setDate(worker.getDate());
+                        workerObservableList.get(i).setCustomerRank(worker.getCustomerRank());
                         break;
                     }
                 }
@@ -593,7 +592,6 @@ public class PeopleAdminUIController implements Initializable {
                 Doctor doctor = ((Doctor) people);
                 for (int i = 0; i < doctorObservableList.size(); i++) {
                     if (doctorObservableList.get(i).getId().equals(doctor.getId())) {
-                        doctorObservableList.get(i).setId(doctor.getId());
                         doctorObservableList.get(i).setName(doctor.getName());
                         doctorObservableList.get(i).setSalary(doctor.getSalary());
                         doctorObservableList.get(i).setMajor(doctor.getMajor());
@@ -605,7 +603,6 @@ public class PeopleAdminUIController implements Initializable {
                 DoorBoy doorBoy = ((DoorBoy) people);
                 for (int i = 0; i < doorBoyObservableList.size(); i++) {
                     if (doorBoyObservableList.get(i).getId().equals(doorBoy.getId())) {
-                        doorBoyObservableList.get(i).setId(doorBoy.getId());
                         doorBoyObservableList.get(i).setName(doorBoy.getName());
                         doorBoyObservableList.get(i).setSalary(doorBoy.getSalary());
                         doorBoyObservableList.get(i).setWorkPlace(doorBoy.getWorkPlace());
@@ -723,19 +720,19 @@ public class PeopleAdminUIController implements Initializable {
         if (MANAGER_PRIV == 0) {
             if (doctorTab.isSelected()) {
                 List<Doctor> doctorSelected = doctorTableView.getSelectionModel().getSelectedItems();
-                ChangePasswordUIController.setPeopleid(doctorSelected.get(0).getId());
+                ChangePasswordUIController.setPeopleId(doctorSelected.get(0).getId());
                 getApp().createChangePasswordUI();
             } else if (doorBoyTab.isSelected()) {
                 List<DoorBoy> doorBoySelected = doorBoyTableView.getSelectionModel().getSelectedItems();
                 if (doorBoySelected.get(0).getWorkPlace().equals("前台")) {
-                    ChangePasswordUIController.setPeopleid(doorBoySelected.get(0).getId());
+                    ChangePasswordUIController.setPeopleId(doorBoySelected.get(0).getId());
                     getApp().createChangePasswordUI();
                 } else {
                     showAlert("[警告]该员工没有账户！");
                 }
             } else if (adminTab.isSelected()) {
                 List<Administrator> adminSelected = adminTableView.getSelectionModel().getSelectedItems();
-                ChangePasswordUIController.setPeopleid(adminSelected.get(0).getId());
+                ChangePasswordUIController.setPeopleId(adminSelected.get(0).getId());
                 getApp().createChangePasswordUI();
             } else {
                 showAlert("[警告]该员工没有账户！");

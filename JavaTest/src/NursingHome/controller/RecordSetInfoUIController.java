@@ -16,6 +16,7 @@ import java.util.Date;
 import java.util.ResourceBundle;
 
 import static NursingHome.ControllerUtils.*;
+import static NursingHome.SQLMethod.*;
 
 public class RecordSetInfoUIController implements Initializable {
     private Main application;
@@ -51,7 +52,7 @@ public class RecordSetInfoUIController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        recordIdLabel.setText("R" + getRecordNumber());
+        recordIdLabel.setText(generateId('R'));
         recordCustomerIdTextField.setText("");
         recordCustomerNameTextField.setText("");
         recordDoctorIdTextField.setText("");
@@ -60,37 +61,6 @@ public class RecordSetInfoUIController implements Initializable {
         String string = sdf.format(date);
         recordDatePicker.setValue(StringToDate(string));
         recordContext.setText("");
-    }
-
-    /**
-     * 生成新的记录编号
-     *
-     * @return 新记录编号
-     */
-    public int getRecordNumber() {
-        int N = 0;
-        // TODO 获取记录条数加1
-        Connection conn;
-        Statement stmt;
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-            String sql = "SELECT count(*) FROM NursingHome.record;";
-            stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
-            if (rs.next()) {
-                N = rs.getInt(1);
-            }
-            rs.close();
-            stmt.close();
-            conn.close();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        System.out.println(N);
-        return N + 1;
     }
 
     /**

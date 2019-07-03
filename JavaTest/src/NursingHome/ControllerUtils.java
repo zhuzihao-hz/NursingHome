@@ -17,17 +17,11 @@ import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
-import java.util.Dictionary;
-import java.util.List;
 import java.util.Random;
 
 import static NursingHome.GlobalInfo.MANAGER_PRIV;
 
 public class ControllerUtils {
-    public static String MYSQL_URL = "jdbc:mysql://localhost:3306";
-    public static String MYSQL_USER = "root";
-    public static String MYSQL_PASSWORD = "12345678";
-
     /**
      * 显示提示框
      *
@@ -87,7 +81,7 @@ public class ControllerUtils {
      * @param peopleType          员工类型
      * @param peopleOtherComboBox 员工岗位（职位）下拉框
      */
-    public static void initPeopleComboBox(ComboBox<String> peopleTypeComboBox, String peopleType, ComboBox<String> peopleOtherComboBox,ComboBox<Integer> customerRankComboBox) {
+    public static void initPeopleComboBox(ComboBox<String> peopleTypeComboBox, String peopleType, ComboBox<String> peopleOtherComboBox, ComboBox<Integer> customerRankComboBox) {
         peopleTypeComboBox.getItems().add("护工");
         peopleTypeComboBox.getItems().add("医生");
         peopleTypeComboBox.getItems().add("勤杂人员");
@@ -120,7 +114,7 @@ public class ControllerUtils {
             peopleOtherComboBox.getItems().add("院长");
             peopleOtherComboBox.setValue("主管");
         }
-        for (int i=1;i<=3;i++){
+        for (int i = 1; i <= 3; i++) {
             customerRankComboBox.getItems().add(i);
         }
         customerRankComboBox.setValue(3);

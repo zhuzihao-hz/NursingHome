@@ -19,6 +19,7 @@ import java.util.ResourceBundle;
 
 import static NursingHome.ControllerUtils.*;
 import static NursingHome.GlobalInfo.MANAGER_PRIV;
+import static NursingHome.SQLMethod.*;
 
 public class PeopleSetInfoUIController implements Initializable {
     private Main application;
@@ -68,13 +69,22 @@ public class PeopleSetInfoUIController implements Initializable {
             if (MANAGER_PRIV == 0) {
                 ControllerUtils.initPeopleComboBox(peopleTypeComboBox, peopleType, peopleOtherComboBox, customerRankComboBox);
                 if (peopleType.equals("护工")) {
-                    peopleIdLabel.setText(getPeopleId(new Worker()));
+                    peopleIdLabel.setText(generateId('W'));
                 } else if (peopleType.equals("医生")) {
-                    peopleIdLabel.setText(getPeopleId(new Doctor()));
+                    peopleIdLabel.setText(generateId('D'));
+                    customerRankComboBox.setVisible(false);
+                    customerRankComboBox.setDisable(true);
+                    customerRankLabel.setVisible(false);
                 } else if (peopleType.equals("勤杂人员")) {
-                    peopleIdLabel.setText(getPeopleId(new DoorBoy()));
+                    peopleIdLabel.setText(generateId('B'));
+                    customerRankComboBox.setVisible(false);
+                    customerRankComboBox.setDisable(true);
+                    customerRankLabel.setVisible(false);
                 } else if (peopleType.equals("行政人员")) {
-                    peopleIdLabel.setText(getPeopleId(new Administrator()));
+                    peopleIdLabel.setText(generateId('A'));
+                    customerRankComboBox.setVisible(false);
+                    customerRankComboBox.setDisable(true);
+                    customerRankLabel.setVisible(false);
                 }
             }
         } else if (people.getClass().getName().equals("NursingHome.dataclass.Worker")) {
@@ -90,27 +100,8 @@ public class PeopleSetInfoUIController implements Initializable {
             peopleOtherComboBox.setValue(oldWorker.getRank());
 
             // TODO 查询该护工是否有护理任务，有的话不能修改护理等级
-            Connection conn;
-            Statement stmt;
-            int N = 0;
-            try {
-                Class.forName("com.mysql.jdbc.Driver");
-                conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-                String sql = "SELECT count(*) FROM NursingHome.customer WHERE customer_careworker='" + oldWorker.getId() + "'";
-                stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery(sql);
-                if (rs.next()) {
-                    N = rs.getInt(1);
-                }
-                rs.close();
-                stmt.close();
-                conn.close();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            if (N>0){
+            int N = oldWorker.getCustomerNumber();
+            if (N > 0) {
                 customerRankComboBox.setDisable(true);
                 peopleOtherComboBox.setDisable(true);
             }
@@ -172,72 +163,27 @@ public class PeopleSetInfoUIController implements Initializable {
         peopleType = peopleTypeComboBox.getValue();
         if (peopleTypeComboBox.getValue().equals("护工")) {
             peopleOtherLabel.setText("级别");
-            peopleIdLabel.setText(getPeopleId(new Worker()));
+            peopleIdLabel.setText(generateId('W'));
+            customerRankComboBox.setDisable(false);
             customerRankLabel.setVisible(true);
             customerRankComboBox.setVisible(true);
         } else if (peopleTypeComboBox.getValue().equals("医生")) {
             peopleOtherLabel.setText("科室");
-            peopleIdLabel.setText(getPeopleId(new Doctor()));
+            peopleIdLabel.setText(generateId('D'));
             customerRankLabel.setVisible(false);
             customerRankComboBox.setVisible(false);
         } else if (peopleTypeComboBox.getValue().equals("勤杂人员")) {
             peopleOtherLabel.setText("工作部门");
-            peopleIdLabel.setText(getPeopleId(new DoorBoy()));
+            peopleIdLabel.setText(generateId('B'));
             customerRankLabel.setVisible(false);
             customerRankComboBox.setVisible(false);
         } else if (peopleTypeComboBox.getValue().equals("行政人员")) {
             peopleOtherLabel.setText("职务");
-            peopleIdLabel.setText(getPeopleId(new Administrator()));
+            peopleIdLabel.setText(generateId('A'));
             customerRankLabel.setVisible(false);
             customerRankComboBox.setVisible(false);
         }
         ControllerUtils.changeComboBox(peopleType, peopleOtherComboBox);
-    }
-
-    /**
-     * 生成新的员工的编号
-     *
-     * @param object 员工对象
-     * @return 新员工编号
-     */
-    public String getPeopleId(Object object) {
-        String peopleId = "";
-        // TODO 从历史员工表获取people(不同类型的职工)数量，加一得到新员工的ID
-        Connection conn;
-        Statement stmt;
-        int N = 0;
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-            String sql = "";
-            if (object.getClass().getName().equals("NursingHome.dataclass.Worker")) {
-                sql = "SELECT count(*) FROM NursingHome.historical_staff WHERE staff_id LIKE 'W%';";
-                peopleId = "W";
-            } else if (object.getClass().getName().equals("NursingHome.dataclass.Doctor")) {
-                sql = "SELECT count(*) FROM NursingHome.historical_staff WHERE staff_id LIKE 'D%';";
-                peopleId = "D";
-            } else if (object.getClass().getName().equals("NursingHome.dataclass.DoorBoy")) {
-                sql = "SELECT count(*) FROM NursingHome.historical_staff WHERE staff_id LIKE 'B%';";
-                peopleId = "B";
-            } else if (object.getClass().getName().equals("NursingHome.dataclass.Administrator")) {
-                sql = "SELECT count(*) FROM NursingHome.historical_staff WHERE staff_id LIKE 'A%';";
-                peopleId = "A";
-            }
-            stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
-            if (rs.next()) {
-                N = rs.getInt(1);
-            }
-            rs.close();
-            stmt.close();
-            conn.close();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        peopleId = peopleId + (N + 1);
-        return peopleId;
     }
 
     /**
@@ -254,7 +200,7 @@ public class PeopleSetInfoUIController implements Initializable {
                 isInsert = true;
                 if (peopleTypeComboBox.getValue().equals("护工")) {
                     Worker worker = new Worker();
-                    worker.setId(getPeopleId(worker));
+                    worker.setId(generateId('W'));
                     worker.setDate(localDateToString(peopleBirthDatePicker.getValue()));
                     worker.setName(peopleNameTextField.getText());
                     try {
@@ -263,31 +209,17 @@ public class PeopleSetInfoUIController implements Initializable {
                         showAlert("[错误]薪水格式错误");
                     }
                     worker.setRank(peopleOtherComboBox.getValue());
+                    worker.setCustomerRank(customerRankComboBox.getValue());
                     System.out.println(worker.getWorkerInfo());
 
                     // TODO 在数据库中新增信息,在历史员工表中也要添加信息
-                    Connection conn;
-                    Statement stmt;
-                    try {
-                        Class.forName("com.mysql.jdbc.Driver");
-                        conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-                        String sql1 = "INSERT INTO NursingHome.historical_staff VALUES ('" + worker.getId() + "','1')";
-                        String sql = "INSERT INTO NursingHome.worker VALUES " + worker.getWorkerInfo();
-                        stmt = conn.createStatement();
-                        stmt.executeUpdate(sql1);
-                        stmt.executeUpdate(sql);
-                        stmt.close();
-                        conn.close();
-                    } catch (ClassNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
+                    newPeople(worker);
+
                     people = (Object) worker;
                 } else if (peopleTypeComboBox.getValue().equals("医生")) {
                     // TODO 新增医生时需要给出登陆密码
                     Doctor doctor = new Doctor();
-                    doctor.setId(getPeopleId(doctor));
+                    doctor.setId(generateId('D'));
                     doctor.setDate(localDateToString(peopleBirthDatePicker.getValue()));
                     doctor.setName(peopleNameTextField.getText());
                     try {
@@ -298,44 +230,15 @@ public class PeopleSetInfoUIController implements Initializable {
                     doctor.setMajor(peopleOtherComboBox.getValue());
 
                     // TODO 在数据库中新增医生信息
-                    Connection conn;
-                    Statement stmt;
-                    try {
-                        Class.forName("com.mysql.jdbc.Driver");
-                        conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-                        String sql1 = "INSERT INTO NursingHome.historical_staff VALUES ('" + doctor.getId() + "','1')";
-                        String sql = "INSERT INTO NursingHome.doctor VALUES " + doctor.getDoctorInfo();
-                        stmt = conn.createStatement();
-                        stmt.executeUpdate(sql1);
-                        stmt.executeUpdate(sql);
-                        stmt.close();
-                        conn.close();
-                    } catch (ClassNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
+                    newPeople(doctor);
+
                     // TODO 生成密码，并输出
-                    String tempPassword = randomPassword();
-                    showAlert("[提示]该医生的密码为：" + tempPassword);
-                    try {
-                        Class.forName("com.mysql.jdbc.Driver");
-                        conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-                        String sql = "INSERT INTO NursingHome.administrator VALUES ('" + doctor.getId() + "',2,'" + md5(tempPassword) + "');";
-                        stmt = conn.createStatement();
-                        stmt.executeUpdate(sql);
-                        stmt.close();
-                        conn.close();
-                    } catch (ClassNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
+                    newPassword(doctor);
 
                     people = (Object) doctor;
                 } else if (peopleTypeComboBox.getValue().equals("勤杂人员")) {
                     DoorBoy doorBoy = new DoorBoy();
-                    doorBoy.setId(getPeopleId(doorBoy));
+                    doorBoy.setId(generateId('B'));
                     doorBoy.setDate(localDateToString(peopleBirthDatePicker.getValue()));
                     doorBoy.setName(peopleNameTextField.getText());
                     try {
@@ -345,50 +248,19 @@ public class PeopleSetInfoUIController implements Initializable {
                     }
                     doorBoy.setWorkPlace(peopleOtherComboBox.getValue());
 
-                    // TODO 在数据库中新增信息
-                    Connection conn;
-                    Statement stmt;
-                    try {
-                        Class.forName("com.mysql.jdbc.Driver");
-                        conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-                        String sql1 = "INSERT INTO NursingHome.historical_staff VALUES ('" + doorBoy.getId() + "','1')";
-                        String sql = "INSERT INTO NursingHome.doorboy VALUES " + doorBoy.getDoorBoyInfo();
-                        stmt = conn.createStatement();
-                        stmt.executeUpdate(sql1);
-                        stmt.executeUpdate(sql);
-                        stmt.close();
-                        conn.close();
-                    } catch (ClassNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
+                    // TODO 在数据库中新增勤杂人员信息
+                    newPeople(doorBoy);
 
                     // TODO 只有前台人员需要生成密码，并输出
                     if (doorBoy.getWorkPlace().equals("前台")) {
-                        String tempPassword = randomPassword();
-                        showAlert("[提示]该前台人员的密码为：" + tempPassword);
-                        try {
-                            Class.forName("com.mysql.jdbc.Driver");
-                            conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-                            String sql = "INSERT INTO NursingHome.manager VALUES ('" + doorBoy.getId() + "',3,'" + md5(tempPassword) + "');";
-                            stmt = conn.createStatement();
-                            stmt.executeUpdate(sql);
-                            stmt.close();
-                            conn.close();
-                        } catch (ClassNotFoundException e) {
-                            e.printStackTrace();
-                        } catch (SQLException e) {
-                            e.printStackTrace();
-                        }
+                        newPassword(doorBoy);
                     }
 
                     people = (Object) doorBoy;
                 } else if (peopleTypeComboBox.getValue().equals("行政人员")) {
                     // TODO 新增行政人员
-
                     Administrator admin = new Administrator();
-                    admin.setId(getPeopleId(admin));
+                    admin.setId(generateId('A'));
                     admin.setDate(localDateToString(peopleBirthDatePicker.getValue()));
                     admin.setName(peopleNameTextField.getText());
                     try {
@@ -399,7 +271,6 @@ public class PeopleSetInfoUIController implements Initializable {
                     admin.setPosition(peopleOtherComboBox.getValue());
 
                     // TODO 判断是否已经有
-
                     Connection conn;
                     Statement stmt;
                     int N = 0;
@@ -421,53 +292,16 @@ public class PeopleSetInfoUIController implements Initializable {
                         e.printStackTrace();
                     }
 
-
                     if (N == 1) {
                         // TODO 已经有相关人员，比如总经理，此时不需要新增
                         insertFailed = true;
                         showAlert("[警告]该只为已经有工作人员，无法新增工作人员！");
                     } else {
-                        // TODO 在数据库中新增信息
-                        try {
-                            Class.forName("com.mysql.jdbc.Driver");
-                            conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-                            String sql1 = "INSERT INTO NursingHome.historical_staff VALUES ('" + admin.getId() + "','1')";
-                            String sql = "INSERT INTO NursingHome.administrator VALUES " + admin.getAdminInfo();
-                            stmt = conn.createStatement();
-                            stmt.executeUpdate(sql1);
-                            stmt.executeUpdate(sql);
-                            stmt.close();
-                            conn.close();
-                        } catch (ClassNotFoundException e) {
-                            e.printStackTrace();
-                        } catch (SQLException e) {
-                            e.printStackTrace();
-                        }
-
-                        String tempPassword = randomPassword();
-                        showAlert("[提示]该行政人员的密码为：" + tempPassword);
-                        try {
-                            Class.forName("com.mysql.jdbc.Driver");
-                            conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-                            String sql;
-                            if (admin.getPosition().equals("主管")) {
-                                sql = "INSERT INTO NursingHome.manager VALUES ('" + admin.getId() + "',0,'" + md5(tempPassword) + "');";
-                            } else {
-                                sql = "INSERT INTO NursingHome.manager VALUES ('" + admin.getId() + "',1,'" + md5(tempPassword) + "');";
-                            }
-                            stmt = conn.createStatement();
-                            stmt.executeUpdate(sql);
-                            stmt.close();
-                            conn.close();
-                        } catch (ClassNotFoundException e) {
-                            e.printStackTrace();
-                        } catch (SQLException e) {
-                            e.printStackTrace();
-                        }
-
+                        // TODO 在数据库中新增行政人员信息
+                        newPeople(admin);
+                        newPassword(admin);
                         people = (Object) admin;
                     }
-
                 }
             } else {
                 isInsert = false;
@@ -483,15 +317,43 @@ public class PeopleSetInfoUIController implements Initializable {
                     } catch (NumberFormatException e) {
                         showAlert("[错误]薪水格式错误");
                     }
-                    worker.setRank(peopleOtherComboBox.getValue());
-                    System.out.println(worker.getWorkerInfo());
-                    // TODO 在数据库中修改信息
+
+                    // TODO 先查询该护工是否有护理任务，有的话不能修改
+                    int N = 0;
                     Connection conn;
                     Statement stmt;
                     try {
                         Class.forName("com.mysql.jdbc.Driver");
                         conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-                        String sql = "UPDATE NursingHome.worker SET worker_name='" + worker.getName() + "', worker_date='" + worker.getDate() + "', worker_salary='" + worker.getSalary() + "', worker_rank='" + worker.getRank() + "' WHERE worker_id='" + worker.getId() + "'";
+                        String sql = "SELECT worker_customernumber FROM NursingHome.worker WHERE worker_id = '" + worker.getId() + "'";
+                        stmt = conn.createStatement();
+                        ResultSet rs = stmt.executeQuery(sql);
+                        if (rs.first()) {
+                            N = rs.getInt(1);
+                        }
+                        stmt.close();
+                        conn.close();
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+
+                    // TODO 在数据库中修改信息(若不能，则只修改部分信息)
+                    try {
+                        Class.forName("com.mysql.jdbc.Driver");
+                        conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
+                        String sql;
+                        if (N > 0) {
+                            // TODO 只能修改护工级别、目标护理级别以外的信息
+                            showAlert("[警告]该护工有护理任务，不能修改护工等级和目标护理级别！");
+                            sql = "UPDATE NursingHome.worker SET worker_name='" + worker.getName() + "', worker_date='" + worker.getDate() + "', worker_salary='" + worker.getSalary() + "' WHERE worker_id='" + worker.getId() + "'";
+                        } else {
+                            // TODO 可以修改所有信息
+                            worker.setRank(peopleOtherComboBox.getValue());
+                            worker.setCustomerRank(customerRankComboBox.getValue());
+                            sql = "UPDATE NursingHome.worker SET worker_name='" + worker.getName() + "', worker_date='" + worker.getDate() + "', worker_salary='" + worker.getSalary() + "', worker_rank='" + worker.getRank() + "', worker_customerrank='" + worker.getCustomerRank() + "' WHERE worker_id='" + worker.getId() + "'";
+                        }
                         stmt = conn.createStatement();
                         stmt.executeUpdate(sql);
                         stmt.close();
@@ -501,6 +363,7 @@ public class PeopleSetInfoUIController implements Initializable {
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
+
                     people = (Object) worker;
                 } else if (peopleTypeComboBox.getValue().equals("医生")) {
                     // TODO 修改医生信息
@@ -515,7 +378,7 @@ public class PeopleSetInfoUIController implements Initializable {
                     }
                     doctor.setMajor(peopleOtherComboBox.getValue());
 
-                    // TODO 在数据库中修改信息
+                    // TODO 在数据库中修改医生信息
                     Connection conn;
                     Statement stmt;
                     try {
@@ -547,7 +410,7 @@ public class PeopleSetInfoUIController implements Initializable {
                     String workerPlaceNew = peopleOtherComboBox.getValue();
                     doorBoy.setWorkPlace(peopleOtherComboBox.getValue());
 
-                    // TODO 在数据库中修改信息
+                    // TODO 在数据库中修改勤杂信息
                     Connection conn;
                     Statement stmt;
                     try {
@@ -584,23 +447,7 @@ public class PeopleSetInfoUIController implements Initializable {
                         showAlert("[提示]该人员调整岗位后已无登陆权限");
                     } else if ((!workerPlaceOld.equals("前台")) && workerPlaceNew.equals("前台")) {
                         // TODO 将勤杂人员从别处调到前台，需要新增该用户的权限，登陆密码
-
-                        // TODO 新增密码并输出，并记录
-                        String tempPassword = randomPassword();
-                        showAlert("[提示]该前台人员的密码为：" + tempPassword);
-                        try {
-                            Class.forName("com.mysql.jdbc.Driver");
-                            conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-                            String sql = "INSERT INTO NursingHome.manager VALUES ('" + doorBoy.getId() + "',3,'" + md5(tempPassword) + "');";
-                            stmt = conn.createStatement();
-                            stmt.executeUpdate(sql);
-                            stmt.close();
-                            conn.close();
-                        } catch (ClassNotFoundException e) {
-                            e.printStackTrace();
-                        } catch (SQLException e) {
-                            e.printStackTrace();
-                        }
+                        newPassword(doorBoy);
                     }
 
                     people = (Object) doorBoy;
@@ -649,7 +496,7 @@ public class PeopleSetInfoUIController implements Initializable {
                         try {
                             Class.forName("com.mysql.jdbc.Driver");
                             conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-                            String sql = "UPDATE NursingHome.administrator SET administrator_name='" + admin.getName() + "', administrator_date='" + admin.getDate() + "', administrator_salary='" + admin.getSalary() + "', administrator_position='" + adminPosOld + "' WHERE administrator_id='" + admin.getId() + "'";
+                            String sql = "UPDATE NursingHome.administrator SET administrator_name='" + admin.getName() + "', administrator_date='" + admin.getDate() + "', administrator_salary='" + admin.getSalary() + "' WHERE administrator_id='" + admin.getId() + "'";
                             stmt = conn.createStatement();
                             stmt.executeUpdate(sql);
                             stmt.close();
@@ -696,11 +543,11 @@ public class PeopleSetInfoUIController implements Initializable {
                                 e.printStackTrace();
                             }
                         } else if ((!adminPosOld.equals("主管")) && adminPosNew.equals("主管")) {
-                            // TODO 原来不是主管现在调回来，更改权限
+                            // TODO 原来不是主管现在调成主管，更改权限
                             try {
                                 Class.forName("com.mysql.jdbc.Driver");
                                 conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-                                String sql = "UPDATE NursingHome.manager SET manager_priv=1 WHERE manager_id='" + admin.getId() + "'";
+                                String sql = "UPDATE NursingHome.manager SET manager_priv=0 WHERE manager_id='" + admin.getId() + "'";
                                 stmt = conn.createStatement();
                                 stmt.executeUpdate(sql);
                                 stmt.close();
