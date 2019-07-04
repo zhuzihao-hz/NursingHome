@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
 
 import static NursingHome.ControllerUtils.*;
 import static NursingHome.SQLMethod.*;
+import static java.sql.Connection.TRANSACTION_SERIALIZABLE;
 
 public class ChangePasswordUIController implements Initializable {
     private Main application;
@@ -61,10 +62,14 @@ public class ChangePasswordUIController implements Initializable {
                 try {
                     Class.forName("com.mysql.jdbc.Driver");
                     conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-                    String sql = "UPDATE NursingHome.manager SET manager_password='" + md5(newPassword1.getText()) + "' WHERE manager_id='" + getPeopleId() + "'";
-                    stmt = conn.createStatement();
-                    stmt.executeUpdate(sql);
-                    stmt.close();
+                    if (conn.getTransactionIsolation() == Connection.TRANSACTION_REPEATABLE_READ) {
+                        conn.setTransactionIsolation(TRANSACTION_SERIALIZABLE);
+                        String sql = "UPDATE NursingHome.manager SET manager_password='" + md5(newPassword1.getText()) + "' WHERE manager_id='" + getPeopleId() + "'";
+                        stmt = conn.createStatement();
+                        stmt.executeUpdate(sql);
+                        stmt.close();
+                        conn.setTransactionIsolation(TRANSACTION_SERIALIZABLE);
+                    }
                     conn.close();
                 } catch (ClassNotFoundException e) {
                     e.printStackTrace();
@@ -76,7 +81,7 @@ public class ChangePasswordUIController implements Initializable {
                 getApp().floatStage.close();
             } else {
                 if (newPassword1.getText().length() < 6) {
-                    showAlert("新密码必须大于6位");
+                    showAlert("新密码必须大于5位");
                 } else if (newPassword1.getText().length() > 16) {
                     showAlert("新密码必须小于16位");
                 } else {

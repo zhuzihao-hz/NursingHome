@@ -20,6 +20,7 @@ import java.util.ResourceBundle;
 import static NursingHome.ControllerUtils.*;
 import static NursingHome.GlobalInfo.*;
 import static NursingHome.SQLMethod.*;
+import static java.sql.Connection.TRANSACTION_SERIALIZABLE;
 
 public class BusinessAdminUIController implements Initializable {
     private Main application;
@@ -296,12 +297,16 @@ public class BusinessAdminUIController implements Initializable {
                 try {
                     Class.forName("com.mysql.jdbc.Driver");
                     conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-                    String sql = "UPDATE NursingHome.bed SET bed_status=0 WHERE bed_id='" + customerSelected.get(i).getBedID() + "' AND bed_roomid='" + customerSelected.get(i).getRoomID() + "';";
-                    String sql1 = "UPDATE NursingHome.room SET room_usedbed=room_usedbed-1 WHERE room_id='" + customerSelected.get(i).getRoomID() + "'";
-                    stmt = conn.createStatement();
-                    stmt.executeUpdate(sql);
-                    stmt.executeUpdate(sql1);
-                    stmt.close();
+                    if (conn.getTransactionIsolation() == Connection.TRANSACTION_REPEATABLE_READ) {
+                        conn.setTransactionIsolation(TRANSACTION_SERIALIZABLE);
+                        String sql = "UPDATE NursingHome.bed SET bed_status=0 WHERE bed_id='" + customerSelected.get(i).getBedID() + "' AND bed_roomid='" + customerSelected.get(i).getRoomID() + "';";
+                        String sql1 = "UPDATE NursingHome.room SET room_usedbed=room_usedbed-1 WHERE room_id='" + customerSelected.get(i).getRoomID() + "'";
+                        stmt = conn.createStatement();
+                        stmt.executeUpdate(sql);
+                        stmt.executeUpdate(sql1);
+                        stmt.close();
+                        conn.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
+                    }
                     conn.close();
                 } catch (ClassNotFoundException e) {
                     e.printStackTrace();
@@ -316,12 +321,16 @@ public class BusinessAdminUIController implements Initializable {
                 try {
                     Class.forName("com.mysql.jdbc.Driver");
                     conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-                    String sql = "DELETE FROM NursingHome.customer WHERE customer_id='" + customerSelected.get(i).getId() + "'";
-                    String sql1 = "UPDATE NursingHome.historical_customer SET customer_status=0 WHERE customer_id='" + customerSelected.get(i).getId() + "'";
-                    stmt = conn.createStatement();
-                    stmt.executeUpdate(sql);
-                    stmt.executeUpdate(sql1);
-                    stmt.close();
+                    if (conn.getTransactionIsolation() == Connection.TRANSACTION_REPEATABLE_READ) {
+                        conn.setTransactionIsolation(TRANSACTION_SERIALIZABLE);
+                        String sql = "DELETE FROM NursingHome.customer WHERE customer_id='" + customerSelected.get(i).getId() + "'";
+                        String sql1 = "UPDATE NursingHome.historical_customer SET customer_status=0 WHERE customer_id='" + customerSelected.get(i).getId() + "'";
+                        stmt = conn.createStatement();
+                        stmt.executeUpdate(sql);
+                        stmt.executeUpdate(sql1);
+                        stmt.close();
+                        conn.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
+                    }
                     conn.close();
                 } catch (ClassNotFoundException e) {
                     e.printStackTrace();
@@ -346,8 +355,10 @@ public class BusinessAdminUIController implements Initializable {
         if (MANAGER_PRIV == 3) {
             // TODO 只有前台工作人员可以修改客户信息
             List<Customer> customerSelected = customerTableView.getSelectionModel().getSelectedItems();
-            CustomerSetInfoUIController.setCustomer(customerSelected.get(0));
-            application.createCustomerSetInfoUI();
+            if (customerSelected.size() > 0) {
+                CustomerSetInfoUIController.setCustomer(customerSelected.get(0));
+                application.createCustomerSetInfoUI();
+            }
         } else {
             showAlert("[警告]您没有修改客户信息的权限！");
         }
@@ -360,7 +371,7 @@ public class BusinessAdminUIController implements Initializable {
         // TODO 新增记录
         if (MANAGER_PRIV == 2) {
             // TODO 只有医生可以新增记录
-            application.createRecordSetInfoUI();
+            application.createRecordInsertUI();
             System.out.println("新增档案记录成功！");
         } else {
             showAlert("[警告]您没有添加记录的权限！");
@@ -374,8 +385,10 @@ public class BusinessAdminUIController implements Initializable {
         if (MANAGER_PRIV == 2) {
             // TODO 只有医生可以查看记录信息
             List<Record> recordSelected = recordTableView.getSelectionModel().getSelectedItems();
-            RecordLookInfoUIController.setRecord(recordSelected.get(0));
-            getApp().createRecordLookInfoUI();
+            if (recordSelected.size() > 0) {
+                RecordLookInfoUIController.setRecord(recordSelected.get(0));
+                getApp().createRecordLookInfoUI();
+            }
         } else {
             showAlert("[警告]您没有查看记录信息的权限！");
         }
@@ -540,56 +553,60 @@ public class BusinessAdminUIController implements Initializable {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-            String sql;
-            if (contextComboBox.getValue().equals("--无--")) {
-                sql = "SELECT * FROM NursingHome.customer";
-            } else if (contextComboBox.getValue().equals("编号")) {
-                sql = "SELECT * FROM NursingHome.customer WHERE customer_id LIKE '" + searchText.getText() + "%'";
-            } else if (contextComboBox.getValue().equals("姓名")) {
-                sql = "SELECT * FROM NursingHome.customer WHERE customer_name LIKE '%" + searchText.getText() + "%'";
-            } else if (contextComboBox.getValue().equals("年龄")) {
-                sql = "SELECT * FROM NursingHome.customer WHERE customer_date = '" + searchText.getText() + "';";
-            } else if (contextComboBox.getValue().equals("入院时间")) {
-                sql = "SELECT * FROM NursingHome.customer WHERE customer_entertime LIKE '" + searchText.getText() + "'";
-            } else if (contextComboBox.getValue().equals("房号")) {
-                sql = "SELECT * FROM NursingHome.customer WHERE customer_roomid LIKE '" + searchText.getText() + "%'";
-            } else if (contextComboBox.getValue().equals("床号")) {
-                sql = "SELECT * FROM NursingHome.customer WHERE customer_bedid LIKE '" + searchText.getText() + "'";
-            } else if (contextComboBox.getValue().equals("电话")) {
-                sql = "SELECT * FROM NursingHome.customer WHERE customer_phone LIKE '" + searchText.getText() + "%'";
-            } else if (contextComboBox.getValue().equals("护工编号")) {
-                sql = "SELECT * FROM NursingHome.customer WHERE customer_careworker LIKE '" + searchText.getText() + "'";
-            } else if (contextComboBox.getValue().equals("护理等级")) {
-                sql = "SELECT * FROM NursingHome.customer WHERE customer_rank = '" + searchText.getText() + "'";
-            } else if (contextComboBox.getValue().equals("亲属姓名")) {
-                sql = "SELECT * FROM NursingHome.customer WHERE customer_relationname LIKE '%" + searchText.getText() + "%'";
-            } else if (contextComboBox.getValue().equals("亲属关系")) {
-                sql = "SELECT * FROM NursingHome.customer WHERE customer_relation LIKE '%" + searchText.getText() + "%'";
-            } else if (contextComboBox.getValue().equals("亲属电话")) {
-                sql = "SELECT * FROM NursingHome.customer WHERE customer_relationphone LIKE '" + searchText.getText() + "%'";
-            } else {
-                sql = "SELECT * FROM NursingHome.customer";
+            if (conn.getTransactionIsolation() == Connection.TRANSACTION_REPEATABLE_READ) {
+                conn.setTransactionIsolation(TRANSACTION_SERIALIZABLE);
+                String sql;
+                if (contextComboBox.getValue().equals("--无--")) {
+                    sql = "SELECT * FROM NursingHome.customer";
+                } else if (contextComboBox.getValue().equals("编号")) {
+                    sql = "SELECT * FROM NursingHome.customer WHERE customer_id LIKE '" + searchText.getText() + "%'";
+                } else if (contextComboBox.getValue().equals("姓名")) {
+                    sql = "SELECT * FROM NursingHome.customer WHERE customer_name LIKE '%" + searchText.getText() + "%'";
+                } else if (contextComboBox.getValue().equals("年龄")) {
+                    sql = "SELECT * FROM NursingHome.customer WHERE Year(sysdate())-year(customer_date) = '" + searchText.getText() + "';";
+                } else if (contextComboBox.getValue().equals("入院时间")) {
+                    sql = "SELECT * FROM NursingHome.customer WHERE customer_entertime LIKE '" + StringToDate(searchText.getText()) + "'";
+                } else if (contextComboBox.getValue().equals("房号")) {
+                    sql = "SELECT * FROM NursingHome.customer WHERE customer_roomid LIKE '" + searchText.getText() + "%'";
+                } else if (contextComboBox.getValue().equals("床号")) {
+                    sql = "SELECT * FROM NursingHome.customer WHERE customer_bedid LIKE '" + searchText.getText() + "'";
+                } else if (contextComboBox.getValue().equals("电话")) {
+                    sql = "SELECT * FROM NursingHome.customer WHERE customer_phone LIKE '" + searchText.getText() + "%'";
+                } else if (contextComboBox.getValue().equals("护工编号")) {
+                    sql = "SELECT * FROM NursingHome.customer WHERE customer_careworker LIKE '" + searchText.getText() + "'";
+                } else if (contextComboBox.getValue().equals("护理等级")) {
+                    sql = "SELECT * FROM NursingHome.customer WHERE customer_rank = '" + searchText.getText() + "'";
+                } else if (contextComboBox.getValue().equals("亲属姓名")) {
+                    sql = "SELECT * FROM NursingHome.customer WHERE customer_relationname LIKE '%" + searchText.getText() + "%'";
+                } else if (contextComboBox.getValue().equals("亲属关系")) {
+                    sql = "SELECT * FROM NursingHome.customer WHERE customer_relation LIKE '%" + searchText.getText() + "%'";
+                } else if (contextComboBox.getValue().equals("亲属电话")) {
+                    sql = "SELECT * FROM NursingHome.customer WHERE customer_relationphone LIKE '" + searchText.getText() + "%'";
+                } else {
+                    sql = "SELECT * FROM NursingHome.customer";
+                }
+                stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(sql);
+                while (rs.next()) {
+                    Customer customer = new Customer();
+                    customer.setId(rs.getString(1));
+                    customer.setName(rs.getString(2));
+                    customer.setDate(rs.getString(3));
+                    customer.setEnterTime(rs.getString(4));
+                    customer.setRoomID(rs.getString(5));
+                    customer.setBedID(rs.getString(6));
+                    customer.setPhone(rs.getString(7));
+                    customer.setCareWorker(rs.getString(8));
+                    customer.setRank(rs.getInt(9));
+                    customer.setRelationName(rs.getString(10));
+                    customer.setRelation(rs.getString(11));
+                    customer.setRelationPhone(rs.getString(12));
+                    customerObservableList.add(customer);
+                }
+                rs.close();
+                stmt.close();
+                conn.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
             }
-            stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
-            while (rs.next()) {
-                Customer customer = new Customer();
-                customer.setId(rs.getString(1));
-                customer.setName(rs.getString(2));
-                customer.setDate(rs.getString(3));
-                customer.setEnterTime(rs.getString(4));
-                customer.setRoomID(rs.getString(5));
-                customer.setBedID(rs.getString(6));
-                customer.setPhone(rs.getString(7));
-                customer.setCareWorker(rs.getString(8));
-                customer.setRank(rs.getInt(9));
-                customer.setRelationName(rs.getString(10));
-                customer.setRelation(rs.getString(11));
-                customer.setRelationPhone(rs.getString(12));
-                customerObservableList.add(customer);
-            }
-            rs.close();
-            stmt.close();
             conn.close();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -610,29 +627,33 @@ public class BusinessAdminUIController implements Initializable {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-            String sql;
-            if (contextComboBox.getValue().equals("--无--")) {
-                sql = "SELECT * FROM NursingHome.bed";
-            } else if (contextComboBox.getValue().equals("床位号")) {
-                sql = "SELECT * FROM NursingHome.bed WHERE bed_id LIKE '" + searchText.getText() + "'";
-            } else if (contextComboBox.getValue().equals("所在房间")) {
-                sql = "SELECT * FROM NursingHome.bed WHERE bed_roomid LIKE '" + searchText.getText() + "%'";
-            } else if (contextComboBox.getValue().equals("是否使用")) {
-                sql = "SELECT * FROM NursingHome.bed WHERE bed_status = '" + searchText.getText() + "'";
-            } else {
-                sql = "SELECT * FROM NursingHome.bed";
+            if (conn.getTransactionIsolation() == Connection.TRANSACTION_REPEATABLE_READ) {
+                conn.setTransactionIsolation(TRANSACTION_SERIALIZABLE);
+                String sql;
+                if (contextComboBox.getValue().equals("--无--")) {
+                    sql = "SELECT * FROM NursingHome.bed";
+                } else if (contextComboBox.getValue().equals("床位号")) {
+                    sql = "SELECT * FROM NursingHome.bed WHERE bed_id LIKE '" + searchText.getText() + "'";
+                } else if (contextComboBox.getValue().equals("所在房间")) {
+                    sql = "SELECT * FROM NursingHome.bed WHERE bed_roomid LIKE '" + searchText.getText() + "%'";
+                } else if (contextComboBox.getValue().equals("是否使用")) {
+                    sql = "SELECT * FROM NursingHome.bed WHERE bed_status = '" + searchText.getText() + "'";
+                } else {
+                    sql = "SELECT * FROM NursingHome.bed";
+                }
+                stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(sql);
+                while (rs.next()) {
+                    Bed bed = new Bed();
+                    bed.setId(rs.getString(1));
+                    bed.setRoomID(rs.getString(2));
+                    bed.setStatus(rs.getInt(3));
+                    bedObservableList.add(bed);
+                }
+                rs.close();
+                stmt.close();
+                conn.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
             }
-            stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
-            while (rs.next()) {
-                Bed bed = new Bed();
-                bed.setId(rs.getString(1));
-                bed.setRoomID(rs.getString(2));
-                bed.setStatus(rs.getInt(3));
-                bedObservableList.add(bed);
-            }
-            rs.close();
-            stmt.close();
             conn.close();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -653,32 +674,37 @@ public class BusinessAdminUIController implements Initializable {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-            String sql;
-            if (contextComboBox.getValue().equals("--无--")) {
-                sql = "SELECT * FROM NursingHome.room";
-            } else if (contextComboBox.getValue().equals("房间号")) {
-                sql = "SELECT * FROM NursingHome.room WHERE room_id LIKE '" + searchText.getText() + "%'";
-            } else if (contextComboBox.getValue().equals("房间等级")) {
-                sql = "SELECT * FROM NursingHome.room WHERE room_rank LIKE '" + searchText.getText() + "'";
-            } else if (contextComboBox.getValue().equals("床位总数")) {
-                sql = "SELECT * FROM NursingHome.room WHERE room_totalbed = '" + searchText.getText() + "'";
-            } else if (contextComboBox.getValue().equals("空余床数")) {
-                sql = "SELECT * FROM NursingHome.room WHERE room_usedbed = '" + searchText.getText() + "'";
-            } else {
-                sql = "SELECT * FROM NursingHome.room";
+            if (conn.getTransactionIsolation() == Connection.TRANSACTION_REPEATABLE_READ) {
+                conn.setTransactionIsolation(TRANSACTION_SERIALIZABLE);
+                String sql;
+                if (contextComboBox.getValue().equals("--无--")) {
+                    sql = "SELECT * FROM NursingHome.room";
+                } else if (contextComboBox.getValue().equals("房间号")) {
+                    sql = "SELECT * FROM NursingHome.room WHERE room_id LIKE '" + searchText.getText() + "%'";
+                } else if (contextComboBox.getValue().equals("房间等级")) {
+                    sql = "SELECT * FROM NursingHome.room WHERE room_rank LIKE '" + searchText.getText() + "'";
+                } else if (contextComboBox.getValue().equals("床位总数")) {
+                    sql = "SELECT * FROM NursingHome.room WHERE room_totalbed = '" + searchText.getText() + "'";
+                } else if (contextComboBox.getValue().equals("空余床数")) {
+                    sql = "SELECT * FROM NursingHome.room WHERE room_usedbed = '" + searchText.getText() + "'";
+                } else {
+                    sql = "SELECT * FROM NursingHome.room";
+                }
+                stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(sql);
+                while (rs.next()) {
+                    Room room = new Room();
+                    room.setId(rs.getString(1));
+                    room.setRank(rs.getString(2));
+                    room.setTotalBed(rs.getInt(3));
+                    room.setUsedBed(rs.getInt(4));
+                    roomObservableList.add(room);
+                }
+                rs.close();
+                stmt.close();
+                conn.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
             }
-            stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
-            while (rs.next()) {
-                Room room = new Room();
-                room.setId(rs.getString(1));
-                room.setRank(rs.getString(2));
-                room.setTotalBed(rs.getInt(3));
-                room.setUsedBed(rs.getInt(4));
-                roomObservableList.add(room);
-            }
-            rs.close();
-            stmt.close();
+
             conn.close();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -698,38 +724,43 @@ public class BusinessAdminUIController implements Initializable {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-            String sql;
-            if (contextComboBox.getValue().equals("--无--")) {
-                sql = "SELECT * FROM NursingHome.record";
-            } else if (contextComboBox.getValue().equals("档案编号")) {
-                sql = "SELECT * FROM NursingHome.record WHERE record_id LIKE '" + searchText.getText() + "%'";
-            } else if (contextComboBox.getValue().equals("客户编号")) {
-                sql = "SELECT * FROM NursingHome.record WHERE customer_id LIKE '" + searchText.getText() + "%'";
-            } else if (contextComboBox.getValue().equals("客户姓名")) {
-                sql = "SELECT * FROM NursingHome.record WHERE customer_name LIKE '%" + searchText.getText() + "%'";
-            } else if (contextComboBox.getValue().equals("医生编号")) {
-                sql = "SELECT * FROM NursingHome.record WHERE doctor_id LIKE '" + searchText.getText() + "%'";
-            } else if (contextComboBox.getValue().equals("记录日期")) {
-                sql = "SELECT * FROM NursingHome.record WHERE record_time LIKE '" + searchText.getText() + "'";
-            } else if (contextComboBox.getValue().equals("记录内容")) {
-                sql = "SELECT * FROM NursingHome.record WHERE record_context LIKE '%" + searchText.getText() + "%'";
-            } else {
-                sql = "SELECT * FROM NursingHome.record";
+            if (conn.getTransactionIsolation() == Connection.TRANSACTION_REPEATABLE_READ) {
+                conn.setTransactionIsolation(TRANSACTION_SERIALIZABLE);
+                String sql;
+                if (contextComboBox.getValue().equals("--无--")) {
+                    sql = "SELECT * FROM NursingHome.record";
+                } else if (contextComboBox.getValue().equals("档案编号")) {
+                    sql = "SELECT * FROM NursingHome.record WHERE record_id LIKE '" + searchText.getText() + "%'";
+                } else if (contextComboBox.getValue().equals("客户编号")) {
+                    sql = "SELECT * FROM NursingHome.record WHERE customer_id LIKE '" + searchText.getText() + "%'";
+                } else if (contextComboBox.getValue().equals("客户姓名")) {
+                    sql = "SELECT * FROM NursingHome.record WHERE customer_name LIKE '%" + searchText.getText() + "%'";
+                } else if (contextComboBox.getValue().equals("医生编号")) {
+                    sql = "SELECT * FROM NursingHome.record WHERE doctor_id LIKE '" + searchText.getText() + "%'";
+                } else if (contextComboBox.getValue().equals("记录日期")) {
+                    sql = "SELECT * FROM NursingHome.record WHERE record_time LIKE '" + StringToDate(searchText.getText()) + "'";
+                } else if (contextComboBox.getValue().equals("记录内容")) {
+                    sql = "SELECT * FROM NursingHome.record WHERE record_context LIKE '%" + searchText.getText() + "%'";
+                } else {
+                    sql = "SELECT * FROM NursingHome.record";
+                }
+                stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(sql);
+                while (rs.next()) {
+                    Record record = new Record();
+                    record.setId(rs.getString(1));
+                    record.setCustomerId(rs.getString(2));
+                    record.setCustomerName(rs.getString(3));
+                    record.setDoctorId(rs.getString(4));
+                    record.setDate(rs.getString(5));
+                    record.setContext(rs.getString(6));
+                    recordObservableList.add(record);
+                }
+                rs.close();
+                stmt.close();
+                conn.setTransactionIsolation(TRANSACTION_SERIALIZABLE);
             }
-            stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
-            while (rs.next()) {
-                Record record = new Record();
-                record.setId(rs.getString(1));
-                record.setCustomerId(rs.getString(2));
-                record.setCustomerName(rs.getString(3));
-                record.setDoctorId(rs.getString(4));
-                record.setDate(rs.getString(5));
-                record.setContext(rs.getString(6));
-                recordObservableList.add(record);
-            }
-            rs.close();
-            stmt.close();
+
             conn.close();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();

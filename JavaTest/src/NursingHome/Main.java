@@ -72,6 +72,7 @@ public class Main extends Application {
             x_stage = stage.getX();
             y_stage = stage.getY();
         });
+        stage.setTitle("管理员 - 人事管理 Administrator People Manage");
         stage.show();
     }
 
@@ -94,6 +95,7 @@ public class Main extends Application {
             x_stage = stage.getX();
             y_stage = stage.getY();
         });
+        stage.setTitle("管理员 - 业务管理 Administrator Business Manage");
         stage.show();
     }
 
@@ -243,7 +245,7 @@ public class Main extends Application {
     /**
      * 创建新增记录的窗口
      */
-    public void createRecordSetInfoUI() {
+    public void createRecordInsertUI() {
         AnchorPane page = new AnchorPane();
         floatStage = new Stage();
         floatStage.setAlwaysOnTop(true);
@@ -251,9 +253,9 @@ public class Main extends Application {
         floatStage.setTitle("档案管理 - 档案信息 Administrator Record Information");
         floatStage.setResizable(false);
         FXMLLoader loader = new FXMLLoader();
-        try (InputStream ignored = Main.class.getResourceAsStream("fxml/RecordSetInfoUI.fxml")) {
+        try (InputStream ignored = Main.class.getResourceAsStream("fxml/RecordInsertUI.fxml")) {
             loader.setBuilderFactory(new JavaFXBuilderFactory());
-            loader.setLocation(Main.class.getResource("fxml/RecordSetInfoUI.fxml"));
+            loader.setLocation(Main.class.getResource("fxml/RecordInsertUI.fxml"));
             page = loader.load();
         } catch (IOException e) {
             e.printStackTrace();
@@ -262,8 +264,8 @@ public class Main extends Application {
 
         floatStage.setScene(scene);
         floatStage.show();
-        RecordSetInfoUIController recordSetInfoUI = loader.getController();
-        recordSetInfoUI.setApp(this);
+        RecordInsertUIController recordInsertUI = loader.getController();
+        recordInsertUI.setApp(this);
     }
 
     /**

@@ -17,6 +17,7 @@ import java.util.ResourceBundle;
 
 import static NursingHome.ControllerUtils.*;
 import static NursingHome.SQLMethod.*;
+import static java.sql.Connection.TRANSACTION_SERIALIZABLE;
 
 public class CustomerSetInfoUIController implements Initializable {
     private Main application;
@@ -71,6 +72,8 @@ public class CustomerSetInfoUIController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        workerRankOld = "";
+        roomRankOld = "";
         ControllerUtils.initCustomerComboBox(customerCareTypeComboBox, customerWorkerRankComboBox, customerRoomRankComboBox);
         // TODO 读取房间等级
         Connection conn;
@@ -78,20 +81,24 @@ public class CustomerSetInfoUIController implements Initializable {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-            String sql = "SELECT room_rank FROM NursingHome.room WHERE room_id = '" + customer.getRoomID() + "'";
-            stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
-            if (rs.first()) {
-                roomRankOld = rs.getString(1);
-                customerRoomRankComboBox.setValue(roomRankOld);
+            if (conn.getTransactionIsolation() == Connection.TRANSACTION_REPEATABLE_READ) {
+                conn.setTransactionIsolation(TRANSACTION_SERIALIZABLE);
+                String sql = "SELECT room_rank FROM NursingHome.room WHERE room_id = '" + customer.getRoomID() + "'";
+                stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(sql);
+                if (rs.first()) {
+                    roomRankOld = rs.getString(1);
+                    customerRoomRankComboBox.setValue(roomRankOld);
+                }
+                String sql2 = "SELECT worker_rank FROM NursingHome.worker WHERE worker_id = '" + customer.getCareWorker() + "'";
+                rs = stmt.executeQuery(sql2);
+                if (rs.next()) {
+                    workerRankOld = rs.getString(1);
+                    customerWorkerRankComboBox.setValue(workerRankOld);
+                }
+                stmt.close();
+                conn.setTransactionIsolation(TRANSACTION_SERIALIZABLE);
             }
-            String sql2 = "SELECT worker_rank FROM NursingHome.worker WHERE worker_id = '" + customer.getCareWorker() + "'";
-            rs = stmt.executeQuery(sql2);
-            if (rs.next()) {
-                workerRankOld = rs.getString(1);
-                customerWorkerRankComboBox.setValue(workerRankOld);
-            }
-            stmt.close();
             conn.close();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -138,21 +145,25 @@ public class CustomerSetInfoUIController implements Initializable {
             try {
                 Class.forName("com.mysql.jdbc.Driver");
                 conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-                String sql = "SELECT room_id FROM NursingHome.room WHERE room_usedbed<room_totalbed AND room_rank='" + customerRoomRankComboBox.getValue() + "' ORDER BY room_id ASC;";
-                stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery(sql);
-                if (rs.first()) {
-                    roomIdNew = rs.getString(1);
-                } else {
-                    // TODO 如果没有满足需求的房间，则返回，并且不能修改掉
-                    showAlert("[警告]没有满足需求的房间！");
-                    available = false;
-                    rs.close();
+                if (conn.getTransactionIsolation() == Connection.TRANSACTION_REPEATABLE_READ) {
+                    conn.setTransactionIsolation(TRANSACTION_SERIALIZABLE);
+                    String sql = "SELECT room_id FROM NursingHome.room WHERE room_usedbed<room_totalbed AND room_rank='" + customerRoomRankComboBox.getValue() + "' ORDER BY room_id ASC;";
+                    stmt = conn.createStatement();
+                    ResultSet rs = stmt.executeQuery(sql);
+                    if (rs.first()) {
+                        roomIdNew = rs.getString(1);
+                    } else {
+                        // TODO 如果没有满足需求的房间，则返回，并且不能修改掉
+                        showAlert("[警告]没有满足需求的房间！");
+                        available = false;
+                        rs.close();
+                        stmt.close();
+                        conn.close();
+                        return customer;
+                    }
                     stmt.close();
-                    conn.close();
-                    return customer;
+                    conn.setTransactionIsolation(TRANSACTION_SERIALIZABLE);
                 }
-                stmt.close();
                 conn.close();
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
@@ -164,12 +175,16 @@ public class CustomerSetInfoUIController implements Initializable {
             try {
                 Class.forName("com.mysql.jdbc.Driver");
                 conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-                String sql = "UPDATE NursingHome.bed SET bed_status=0 WHERE bed_id='" + customer.getBedID() + "' AND bed_roomid='" + customer.getRoomID() + "';";
-                String sql1 = "UPDATE Nursinghome.room SET room_usedbed=room_usedbed-1 WHERE room_id='" + customer.getRoomID() + "';";
-                stmt = conn.createStatement();
-                stmt.executeUpdate(sql);
-                stmt.executeUpdate(sql1);
-                stmt.close();
+                if (conn.getTransactionIsolation() == Connection.TRANSACTION_REPEATABLE_READ) {
+                    conn.setTransactionIsolation(TRANSACTION_SERIALIZABLE);
+                    String sql = "UPDATE NursingHome.bed SET bed_status=0 WHERE bed_id='" + customer.getBedID() + "' AND bed_roomid='" + customer.getRoomID() + "';";
+                    String sql1 = "UPDATE Nursinghome.room SET room_usedbed=room_usedbed-1 WHERE room_id='" + customer.getRoomID() + "';";
+                    stmt = conn.createStatement();
+                    stmt.executeUpdate(sql);
+                    stmt.executeUpdate(sql1);
+                    stmt.close();
+                    conn.setTransactionIsolation(TRANSACTION_SERIALIZABLE);
+                }
                 conn.close();
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
@@ -182,18 +197,21 @@ public class CustomerSetInfoUIController implements Initializable {
             try {
                 Class.forName("com.mysql.jdbc.Driver");
                 conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-
-                String sql = "SELECT bed_id FROM NursingHome.bed WHERE bed_roomid = '" + roomIdNew + "' AND bed_status = 0;";
-                stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery(sql);
-                if (rs.first()) {
-                    bedIdNew = rs.getString(1);
+                if (conn.getTransactionIsolation() == Connection.TRANSACTION_REPEATABLE_READ) {
+                    conn.setTransactionIsolation(TRANSACTION_SERIALIZABLE);
+                    String sql = "SELECT bed_id FROM NursingHome.bed WHERE bed_roomid = '" + roomIdNew + "' AND bed_status = 0;";
+                    stmt = conn.createStatement();
+                    ResultSet rs = stmt.executeQuery(sql);
+                    if (rs.first()) {
+                        bedIdNew = rs.getString(1);
+                    }
+                    String sql1 = "UPDATE NursingHome.bed SET bed_status=1 WHERE bed_id='" + bedIdNew + "' AND bed_roomid='" + roomIdNew + "';";
+                    String sql2 = "UPDATE Nursinghome.room SET room_usedbed=room_usedbed+1 WHERE room_id='" + roomIdNew + "';";
+                    stmt.executeUpdate(sql1);
+                    stmt.executeUpdate(sql2);
+                    stmt.close();
+                    conn.setTransactionIsolation(TRANSACTION_SERIALIZABLE);
                 }
-                String sql1 = "UPDATE NursingHome.bed SET bed_status=1 WHERE bed_id='" + bedIdNew + "' AND bed_roomid='" + roomIdNew + "';";
-                String sql2 = "UPDATE Nursinghome.room SET room_usedbed=room_usedbed+1 WHERE room_id='" + roomIdNew + "';";
-                stmt.executeUpdate(sql1);
-                stmt.executeUpdate(sql2);
-                stmt.close();
                 conn.close();
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
@@ -210,7 +228,7 @@ public class CustomerSetInfoUIController implements Initializable {
         }
 
         // TODO 检查是否需要更改护工
-        if (!workerRankOld.equals(customerWorkerRankComboBox.getValue())||(rank!=customerCareTypeComboBox.getValue())) {
+        if (!workerRankOld.equals(customerWorkerRankComboBox.getValue()) || (rank != customerCareTypeComboBox.getValue())) {
             // TODO 需要更改新的护工
             Connection conn;
             Statement stmt;
@@ -220,27 +238,31 @@ public class CustomerSetInfoUIController implements Initializable {
             try {
                 Class.forName("com.mysql.jdbc.Driver");
                 conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-                String sql = "SELECT worker_id FROM NursingHome.worker WHERE worker_rank='" + customerWorkerRankComboBox.getValue() + "' AND worker_customerrank=" + customerCareTypeComboBox.getValue() + " ORDER BY abs(" + room_idDouble + "-worker_vispos) ASC, worker_customernumber ASC";
-                stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery(sql);
-                if (rs.next()) {
-                    workerIdNew = rs.getString(1);
-                } else {
-                    showAlert("[警告]没有满足需求的护工！");
-                    available = false;
-                    rs.close();
+                if (conn.getTransactionIsolation() == Connection.TRANSACTION_REPEATABLE_READ) {
+                    conn.setTransactionIsolation(TRANSACTION_SERIALIZABLE);
+                    String sql = "SELECT worker_id FROM NursingHome.worker WHERE worker_rank='" + customerWorkerRankComboBox.getValue() + "' AND worker_customerrank=" + customerCareTypeComboBox.getValue() + " ORDER BY abs(" + room_idDouble + "-worker_vispos) ASC, worker_customernumber ASC";
+                    stmt = conn.createStatement();
+                    ResultSet rs = stmt.executeQuery(sql);
+                    if (rs.next()) {
+                        workerIdNew = rs.getString(1);
+                    } else {
+                        showAlert("[警告]没有满足需求的护工！");
+                        available = false;
+                        rs.close();
+                        stmt.close();
+                        conn.close();
+                        return customer;
+                    }
                     stmt.close();
-                    conn.close();
-                    return customer;
+                    conn.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
                 }
-                stmt.close();
                 conn.close();
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            System.out.println(123);
+
             // TODO 更改原来护工的位置
             changeWorkerPos(false, customer.getCareWorker(), roomIdOld);
             // TODO 更改新的护工位置信息
@@ -249,10 +271,14 @@ public class CustomerSetInfoUIController implements Initializable {
             try {
                 Class.forName("com.mysql.jdbc.Driver");
                 conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-                stmt = conn.createStatement();
-                String sql = "UPDATE NursingHome.customer SET customer_careworker='" + workerIdNew + "' WHERE customer_id='" + customer.getId() + "'";
-                stmt.executeUpdate(sql);
-                stmt.close();
+                if (conn.getTransactionIsolation() == Connection.TRANSACTION_REPEATABLE_READ) {
+                    conn.setTransactionIsolation(TRANSACTION_SERIALIZABLE);
+                    stmt = conn.createStatement();
+                    String sql = "UPDATE NursingHome.customer SET customer_careworker='" + workerIdNew + "' WHERE customer_id='" + customer.getId() + "'";
+                    stmt.executeUpdate(sql);
+                    stmt.close();
+                    conn.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
+                }
                 conn.close();
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
@@ -296,10 +322,14 @@ public class CustomerSetInfoUIController implements Initializable {
             try {
                 Class.forName("com.mysql.jdbc.Driver");
                 conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-                String sql = "UPDATE NursingHome.customer SET customer_name='" + customer.getName() + "', customer_date='" + customer.getDate() + "', customer_entertime='" + customer.getEnterTime() + "', customer_roomid='" + customer.getRoomID() + "', customer_bedid='" + customer.getBedID() + "', customer_phone='" + customer.getPhone() + "', customer_careworker='" + customer.getCareWorker() + "', customer_rank='" + customer.getRank() + "', customer_relationname='" + customer.getRelationName() + "', customer_relation='" + customer.getRelation() + "', customer_relationphone='" + customer.getRelationPhone() + "' WHERE customer_id='" + customer.getId() + "'";
-                stmt = conn.createStatement();
-                stmt.executeUpdate(sql);
-                stmt.close();
+                if (conn.getTransactionIsolation() == Connection.TRANSACTION_REPEATABLE_READ) {
+                    conn.setTransactionIsolation(TRANSACTION_SERIALIZABLE);
+                    String sql = "UPDATE NursingHome.customer SET customer_name='" + customer.getName() + "', customer_date='" + customer.getDate() + "', customer_entertime='" + customer.getEnterTime() + "', customer_roomid='" + customer.getRoomID() + "', customer_bedid='" + customer.getBedID() + "', customer_phone='" + customer.getPhone() + "', customer_careworker='" + customer.getCareWorker() + "', customer_rank='" + customer.getRank() + "', customer_relationname='" + customer.getRelationName() + "', customer_relation='" + customer.getRelation() + "', customer_relationphone='" + customer.getRelationPhone() + "' WHERE customer_id='" + customer.getId() + "'";
+                    stmt = conn.createStatement();
+                    stmt.executeUpdate(sql);
+                    stmt.close();
+                    conn.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
+                }
                 conn.close();
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();

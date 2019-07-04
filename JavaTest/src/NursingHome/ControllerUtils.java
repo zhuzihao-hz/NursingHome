@@ -98,9 +98,6 @@ public class ControllerUtils {
             peopleOtherComboBox.setValue("低级护工");
         } else if (PeopleSetInfoUIController.peopleType.equals("医生")) {
             peopleOtherComboBox.getItems().add("全科");
-            peopleOtherComboBox.getItems().add("外科");
-            peopleOtherComboBox.getItems().add("内科");
-            peopleOtherComboBox.getItems().add("实习");
             peopleOtherComboBox.setValue("全科");
         } else if (PeopleSetInfoUIController.peopleType.equals("勤杂人员")) {
             peopleOtherComboBox.getItems().add("厨房");
@@ -136,9 +133,6 @@ public class ControllerUtils {
             peopleOtherComboBox.setValue("低级护工");
         } else if (peopleType.equals("医生")) {
             peopleOtherComboBox.getItems().add("全科");
-            peopleOtherComboBox.getItems().add("外科");
-            peopleOtherComboBox.getItems().add("内科");
-            peopleOtherComboBox.getItems().add("实习");
             peopleOtherComboBox.setValue("全科");
         } else if (peopleType.equals("勤杂人员")) {
             peopleOtherComboBox.getItems().add("厨房");

@@ -19,11 +19,11 @@ public class RecordLookInfoUIController implements Initializable {
     @FXML
     private Label recordIdLabel;
     @FXML
-    private TextField recordCustomerIdTextField;
+    private Label recordCustomerIdLabel;
     @FXML
-    private TextField recordCustomerNameTextField;
+    private Label recordCustomerNameLabel;
     @FXML
-    private TextField recordDoctorIdTextField;
+    private Label recordDoctorIdLabel;
     @FXML
     private JFXDatePicker recordDatePicker;
     @FXML
@@ -49,14 +49,11 @@ public class RecordLookInfoUIController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         recordIdLabel.setText(getRecord().getId());
-        recordCustomerIdTextField.setText(getRecord().getCustomerId());
-        recordCustomerNameTextField.setText(getRecord().getCustomerName());
-        recordDoctorIdTextField.setText(getRecord().getDoctorId());
+        recordCustomerIdLabel.setText(getRecord().getCustomerId());
+        recordCustomerNameLabel.setText(getRecord().getCustomerName());
+        recordDoctorIdLabel.setText(getRecord().getDoctorId());
         recordDatePicker.setValue(StringToDate(getRecord().getDate()));
         recordContext.setText(getRecord().getContext());
-        recordCustomerIdTextField.setEditable(false);
-        recordCustomerNameTextField.setEditable(false);
-        recordDoctorIdTextField.setEditable(false);
         recordDatePicker.setEditable(false);
         recordDatePicker.setDisable(true);
         recordContext.setEditable(false);

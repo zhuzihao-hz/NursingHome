@@ -21,6 +21,7 @@ import java.util.ResourceBundle;
 import static NursingHome.ControllerUtils.*;
 import static NursingHome.GlobalInfo.*;
 import static NursingHome.SQLMethod.*;
+import static java.sql.Connection.TRANSACTION_SERIALIZABLE;
 
 public class PeopleAdminUIController implements Initializable {
     private Main application;
@@ -303,17 +304,21 @@ public class PeopleAdminUIController implements Initializable {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-            String sql = "SELECT worker_id FROM NursingHome.worker WHERE worker_rank='" + workerRank + "' AND worker_customerrank=" + rank + " ORDER BY abs(" + room_idDouble + "-worker_vispos) ASC, worker_customernumber ASC";
-            stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
-            if (rs.next()) {
-                customer.setCareWorker(rs.getString(1));
+            if (conn.getTransactionIsolation() == Connection.TRANSACTION_REPEATABLE_READ) {
+                conn.setTransactionIsolation(TRANSACTION_SERIALIZABLE);
+                String sql = "SELECT worker_id FROM NursingHome.worker WHERE worker_rank='" + workerRank + "' AND worker_customerrank=" + rank + " ORDER BY abs(" + room_idDouble + "-worker_vispos) ASC, worker_customernumber ASC";
+                stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(sql);
+                if (rs.next()) {
+                    customer.setCareWorker(rs.getString(1));
+                }
+                String sql1 = "UPDATE NursingHome.worker SET worker_customernumber=worker_customernumber+1 WHERE worker_id='" + customer.getCareWorker() + "'";
+                String sql2 = "UPDATE NursingHome.worker SET worker_vispos=(worker_vispos*(worker_customernumber-1)+" + room_idDouble + ")/worker_customernumber WHERE worker_id='" + customer.getCareWorker() + "'";
+                stmt.executeUpdate(sql1);
+                stmt.executeUpdate(sql2);
+                stmt.close();
+                conn.setTransactionIsolation(TRANSACTION_SERIALIZABLE);
             }
-            String sql1 = "UPDATE NursingHome.worker SET worker_customernumber=worker_customernumber+1 WHERE worker_id='" + customer.getCareWorker() + "'";
-            String sql2 = "UPDATE NursingHome.worker SET worker_vispos=(worker_vispos*(worker_customernumber-1)+" + room_idDouble + ")/worker_customernumber WHERE worker_id='" + customer.getCareWorker() + "'";
-            stmt.executeUpdate(sql1);
-            stmt.executeUpdate(sql2);
-            stmt.close();
             conn.close();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -347,13 +352,17 @@ public class PeopleAdminUIController implements Initializable {
                     try {
                         Class.forName("com.mysql.jdbc.Driver");
                         conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-                        String sql = "SELECT count(*) FROM NursingHome.worker WHERE worker_rank = '" + workerSelected.get(i).getRank() + "' AND worker_customerrank = '" + workerSelected.get(i).getCustomerRank() + "';";
-                        stmt = conn.createStatement();
-                        ResultSet rs = stmt.executeQuery(sql);
-                        if (rs.first()) {
-                            N = rs.getInt(1);
+                        if (conn.getTransactionIsolation() == Connection.TRANSACTION_REPEATABLE_READ) {
+                            conn.setTransactionIsolation(TRANSACTION_SERIALIZABLE);
+                            String sql = "SELECT count(*) FROM NursingHome.worker WHERE worker_rank = '" + workerSelected.get(i).getRank() + "' AND worker_customerrank = '" + workerSelected.get(i).getCustomerRank() + "';";
+                            stmt = conn.createStatement();
+                            ResultSet rs = stmt.executeQuery(sql);
+                            if (rs.first()) {
+                                N = rs.getInt(1);
+                            }
+                            stmt.close();
+                            conn.setTransactionIsolation(TRANSACTION_SERIALIZABLE);
                         }
-                        stmt.close();
                         conn.close();
                     } catch (ClassNotFoundException e) {
                         e.printStackTrace();
@@ -368,12 +377,16 @@ public class PeopleAdminUIController implements Initializable {
                         try {
                             Class.forName("com.mysql.jdbc.Driver");
                             conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-                            String sql = "DELETE FROM NursingHome.worker WHERE worker_id='" + workerSelected.get(i).getId() + "'";
-                            String sql1 = "UPDATE NursingHome.historical_staff SET staff_status=0 WHERE staff_id='" + workerSelected.get(i).getId() + "'";
-                            stmt = conn.createStatement();
-                            stmt.executeUpdate(sql);
-                            stmt.executeUpdate(sql1);
-                            stmt.close();
+                            if (conn.getTransactionIsolation() == Connection.TRANSACTION_REPEATABLE_READ) {
+                                conn.setTransactionIsolation(TRANSACTION_SERIALIZABLE);
+                                String sql = "DELETE FROM NursingHome.worker WHERE worker_id='" + workerSelected.get(i).getId() + "'";
+                                String sql1 = "UPDATE NursingHome.historical_staff SET staff_status=0 WHERE staff_id='" + workerSelected.get(i).getId() + "'";
+                                stmt = conn.createStatement();
+                                stmt.executeUpdate(sql);
+                                stmt.executeUpdate(sql1);
+                                stmt.close();
+                                conn.setTransactionIsolation(TRANSACTION_SERIALIZABLE);
+                            }
                             conn.close();
                         } catch (ClassNotFoundException e) {
                             e.printStackTrace();
@@ -385,42 +398,50 @@ public class PeopleAdminUIController implements Initializable {
                         try {
                             Class.forName("com.mysql.jdbc.Driver");
                             conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-                            String sql = "SELECT * FROM NursingHome.customer WHERE customer_careworker='" + workerId + "'";
-                            stmt = conn.createStatement();
-                            ResultSet rs = stmt.executeQuery(sql);
-                            while (rs.next()) {
-                                Customer customer = new Customer();
-                                customer.setId(rs.getString(1));
-                                customer.setName(rs.getString(2));
-                                customer.setDate(rs.getString(3));
-                                customer.setEnterTime(rs.getString(4));
-                                customer.setRoomID(rs.getString(5));
-                                customer.setBedID(rs.getString(6));
-                                customer.setPhone(rs.getString(7));
-                                customer.setCareWorker(rs.getString(8));
-                                customer.setRank(rs.getInt(9));
-                                customer.setRelationName(rs.getString(10));
-                                customer.setRelation(rs.getString(11));
-                                customer.setRelationPhone(rs.getString(12));
-                                customer = autoAllocate(customer, customer.getRank(), workerRank);
+                            if (conn.getTransactionIsolation() == Connection.TRANSACTION_REPEATABLE_READ) {
+                                conn.setTransactionIsolation(TRANSACTION_SERIALIZABLE);
+                                String sql = "SELECT * FROM NursingHome.customer WHERE customer_careworker='" + workerId + "'";
+                                stmt = conn.createStatement();
+                                ResultSet rs = stmt.executeQuery(sql);
+                                while (rs.next()) {
+                                    Customer customer = new Customer();
+                                    customer.setId(rs.getString(1));
+                                    customer.setName(rs.getString(2));
+                                    customer.setDate(rs.getString(3));
+                                    customer.setEnterTime(rs.getString(4));
+                                    customer.setRoomID(rs.getString(5));
+                                    customer.setBedID(rs.getString(6));
+                                    customer.setPhone(rs.getString(7));
+                                    customer.setCareWorker(rs.getString(8));
+                                    customer.setRank(rs.getInt(9));
+                                    customer.setRelationName(rs.getString(10));
+                                    customer.setRelation(rs.getString(11));
+                                    customer.setRelationPhone(rs.getString(12));
+                                    customer = autoAllocate(customer, customer.getRank(), workerRank);
 
-                                // TODO 重新分配后更改数据库中的客户表
-                                try {
-                                    Class.forName("com.mysql.jdbc.Driver");
-                                    conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-                                    String sql1 = "UPDATE NursingHome.customer SET customer_name='" + customer.getName() + "', customer_date='" + customer.getDate() + "', customer_entertime='" + customer.getEnterTime() + "', customer_roomid='" + customer.getRoomID() + "', customer_bedid='" + customer.getBedID() + "', customer_phone='" + customer.getPhone() + "', customer_careworker='" + customer.getCareWorker() + "', customer_rank='" + customer.getRank() + "', customer_relationname='" + customer.getRelationName() + "', customer_relation='" + customer.getRelation() + "', customer_relationphone='" + customer.getRelationPhone() + "' WHERE customer_id='" + customer.getId() + "'";
-                                    stmt = conn.createStatement();
-                                    stmt.executeUpdate(sql1);
-                                    stmt.close();
-                                    conn.close();
-                                } catch (ClassNotFoundException e) {
-                                    e.printStackTrace();
-                                } catch (SQLException e) {
-                                    e.printStackTrace();
+                                    // TODO 重新分配后更改数据库中的客户表
+                                    try {
+                                        Class.forName("com.mysql.jdbc.Driver");
+                                        conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
+                                        if (conn.getTransactionIsolation() == Connection.TRANSACTION_REPEATABLE_READ) {
+                                            conn.setTransactionIsolation(TRANSACTION_SERIALIZABLE);
+                                            String sql1 = "UPDATE NursingHome.customer SET customer_name='" + customer.getName() + "', customer_date='" + customer.getDate() + "', customer_entertime='" + customer.getEnterTime() + "', customer_roomid='" + customer.getRoomID() + "', customer_bedid='" + customer.getBedID() + "', customer_phone='" + customer.getPhone() + "', customer_careworker='" + customer.getCareWorker() + "', customer_rank='" + customer.getRank() + "', customer_relationname='" + customer.getRelationName() + "', customer_relation='" + customer.getRelation() + "', customer_relationphone='" + customer.getRelationPhone() + "' WHERE customer_id='" + customer.getId() + "'";
+                                            stmt = conn.createStatement();
+                                            stmt.executeUpdate(sql1);
+                                            stmt.close();
+                                            conn.setTransactionIsolation(TRANSACTION_SERIALIZABLE);
+                                        }
+                                        conn.close();
+                                    } catch (ClassNotFoundException e) {
+                                        e.printStackTrace();
+                                    } catch (SQLException e) {
+                                        e.printStackTrace();
+                                    }
+
                                 }
-
+                                stmt.close();
+                                conn.setTransactionIsolation(TRANSACTION_SERIALIZABLE);
                             }
-                            stmt.close();
                             conn.close();
                         } catch (ClassNotFoundException e) {
                             e.printStackTrace();
@@ -441,14 +462,18 @@ public class PeopleAdminUIController implements Initializable {
                     try {
                         Class.forName("com.mysql.jdbc.Driver");
                         conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-                        String sql = "DELETE FROM NursingHome.doctor WHERE doctor_id='" + doctorSelected.get(i).getId() + "'";
-                        String sql2 = "DELETE FROM NursingHome.manager WHERE manager_id='" + doctorSelected.get(i).getId() + "'";
-                        String sql1 = "UPDATE NursingHome.historical_staff SET staff_status=0 WHERE staff_id='" + doctorSelected.get(i).getId() + "'";
-                        stmt = conn.createStatement();
-                        stmt.executeUpdate(sql);
-                        stmt.executeUpdate(sql2);
-                        stmt.executeUpdate(sql1);
-                        stmt.close();
+                        if (conn.getTransactionIsolation() == Connection.TRANSACTION_REPEATABLE_READ) {
+                            conn.setTransactionIsolation(TRANSACTION_SERIALIZABLE);
+                            String sql = "DELETE FROM NursingHome.doctor WHERE doctor_id='" + doctorSelected.get(i).getId() + "'";
+                            String sql2 = "DELETE FROM NursingHome.manager WHERE manager_id='" + doctorSelected.get(i).getId() + "'";
+                            String sql1 = "UPDATE NursingHome.historical_staff SET staff_status=0 WHERE staff_id='" + doctorSelected.get(i).getId() + "'";
+                            stmt = conn.createStatement();
+                            stmt.executeUpdate(sql);
+                            stmt.executeUpdate(sql2);
+                            stmt.executeUpdate(sql1);
+                            stmt.close();
+                            conn.setTransactionIsolation(TRANSACTION_SERIALIZABLE);
+                        }
                         conn.close();
                     } catch (ClassNotFoundException e) {
                         e.printStackTrace();
@@ -468,16 +493,20 @@ public class PeopleAdminUIController implements Initializable {
                     try {
                         Class.forName("com.mysql.jdbc.Driver");
                         conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-                        String sql = "DELETE FROM NursingHome.doorboy WHERE doorboy_id='" + doorBoySelected.get(i).getId() + "'";
-                        String sql1 = "UPDATE NursingHome.historical_staff SET staff_status=0 WHERE staff_id='" + doorBoySelected.get(i).getId() + "'";
-                        stmt = conn.createStatement();
-                        stmt.executeUpdate(sql);
-                        if (doorBoySelected.get(i).getWorkPlace().equals("前台")) {
-                            String sql2 = "DELETE FROM NursingHome.manager WHERE manager_id='" + doorBoySelected.get(i).getId() + "'";
-                            stmt.executeUpdate(sql2);
+                        if (conn.getTransactionIsolation() == Connection.TRANSACTION_REPEATABLE_READ) {
+                            conn.setTransactionIsolation(TRANSACTION_SERIALIZABLE);
+                            String sql = "DELETE FROM NursingHome.doorboy WHERE doorboy_id='" + doorBoySelected.get(i).getId() + "'";
+                            String sql1 = "UPDATE NursingHome.historical_staff SET staff_status=0 WHERE staff_id='" + doorBoySelected.get(i).getId() + "'";
+                            stmt = conn.createStatement();
+                            stmt.executeUpdate(sql);
+                            if (doorBoySelected.get(i).getWorkPlace().equals("前台")) {
+                                String sql2 = "DELETE FROM NursingHome.manager WHERE manager_id='" + doorBoySelected.get(i).getId() + "'";
+                                stmt.executeUpdate(sql2);
+                            }
+                            stmt.executeUpdate(sql1);
+                            stmt.close();
+                            conn.setTransactionIsolation(TRANSACTION_SERIALIZABLE);
                         }
-                        stmt.executeUpdate(sql1);
-                        stmt.close();
                         conn.close();
                     } catch (ClassNotFoundException e) {
                         e.printStackTrace();
@@ -497,14 +526,18 @@ public class PeopleAdminUIController implements Initializable {
                     try {
                         Class.forName("com.mysql.jdbc.Driver");
                         conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-                        String sql = "DELETE FROM NursingHome.administrator WHERE administrator_id='" + adminSelected.get(i).getId() + "'";
-                        String sql2 = "DELETE FROM NursingHome.manager WHERE manager_id='" + adminSelected.get(i).getId() + "'";
-                        String sql1 = "UPDATE NursingHome.historical_staff SET staff_status=0 WHERE staff_id='" + adminSelected.get(i).getId() + "'";
-                        stmt = conn.createStatement();
-                        stmt.executeUpdate(sql);
-                        stmt.executeUpdate(sql2);
-                        stmt.executeUpdate(sql1);
-                        stmt.close();
+                        if (conn.getTransactionIsolation() == Connection.TRANSACTION_REPEATABLE_READ) {
+                            conn.setTransactionIsolation(TRANSACTION_SERIALIZABLE);
+                            String sql = "DELETE FROM NursingHome.administrator WHERE administrator_id='" + adminSelected.get(i).getId() + "'";
+                            String sql2 = "DELETE FROM NursingHome.manager WHERE manager_id='" + adminSelected.get(i).getId() + "'";
+                            String sql1 = "UPDATE NursingHome.historical_staff SET staff_status=0 WHERE staff_id='" + adminSelected.get(i).getId() + "'";
+                            stmt = conn.createStatement();
+                            stmt.executeUpdate(sql);
+                            stmt.executeUpdate(sql2);
+                            stmt.executeUpdate(sql1);
+                            stmt.close();
+                            conn.setTransactionIsolation(TRANSACTION_SERIALIZABLE);
+                        }
                         conn.close();
                     } catch (ClassNotFoundException e) {
                         e.printStackTrace();
@@ -529,20 +562,28 @@ public class PeopleAdminUIController implements Initializable {
         if (MANAGER_PRIV == 0 || MANAGER_PRIV == 1) {
             if (workerTab.isSelected()) {
                 List<Worker> workerSelected = workerTableView.getSelectionModel().getSelectedItems();
-                PeopleSetInfoUIController.setPeople((workerSelected.get(0)));
-                getApp().createPeopleSetInfoUI();
+                if (workerSelected.size() > 0) {
+                    PeopleSetInfoUIController.setPeople((workerSelected.get(0)));
+                    getApp().createPeopleSetInfoUI();
+                }
             } else if (doctorTab.isSelected()) {
                 List<Doctor> doctorSelected = doctorTableView.getSelectionModel().getSelectedItems();
-                PeopleSetInfoUIController.setPeople((doctorSelected.get(0)));
-                getApp().createPeopleSetInfoUI();
+                if (doctorSelected.size() > 0) {
+                    PeopleSetInfoUIController.setPeople((doctorSelected.get(0)));
+                    getApp().createPeopleSetInfoUI();
+                }
             } else if (doorBoyTab.isSelected()) {
                 List<DoorBoy> doorBoySelected = doorBoyTableView.getSelectionModel().getSelectedItems();
-                PeopleSetInfoUIController.setPeople((doorBoySelected.get(0)));
-                getApp().createPeopleSetInfoUI();
+                if (doorBoySelected.size() > 0) {
+                    PeopleSetInfoUIController.setPeople((doorBoySelected.get(0)));
+                    getApp().createPeopleSetInfoUI();
+                }
             } else if (adminTab.isSelected()) {
                 List<Administrator> adminSelected = adminTableView.getSelectionModel().getSelectedItems();
-                PeopleSetInfoUIController.setPeople((adminSelected.get(0)));
-                getApp().createPeopleSetInfoUI();
+                if (adminSelected.size() > 0) {
+                    PeopleSetInfoUIController.setPeople((adminSelected.get(0)));
+                    getApp().createPeopleSetInfoUI();
+                }
             }
         } else {
             showAlert("[警告]您没有查看用户信息的权限！");
@@ -720,20 +761,26 @@ public class PeopleAdminUIController implements Initializable {
         if (MANAGER_PRIV == 0) {
             if (doctorTab.isSelected()) {
                 List<Doctor> doctorSelected = doctorTableView.getSelectionModel().getSelectedItems();
-                ChangePasswordUIController.setPeopleId(doctorSelected.get(0).getId());
-                getApp().createChangePasswordUI();
+                if (doctorSelected.size() > 0) {
+                    ChangePasswordUIController.setPeopleId(doctorSelected.get(0).getId());
+                    getApp().createChangePasswordUI();
+                }
             } else if (doorBoyTab.isSelected()) {
                 List<DoorBoy> doorBoySelected = doorBoyTableView.getSelectionModel().getSelectedItems();
-                if (doorBoySelected.get(0).getWorkPlace().equals("前台")) {
-                    ChangePasswordUIController.setPeopleId(doorBoySelected.get(0).getId());
-                    getApp().createChangePasswordUI();
-                } else {
-                    showAlert("[警告]该员工没有账户！");
+                if (doorBoySelected.size() > 0) {
+                    if (doorBoySelected.get(0).getWorkPlace().equals("前台")) {
+                        ChangePasswordUIController.setPeopleId(doorBoySelected.get(0).getId());
+                        getApp().createChangePasswordUI();
+                    } else {
+                        showAlert("[警告]该员工没有账户！");
+                    }
                 }
             } else if (adminTab.isSelected()) {
                 List<Administrator> adminSelected = adminTableView.getSelectionModel().getSelectedItems();
-                ChangePasswordUIController.setPeopleId(adminSelected.get(0).getId());
-                getApp().createChangePasswordUI();
+                if (adminSelected.size() > 0) {
+                    ChangePasswordUIController.setPeopleId(adminSelected.get(0).getId());
+                    getApp().createChangePasswordUI();
+                }
             } else {
                 showAlert("[警告]该员工没有账户！");
             }
@@ -815,41 +862,45 @@ public class PeopleAdminUIController implements Initializable {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-            String sql;
-            if (contextComboBox.getValue().equals("--无--")) {
-                sql = "SELECT * FROM NursingHome.worker";
-            } else if (contextComboBox.getValue().equals("工号")) {
-                sql = "SELECT * FROM NursingHome.worker WHERE worker_id LIKE '" + searchText.getText() + "%'";
-            } else if (contextComboBox.getValue().equals("姓名")) {
-                sql = "SELECT * FROM NursingHome.worker WHERE worker_name LIKE '%" + searchText.getText() + "%'";
-            } else if (contextComboBox.getValue().equals("年龄")) {
-                sql = "SELECT * FROM NursingHome.worker WHERE worker_date = '" + searchText.getText() + "'";
-            } else if (contextComboBox.getValue().equals("薪水")) {
-                sql = "SELECT * FROM NursingHome.worker WHERE worker_salary = '" + searchText.getText() + "'";
-            } else if (contextComboBox.getValue().equals("级别")) {
-                sql = "SELECT * FROM NursingHome.worker WHERE worker_rank LIKE '" + searchText.getText() + "'";
-            } else if (contextComboBox.getValue().equals("目标护理级别")) {
-                sql = "SELECT * FROM NursingHome.worker WHERE worker_customerrank = '" + searchText.getText() + "'";
-            } else if (contextComboBox.getValue().equals("护理人数")) {
-                sql = "SELECT * FROM NursingHome.worker WHERE worker_customernumber = '" + searchText.getText() + "'";
-            } else {
-                sql = "SELECT * FROM NursingHome.worker";
+            if (conn.getTransactionIsolation() == Connection.TRANSACTION_REPEATABLE_READ) {
+                conn.setTransactionIsolation(TRANSACTION_SERIALIZABLE);
+                String sql;
+                if (contextComboBox.getValue().equals("--无--")) {
+                    sql = "SELECT * FROM NursingHome.worker";
+                } else if (contextComboBox.getValue().equals("工号")) {
+                    sql = "SELECT * FROM NursingHome.worker WHERE worker_id LIKE '" + searchText.getText() + "%'";
+                } else if (contextComboBox.getValue().equals("姓名")) {
+                    sql = "SELECT * FROM NursingHome.worker WHERE worker_name LIKE '%" + searchText.getText() + "%'";
+                } else if (contextComboBox.getValue().equals("年龄")) {
+                    sql = "SELECT * FROM NursingHome.worker WHERE Year(sysdate())-year(worker_date) = '" + searchText.getText() + "'";
+                } else if (contextComboBox.getValue().equals("薪水")) {
+                    sql = "SELECT * FROM NursingHome.worker WHERE worker_salary = '" + searchText.getText() + "'";
+                } else if (contextComboBox.getValue().equals("级别")) {
+                    sql = "SELECT * FROM NursingHome.worker WHERE worker_rank LIKE '" + searchText.getText() + "'";
+                } else if (contextComboBox.getValue().equals("目标护理级别")) {
+                    sql = "SELECT * FROM NursingHome.worker WHERE worker_customerrank = '" + searchText.getText() + "'";
+                } else if (contextComboBox.getValue().equals("护理人数")) {
+                    sql = "SELECT * FROM NursingHome.worker WHERE worker_customernumber = '" + searchText.getText() + "'";
+                } else {
+                    sql = "SELECT * FROM NursingHome.worker";
+                }
+                stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(sql);
+                while (rs.next()) {
+                    Worker worker = new Worker();
+                    worker.setId(rs.getString(1));
+                    worker.setName(rs.getString(2));
+                    worker.setDate(rs.getString(3));
+                    worker.setSalary(rs.getDouble(4));
+                    worker.setRank(rs.getString(5));
+                    worker.setCustomerRank(rs.getInt(6));
+                    worker.setCustomerNumber(rs.getInt(7));
+                    workerObservableList.add(worker);
+                }
+                rs.close();
+                stmt.close();
+                conn.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
             }
-            stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
-            while (rs.next()) {
-                Worker worker = new Worker();
-                worker.setId(rs.getString(1));
-                worker.setName(rs.getString(2));
-                worker.setDate(rs.getString(3));
-                worker.setSalary(rs.getDouble(4));
-                worker.setRank(rs.getString(5));
-                worker.setCustomerRank(rs.getInt(6));
-                worker.setCustomerNumber(rs.getInt(7));
-                workerObservableList.add(worker);
-            }
-            rs.close();
-            stmt.close();
             conn.close();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -870,35 +921,39 @@ public class PeopleAdminUIController implements Initializable {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-            String sql;
-            if (contextComboBox.getValue().equals("--无--")) {
-                sql = "SELECT * FROM NursingHome.doctor";
-            } else if (contextComboBox.getValue().equals("工号")) {
-                sql = "SELECT * FROM NursingHome.doctor WHERE doctor_id LIKE '" + searchText.getText() + "%'";
-            } else if (contextComboBox.getValue().equals("姓名")) {
-                sql = "SELECT * FROM NursingHome.doctor WHERE doctor_name LIKE '%" + searchText.getText() + "%'";
-            } else if (contextComboBox.getValue().equals("年龄")) {
-                sql = "SELECT * FROM NursingHome.doctor WHERE doctor_date = '" + searchText.getText() + "'";
-            } else if (contextComboBox.getValue().equals("科室")) {
-                sql = "SELECT * FROM NursingHome.doctor WHERE doctor_major LIKE '%" + searchText.getText() + "%'";
-            } else if (contextComboBox.getValue().equals("薪水")) {
-                sql = "SELECT * FROM NursingHome.doctor WHERE doctor_salary = '" + searchText.getText() + "'";
-            } else {
-                sql = "SELECT * FROM NursingHome.doctor";
+            if (conn.getTransactionIsolation() == Connection.TRANSACTION_REPEATABLE_READ) {
+                conn.setTransactionIsolation(TRANSACTION_SERIALIZABLE);
+                String sql;
+                if (contextComboBox.getValue().equals("--无--")) {
+                    sql = "SELECT * FROM NursingHome.doctor";
+                } else if (contextComboBox.getValue().equals("工号")) {
+                    sql = "SELECT * FROM NursingHome.doctor WHERE doctor_id LIKE '" + searchText.getText() + "%'";
+                } else if (contextComboBox.getValue().equals("姓名")) {
+                    sql = "SELECT * FROM NursingHome.doctor WHERE doctor_name LIKE '%" + searchText.getText() + "%'";
+                } else if (contextComboBox.getValue().equals("年龄")) {
+                    sql = "SELECT * FROM NursingHome.doctor WHERE Year(sysdate())-year(doctor_date)= '" + searchText.getText() + "'";
+                } else if (contextComboBox.getValue().equals("科室")) {
+                    sql = "SELECT * FROM NursingHome.doctor WHERE doctor_major LIKE '%" + searchText.getText() + "%'";
+                } else if (contextComboBox.getValue().equals("薪水")) {
+                    sql = "SELECT * FROM NursingHome.doctor WHERE doctor_salary = '" + searchText.getText() + "'";
+                } else {
+                    sql = "SELECT * FROM NursingHome.doctor";
+                }
+                stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(sql);
+                while (rs.next()) {
+                    Doctor doctor = new Doctor();
+                    doctor.setId(rs.getString(1));
+                    doctor.setName(rs.getString(2));
+                    doctor.setDate(rs.getString(3));
+                    doctor.setMajor(rs.getString(5));
+                    doctor.setSalary(rs.getDouble(4));
+                    doctorObservableList.add(doctor);
+                }
+                rs.close();
+                stmt.close();
+                conn.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
             }
-            stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
-            while (rs.next()) {
-                Doctor doctor = new Doctor();
-                doctor.setId(rs.getString(1));
-                doctor.setName(rs.getString(2));
-                doctor.setDate(rs.getString(3));
-                doctor.setMajor(rs.getString(5));
-                doctor.setSalary(rs.getDouble(4));
-                doctorObservableList.add(doctor);
-            }
-            rs.close();
-            stmt.close();
             conn.close();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -919,35 +974,39 @@ public class PeopleAdminUIController implements Initializable {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-            String sql;
-            if (contextComboBox.getValue().equals("--无--")) {
-                sql = "SELECT * FROM NursingHome.doorboy";
-            } else if (contextComboBox.getValue().equals("工号")) {
-                sql = "SELECT * FROM NursingHome.doorboy WHERE doorboy_id LIKE '" + searchText.getText() + "%'";
-            } else if (contextComboBox.getValue().equals("姓名")) {
-                sql = "SELECT * FROM NursingHome.doorboy WHERE doorboy_name LIKE '%" + searchText.getText() + "%'";
-            } else if (contextComboBox.getValue().equals("年龄")) {
-                sql = "SELECT * FROM NursingHome.doorboy WHERE doorboy_date = '" + searchText.getText() + "'";
-            } else if (contextComboBox.getValue().equals("岗位")) {
-                sql = "SELECT * FROM NursingHome.doorboy WHERE doorboy_workplace LIKE '%" + searchText.getText() + "%'";
-            } else if (contextComboBox.getValue().equals("薪水")) {
-                sql = "SELECT * FROM NursingHome.doorboy WHERE doorboy_salary = '" + searchText.getText() + "'";
-            } else {
-                sql = "SELECT * FROM NursingHome.doorboy";
+            if (conn.getTransactionIsolation() == Connection.TRANSACTION_REPEATABLE_READ) {
+                conn.setTransactionIsolation(TRANSACTION_SERIALIZABLE);
+                String sql;
+                if (contextComboBox.getValue().equals("--无--")) {
+                    sql = "SELECT * FROM NursingHome.doorboy";
+                } else if (contextComboBox.getValue().equals("工号")) {
+                    sql = "SELECT * FROM NursingHome.doorboy WHERE doorboy_id LIKE '" + searchText.getText() + "%'";
+                } else if (contextComboBox.getValue().equals("姓名")) {
+                    sql = "SELECT * FROM NursingHome.doorboy WHERE doorboy_name LIKE '%" + searchText.getText() + "%'";
+                } else if (contextComboBox.getValue().equals("年龄")) {
+                    sql = "SELECT * FROM NursingHome.doorboy WHERE Year(sysdate())-year(doorboy_date) = '" + searchText.getText() + "'";
+                } else if (contextComboBox.getValue().equals("岗位")) {
+                    sql = "SELECT * FROM NursingHome.doorboy WHERE doorboy_workplace LIKE '%" + searchText.getText() + "%'";
+                } else if (contextComboBox.getValue().equals("薪水")) {
+                    sql = "SELECT * FROM NursingHome.doorboy WHERE doorboy_salary = '" + searchText.getText() + "'";
+                } else {
+                    sql = "SELECT * FROM NursingHome.doorboy";
+                }
+                stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(sql);
+                while (rs.next()) {
+                    DoorBoy doorBoy = new DoorBoy();
+                    doorBoy.setId(rs.getString(1));
+                    doorBoy.setName(rs.getString(2));
+                    doorBoy.setDate(rs.getString(3));
+                    doorBoy.setSalary(rs.getDouble(4));
+                    doorBoy.setWorkPlace(rs.getString(5));
+                    doorBoyObservableList.add(doorBoy);
+                }
+                rs.close();
+                stmt.close();
+                conn.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
             }
-            stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
-            while (rs.next()) {
-                DoorBoy doorBoy = new DoorBoy();
-                doorBoy.setId(rs.getString(1));
-                doorBoy.setName(rs.getString(2));
-                doorBoy.setDate(rs.getString(3));
-                doorBoy.setSalary(rs.getDouble(4));
-                doorBoy.setWorkPlace(rs.getString(5));
-                doorBoyObservableList.add(doorBoy);
-            }
-            rs.close();
-            stmt.close();
             conn.close();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -968,35 +1027,39 @@ public class PeopleAdminUIController implements Initializable {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-            String sql;
-            if (contextComboBox.getValue().equals("--无--")) {
-                sql = "SELECT * FROM NursingHome.administrator";
-            } else if (contextComboBox.getValue().equals("工号")) {
-                sql = "SELECT * FROM NursingHome.administrator WHERE administrator_id LIKE '" + searchText.getText() + "%'";
-            } else if (contextComboBox.getValue().equals("姓名")) {
-                sql = "SELECT * FROM NursingHome.administrator WHERE administrator_name LIKE '%" + searchText.getText() + "%'";
-            } else if (contextComboBox.getValue().equals("年龄")) {
-                sql = "SELECT * FROM NursingHome.administrator WHERE administrator_date = '" + searchText.getText() + "'";
-            } else if (contextComboBox.getValue().equals("岗位")) {
-                sql = "SELECT * FROM NursingHome.administrator WHERE administrator_position LIKE '%" + searchText.getText() + "%'";
-            } else if (contextComboBox.getValue().equals("薪水")) {
-                sql = "SELECT * FROM NursingHome.administrator WHERE administrator_salary = '" + searchText.getText() + "'";
-            } else {
-                sql = "SELECT * FROM NursingHome.administrator";
+            if (conn.getTransactionIsolation() == Connection.TRANSACTION_REPEATABLE_READ) {
+                conn.setTransactionIsolation(TRANSACTION_SERIALIZABLE);
+                String sql;
+                if (contextComboBox.getValue().equals("--无--")) {
+                    sql = "SELECT * FROM NursingHome.administrator";
+                } else if (contextComboBox.getValue().equals("工号")) {
+                    sql = "SELECT * FROM NursingHome.administrator WHERE administrator_id LIKE '" + searchText.getText() + "%'";
+                } else if (contextComboBox.getValue().equals("姓名")) {
+                    sql = "SELECT * FROM NursingHome.administrator WHERE administrator_name LIKE '%" + searchText.getText() + "%'";
+                } else if (contextComboBox.getValue().equals("年龄")) {
+                    sql = "SELECT * FROM NursingHome.administrator WHERE Year(sysdate())-year(administrator_date) = '" + searchText.getText() + "'";
+                } else if (contextComboBox.getValue().equals("岗位")) {
+                    sql = "SELECT * FROM NursingHome.administrator WHERE administrator_position LIKE '%" + searchText.getText() + "%'";
+                } else if (contextComboBox.getValue().equals("薪水")) {
+                    sql = "SELECT * FROM NursingHome.administrator WHERE administrator_salary = '" + searchText.getText() + "'";
+                } else {
+                    sql = "SELECT * FROM NursingHome.administrator";
+                }
+                stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(sql);
+                while (rs.next()) {
+                    Administrator administrator = new Administrator();
+                    administrator.setId(rs.getString(1));
+                    administrator.setName(rs.getString(2));
+                    administrator.setDate(rs.getString(3));
+                    administrator.setSalary(rs.getDouble(5));
+                    administrator.setPosition(rs.getString(4));
+                    adminObservableList.add(administrator);
+                }
+                rs.close();
+                stmt.close();
+                conn.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
             }
-            stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
-            while (rs.next()) {
-                Administrator administrator = new Administrator();
-                administrator.setId(rs.getString(1));
-                administrator.setName(rs.getString(2));
-                administrator.setDate(rs.getString(3));
-                administrator.setSalary(rs.getDouble(5));
-                administrator.setPosition(rs.getString(4));
-                adminObservableList.add(administrator);
-            }
-            rs.close();
-            stmt.close();
             conn.close();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();

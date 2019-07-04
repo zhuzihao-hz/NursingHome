@@ -13,6 +13,7 @@ import java.util.ResourceBundle;
 
 import static NursingHome.ControllerUtils.*;
 import static NursingHome.SQLMethod.*;
+import static java.sql.Connection.TRANSACTION_SERIALIZABLE;
 
 public class AdminLoginUIController implements Initializable {
     private Main application;
@@ -69,14 +70,18 @@ public class AdminLoginUIController implements Initializable {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-            String sql = "SELECT * FROM NursingHome.manager WHERE manager_id='" + id + "'";
-            stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
-            if (rs.next()) {
-                tempPri = rs.getInt(2);
-                password1 = rs.getString(3);
+            if (conn.getTransactionIsolation() == Connection.TRANSACTION_REPEATABLE_READ) {
+                conn.setTransactionIsolation(TRANSACTION_SERIALIZABLE);
+                String sql = "SELECT * FROM NursingHome.manager WHERE manager_id='" + id + "'";
+                stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(sql);
+                if (rs.next()) {
+                    tempPri = rs.getInt(2);
+                    password1 = rs.getString(3);
+                }
+                stmt.close();
+                conn.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
             }
-            stmt.close();
             conn.close();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -92,20 +97,24 @@ public class AdminLoginUIController implements Initializable {
             try {
                 Class.forName("com.mysql.jdbc.Driver");
                 conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-                String sql = "";
-                if (id.charAt(0) == 'D') {
-                    sql = "SELECT doctor_name FROM NursingHome.doctor WHERE doctor_id='" + id + "'";
-                } else if (id.charAt(0) == 'A') {
-                    sql = "SELECT administrator_name FROM NursingHome.administrator WHERE administrator_id='" + id + "'";
-                } else if (id.charAt(0) == 'B') {
-                    sql = "SELECT doorboy_name FROM NursingHome.doorboy WHERE doorboy_id='" + id + "'";
+                if (conn.getTransactionIsolation() == Connection.TRANSACTION_REPEATABLE_READ) {
+                    conn.setTransactionIsolation(TRANSACTION_SERIALIZABLE);
+                    String sql = "";
+                    if (id.charAt(0) == 'D') {
+                        sql = "SELECT doctor_name FROM NursingHome.doctor WHERE doctor_id='" + id + "'";
+                    } else if (id.charAt(0) == 'A') {
+                        sql = "SELECT administrator_name FROM NursingHome.administrator WHERE administrator_id='" + id + "'";
+                    } else if (id.charAt(0) == 'B') {
+                        sql = "SELECT doorboy_name FROM NursingHome.doorboy WHERE doorboy_id='" + id + "'";
+                    }
+                    stmt = conn.createStatement();
+                    ResultSet rs = stmt.executeQuery(sql);
+                    if (rs.next()) {
+                        GlobalInfo.MANAGER_NAME = rs.getString(1);
+                    }
+                    stmt.close();
+                    conn.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
                 }
-                stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery(sql);
-                if (rs.next()) {
-                    GlobalInfo.MANAGER_NAME = rs.getString(1);
-                }
-                stmt.close();
                 conn.close();
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();

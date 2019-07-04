@@ -16,16 +16,16 @@ import java.util.Date;
 import java.util.ResourceBundle;
 
 import static NursingHome.ControllerUtils.*;
+import static NursingHome.GlobalInfo.MANAGER_ID;
 import static NursingHome.SQLMethod.*;
+import static java.sql.Connection.TRANSACTION_SERIALIZABLE;
 
-public class RecordSetInfoUIController implements Initializable {
+public class RecordInsertUIController implements Initializable {
     private Main application;
     @FXML
     private Label recordIdLabel;
     @FXML
     private TextField recordCustomerIdTextField;
-    @FXML
-    private TextField recordDoctorIdTextField;
     @FXML
     private JFXDatePicker recordDatePicker;
     @FXML
@@ -43,10 +43,10 @@ public class RecordSetInfoUIController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         recordIdLabel.setText(generateId('R'));
         recordCustomerIdTextField.setText("");
-        recordDoctorIdTextField.setText("");
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String string = sdf.format(new Date());
         recordDatePicker.setValue(StringToDate(string));
+        recordDatePicker.setDisable(true);
         recordContext.setText("");
     }
 
@@ -63,15 +63,19 @@ public class RecordSetInfoUIController implements Initializable {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-            String sql = "SELECT customer_name FROM NursingHome.customer WHERE customer_id = '" + id + "'";
-            stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
-            if (rs.first()) {
-                name = rs.getString(1);
-            } else {
-                showAlert("[警告]没有这个客户！");
+            if (conn.getTransactionIsolation() == Connection.TRANSACTION_REPEATABLE_READ) {
+                conn.setTransactionIsolation(TRANSACTION_SERIALIZABLE);
+                String sql = "SELECT customer_name FROM NursingHome.customer WHERE customer_id = '" + id + "'";
+                stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(sql);
+                if (rs.first()) {
+                    name = rs.getString(1);
+                } else {
+                    showAlert("[警告]没有这个客户！");
+                }
+                stmt.close();
+                conn.setTransactionIsolation(TRANSACTION_SERIALIZABLE);
             }
-            stmt.close();
             conn.close();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -89,7 +93,7 @@ public class RecordSetInfoUIController implements Initializable {
         Record record = new Record();
         record.setId(recordIdLabel.getText());
         record.setCustomerId(recordCustomerIdTextField.getText());
-        record.setDoctorId(recordDoctorIdTextField.getText());
+        record.setDoctorId(MANAGER_ID);
         record.setDate(localDateToString(recordDatePicker.getValue()));
         record.setContext(recordContext.getText());
 
@@ -104,10 +108,14 @@ public class RecordSetInfoUIController implements Initializable {
             try {
                 Class.forName("com.mysql.jdbc.Driver");
                 conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-                String sql = "INSERT INTO NursingHome.record VALUES " + record.getRecordInfo();
-                stmt = conn.createStatement();
-                stmt.executeUpdate(sql);
-                stmt.close();
+                if (conn.getTransactionIsolation() == Connection.TRANSACTION_REPEATABLE_READ) {
+                    conn.setTransactionIsolation(TRANSACTION_SERIALIZABLE);
+                    String sql = "INSERT INTO NursingHome.record VALUES " + record.getRecordInfo();
+                    stmt = conn.createStatement();
+                    stmt.executeUpdate(sql);
+                    stmt.close();
+                    conn.setTransactionIsolation(TRANSACTION_SERIALIZABLE);
+                }
                 conn.close();
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();

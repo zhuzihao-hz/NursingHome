@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="NursingHome.controller.RecordSetInfoUIController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="NursingHome.controller.RecordInsertUIController">
     <children>
         <JFXButton fx:id="saveInfoButton" layoutX="173.0" layoutY="337.0" onAction="#saveRecordInfo" prefHeight="35.0" prefWidth="61.0" text="保存" />
         <JFXButton fx:id="infoBackButton" layoutX="367.0" layoutY="337.0" onAction="#backToBusinessAdmin" prefHeight="35.0" prefWidth="61.0" text="退出" />
@@ -21,22 +21,19 @@
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
             </columnConstraints>
             <rowConstraints>
-                <RowConstraints maxHeight="45.0" minHeight="10.0" prefHeight="36.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="45.0" minHeight="10.0" prefHeight="36.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="70.0" minHeight="10.0" prefHeight="36.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="72.0" minHeight="10.0" prefHeight="36.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="101.0" minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="45.0" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="45.0" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="77.0" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="140.0" minHeight="10.0" prefHeight="139.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <TextField fx:id="recordDoctorIdTextField" promptText="请输入医生编号" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                <Label prefHeight="28.0" prefWidth="76.0" text="医生编号" GridPane.rowIndex="2" />
-                <Label prefHeight="28.0" prefWidth="76.0" text="档案内容" GridPane.rowIndex="4" />
-                <Label prefHeight="28.0" prefWidth="76.0" text="记录日期" GridPane.rowIndex="3" />
+                <Label prefHeight="28.0" prefWidth="76.0" text="档案内容" GridPane.rowIndex="3" />
+                <Label prefHeight="28.0" prefWidth="76.0" text="记录日期" GridPane.rowIndex="2" />
                 <Label prefHeight="28.0" prefWidth="66.0" text="档案编号" />
                 <Label prefHeight="28.0" prefWidth="66.0" text="客户编号" GridPane.rowIndex="1" />
-                <JFXDatePicker fx:id="recordDatePicker" prefHeight="29.0" prefWidth="336.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                <JFXDatePicker fx:id="recordDatePicker" prefHeight="29.0" prefWidth="336.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                 <TextField fx:id="recordCustomerIdTextField" promptText="请输入客户编号" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                <JFXTextArea fx:id="recordContext" prefWidth="355.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                <JFXTextArea fx:id="recordContext" prefWidth="355.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                 <Label fx:id="recordIdLabel" prefHeight="26.0" prefWidth="353.0" text="档案编号" GridPane.columnIndex="1">
                     <font>
                         <Font size="14.0" />
