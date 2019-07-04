@@ -6,27 +6,7 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b39658a6-836c-40d7-993d-e05f082f754b" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/artifacts/database.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/database/NursingHome/ControllerUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/database/NursingHome/ControllerUtils.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/database/NursingHome/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/database/NursingHome/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/database/NursingHome/SQLMethod.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/database/NursingHome/SQLMethod.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/database/NursingHome/controller/PeopleAdminUIController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/database/NursingHome/controller/PeopleAdminUIController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/database/NursingHome/controller/RecordSetInfoUIController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/database/NursingHome/controller/RecordSetInfoUIController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/database/NursingHome/fxml/AdminMainUI.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/database/NursingHome/fxml/AdminMainUI.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/database/NursingHome/fxml/BusinessAdminUI.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/database/NursingHome/fxml/BusinessAdminUI.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/database/NursingHome/fxml/CustomerInsertInfoUI.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/database/NursingHome/fxml/CustomerInsertInfoUI.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/database/NursingHome/fxml/PeopleAdminUI.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/database/NursingHome/fxml/PeopleAdminUI.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/database/NursingHome/fxml/PeopleSetInfoUI.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/database/NursingHome/fxml/PeopleSetInfoUI.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/database/NursingHome/fxml/RecordSetInfoUI.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/database/NursingHome/fxml/RecordSetInfoUI.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NursingHome/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/NursingHome/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NursingHome/SQLMethod.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/NursingHome/SQLMethod.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NursingHome/controller/RecordSetInfoUIController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/NursingHome/controller/RecordSetInfoUIController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NursingHome/fxml/AdminMainUI.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/NursingHome/fxml/AdminMainUI.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NursingHome/fxml/PeopleAdminUI.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/NursingHome/fxml/PeopleAdminUI.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NursingHome/fxml/RecordSetInfoUI.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/NursingHome/fxml/RecordSetInfoUI.fxml" afterDir="false" />
-    </list>
+    <list default="true" id="b39658a6-836c-40d7-993d-e05f082f754b" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -95,7 +75,7 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/NursingHome/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
+            <state relative-caret-position="461">
               <caret line="138" column="7" lean-forward="true" selection-start-line="138" selection-start-column="7" selection-end-line="138" selection-end-column="7" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -218,41 +198,6 @@
             <path>
               <item name="JavaTest" type="b2602c69:ProjectViewProjectNode" />
               <item name="JavaTest" type="462c0819:PsiDirectoryNode" />
-              <item name="out" type="462c0819:PsiDirectoryNode" />
-              <item name="artifacts" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="JavaTest" type="b2602c69:ProjectViewProjectNode" />
-              <item name="JavaTest" type="462c0819:PsiDirectoryNode" />
-              <item name="out" type="462c0819:PsiDirectoryNode" />
-              <item name="production" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="JavaTest" type="b2602c69:ProjectViewProjectNode" />
-              <item name="JavaTest" type="462c0819:PsiDirectoryNode" />
-              <item name="out" type="462c0819:PsiDirectoryNode" />
-              <item name="production" type="462c0819:PsiDirectoryNode" />
-              <item name="database" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="JavaTest" type="b2602c69:ProjectViewProjectNode" />
-              <item name="JavaTest" type="462c0819:PsiDirectoryNode" />
-              <item name="out" type="462c0819:PsiDirectoryNode" />
-              <item name="production" type="462c0819:PsiDirectoryNode" />
-              <item name="database" type="462c0819:PsiDirectoryNode" />
-              <item name="META-INF" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="JavaTest" type="b2602c69:ProjectViewProjectNode" />
-              <item name="JavaTest" type="462c0819:PsiDirectoryNode" />
-              <item name="out" type="462c0819:PsiDirectoryNode" />
-              <item name="production" type="462c0819:PsiDirectoryNode" />
-              <item name="database" type="462c0819:PsiDirectoryNode" />
-              <item name="NursingHome" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="JavaTest" type="b2602c69:ProjectViewProjectNode" />
-              <item name="JavaTest" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -273,13 +218,6 @@
               <item name="JavaTest" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="NursingHome" type="462c0819:PsiDirectoryNode" />
-              <item name="css" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="JavaTest" type="b2602c69:ProjectViewProjectNode" />
-              <item name="JavaTest" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="NursingHome" type="462c0819:PsiDirectoryNode" />
               <item name="dataclass" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -291,19 +229,7 @@
             </path>
             <path>
               <item name="JavaTest" type="b2602c69:ProjectViewProjectNode" />
-              <item name="JavaTest" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="NursingHome" type="462c0819:PsiDirectoryNode" />
-              <item name="img" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="JavaTest" type="b2602c69:ProjectViewProjectNode" />
               <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-            </path>
-            <path>
-              <item name="JavaTest" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-              <item name="&lt; 10 &gt;" type="70bed36:NamedLibraryElementNode" />
             </path>
           </expand>
           <select />
@@ -401,17 +327,17 @@
       <workItem from="1562116813726" duration="409000" />
       <workItem from="1562120722631" duration="15810000" />
       <workItem from="1562207356188" duration="13000" />
-      <workItem from="1562207375619" duration="3504000" />
+      <workItem from="1562207375619" duration="3804000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="206234000" />
+    <option name="totallyTimeSpent" value="206534000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.33150184" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.33150184" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -430,7 +356,7 @@
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Terminal" order="10" />
       <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
-      <window_info active="true" anchor="bottom" id="Messages" order="12" visible="true" weight="0.32959184" />
+      <window_info anchor="bottom" id="Messages" order="12" weight="0.32959184" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -925,7 +851,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/NursingHome/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
+        <state relative-caret-position="461">
           <caret line="138" column="7" lean-forward="true" selection-start-line="138" selection-start-column="7" selection-end-line="138" selection-end-column="7" />
           <folding>
             <element signature="imports" expanded="true" />
