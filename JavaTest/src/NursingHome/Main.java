@@ -103,6 +103,7 @@ public class Main extends Application {
     public void gotoAdminMainUI() {
         stage.close();
         stage = new Stage();
+        stage.setResizable(false);
         stage.setTitle("养老院管理系统(管理员) Nursing Home(Admin)");
         AdminMainUIController adminMainUI = (AdminMainUIController) replaceSceneContent("fxml/AdminMainUI.fxml");
         adminMainUI.setApp(this);

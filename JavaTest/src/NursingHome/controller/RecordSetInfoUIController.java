@@ -25,14 +25,11 @@ public class RecordSetInfoUIController implements Initializable {
     @FXML
     private TextField recordCustomerIdTextField;
     @FXML
-    private TextField recordCustomerNameTextField;
-    @FXML
     private TextField recordDoctorIdTextField;
     @FXML
     private JFXDatePicker recordDatePicker;
     @FXML
     private JFXTextArea recordContext;
-    private static Record record;
 
     public void setApp(Main app) {
         this.application = app;
@@ -42,25 +39,46 @@ public class RecordSetInfoUIController implements Initializable {
         return this.application;
     }
 
-    public static Record getRecord() {
-        return record;
-    }
-
-    public static void setRecord(Record record) {
-        RecordSetInfoUIController.record = record;
-    }
-
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         recordIdLabel.setText(generateId('R'));
         recordCustomerIdTextField.setText("");
-        recordCustomerNameTextField.setText("");
         recordDoctorIdTextField.setText("");
-        Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String string = sdf.format(date);
+        String string = sdf.format(new Date());
         recordDatePicker.setValue(StringToDate(string));
         recordContext.setText("");
+    }
+
+    /**
+     * 获得指定客户号的客户姓名
+     *
+     * @param id 客户编号
+     * @return 返回客户姓名，若无此客户则返回空字符串
+     */
+    private String getCustomerName(String id) {
+        String name = "";
+        Connection conn;
+        Statement stmt;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
+            String sql = "SELECT customer_name FROM NursingHome.customer WHERE customer_id = '" + id + "'";
+            stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            if (rs.first()) {
+                name = rs.getString(1);
+            } else {
+                showAlert("[警告]没有这个客户！");
+            }
+            stmt.close();
+            conn.close();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return name;
     }
 
     /**
@@ -71,36 +89,40 @@ public class RecordSetInfoUIController implements Initializable {
         Record record = new Record();
         record.setId(recordIdLabel.getText());
         record.setCustomerId(recordCustomerIdTextField.getText());
-        record.setCustomerName(recordCustomerNameTextField.getText());
         record.setDoctorId(recordDoctorIdTextField.getText());
         record.setDate(localDateToString(recordDatePicker.getValue()));
         record.setContext(recordContext.getText());
 
-        // TODO 在数据库中新增信息
-        Connection conn;
-        Statement stmt;
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-            String sql = "INSERT INTO NursingHome.record VALUES " + record.getRecordInfo();
-            stmt = conn.createStatement();
-            stmt.executeUpdate(sql);
-            stmt.close();
-            conn.close();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        String name = getCustomerName(record.getCustomerId());
+        if (name.equals("")) {
+            recordCustomerIdTextField.setText("");
+        } else {
+            record.setCustomerName(name);
+            // TODO 在数据库中新增信息
+            Connection conn;
+            Statement stmt;
+            try {
+                Class.forName("com.mysql.jdbc.Driver");
+                conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
+                String sql = "INSERT INTO NursingHome.record VALUES " + record.getRecordInfo();
+                stmt = conn.createStatement();
+                stmt.executeUpdate(sql);
+                stmt.close();
+                conn.close();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            BusinessAdminUIController.setInfoTableView(true, true, record);
+            backToBusinessAdmin();
         }
-        BusinessAdminUIController.setInfoTableView(true, true, record);
-        backToBusinessAdmin();
     }
 
     /**
      * 返回业务管理界面
      */
     public void backToBusinessAdmin() {
-        record = new Record();
         getApp().floatStage.close();
     }
 }

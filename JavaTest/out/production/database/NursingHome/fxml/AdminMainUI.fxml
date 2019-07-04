@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -11,9 +12,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="background" style="-fx-background-radius: 10px;" stylesheets="@../css/AdminMainUI.css"
-            xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="NursingHome.controller.AdminMainUIController">
+<AnchorPane id="background" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="NursingHome.controller.AdminMainUIController">
     <children>
         <VBox prefHeight="400.0" prefWidth="640.0">
             <children>
@@ -21,21 +20,20 @@
                     <menus>
                         <Menu mnemonicParsing="false" text="个人">
                             <items>
-                                <MenuItem fx:id="personInfoMenu" mnemonicParsing="false" onAction="#personalInfo"
-                                          text="个人信息"/>
-                                <MenuItem fx:id="logoutMenu" mnemonicParsing="false" onAction="#logout" text="注销"/>
-                                <MenuItem fx:id="quitMenu" mnemonicParsing="false" onAction="#quit" text="退出"/>
+                                <MenuItem fx:id="personInfoMenu" mnemonicParsing="false" onAction="#personalInfo" text="个人信息" />
+                                <MenuItem fx:id="logoutMenu" mnemonicParsing="false" onAction="#logout" text="注销" />
+                                <MenuItem fx:id="quitMenu" mnemonicParsing="false" onAction="#quit" text="退出" />
                             </items>
                         </Menu>
                         <Menu mnemonicParsing="false" text="管理">
                             <items>
-                                <MenuItem mnemonicParsing="false" onAction="#movePeopleAdminMenu" text="人事管理"/>
-                                <MenuItem mnemonicParsing="false" onAction="#moveBusinessAdminMenu" text="业务管理"/>
+                                <MenuItem mnemonicParsing="false" onAction="#movePeopleAdminMenu" text="人事管理" />
+                                <MenuItem mnemonicParsing="false" onAction="#moveBusinessAdminMenu" text="业务管理" />
                             </items>
                         </Menu>
                         <Menu mnemonicParsing="false" text="帮助">
                             <items>
-                                <MenuItem mnemonicParsing="false" onAction="#aboutInfo" text="关于"/>
+                                <MenuItem mnemonicParsing="false" onAction="#aboutInfo" text="关于" />
                             </items>
                         </Menu>
                     </menus>
@@ -46,60 +44,50 @@
                             <children>
                                 <AnchorPane prefHeight="399.0" prefWidth="161.0">
                                     <children>
-                                        <ImageView fitHeight="78.0" fitWidth="78.0" layoutX="41.0" layoutY="26.0"
-                                                   onMouseReleased="#personInfoImage" pickOnBounds="true"
-                                                   preserveRatio="true">
+                                        <ImageView fitHeight="78.0" fitWidth="78.0" layoutX="41.0" layoutY="26.0" onMouseReleased="#personInfoImage" pickOnBounds="true" preserveRatio="true">
                                             <image>
-                                                <Image url="@../img/dummy_potrait.jpg"/>
+                                                <Image url="@../img/dummy_potrait.jpg" />
                                             </image>
                                         </ImageView>
-                                        <Text fx:id="welcome" layoutX="10.0" layoutY="141.0"
-                                              onMouseReleased="#personInfoImage" strokeType="OUTSIDE" strokeWidth="0.0"
-                                              text="姓名" textAlignment="CENTER" wrappingWidth="129.2060546875">
+                                        <Text fx:id="welcome" layoutX="10.0" layoutY="141.0" onMouseReleased="#personInfoImage" strokeType="OUTSIDE" strokeWidth="0.0" text="姓名" textAlignment="CENTER" wrappingWidth="129.2060546875">
                                             <font>
-                                                <Font size="20.0"/>
+                                                <Font size="20.0" />
                                             </font>
                                         </Text>
-                                        <Text fx:id="dateText" layoutX="1.0" layoutY="353.0" strokeType="OUTSIDE"
-                                              strokeWidth="0.0" text="时间" textAlignment="CENTER" wrappingWidth="149.0">
+                                        <Text fx:id="dateText" layoutX="1.0" layoutY="353.0" strokeType="OUTSIDE" strokeWidth="0.0" text="时间" textAlignment="CENTER" wrappingWidth="149.0">
                                             <font>
-                                                <Font size="18.0"/>
+                                                <Font size="18.0" />
                                             </font>
                                         </Text>
+                              <Separator layoutX="152.0" layoutY="1.0" orientation="VERTICAL" prefHeight="390.0" prefWidth="6.0" />
                                     </children>
                                 </AnchorPane>
                             </children>
                         </VBox>
-                        <AnchorPane fx:id="peopleAmdinPane" layoutX="161.0" layoutY="21.0"
-                                    onMouseReleased="#movePeopleAdmin" prefHeight="237.0" prefWidth="200.0">
+                        <AnchorPane fx:id="peopleAmdinPane" layoutX="161.0" layoutY="21.0" onMouseReleased="#movePeopleAdmin" prefHeight="237.0" prefWidth="200.0">
                             <children>
-                                <ImageView fitHeight="194.0" fitWidth="200.0" layoutY="7.0" pickOnBounds="true"
-                                           preserveRatio="true">
+                                <ImageView fitHeight="194.0" fitWidth="200.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
-                                        <Image url="@../img/inter_manage.jpg"/>
+                                        <Image url="@../img/inter_manage.jpg" />
                                     </image>
                                 </ImageView>
-                                <Label alignment="CENTER" layoutX="58.0" layoutY="203.0" prefHeight="40.0"
-                                       prefWidth="85.0" text="人事管理">
+                                <Label alignment="CENTER" layoutX="58.0" layoutY="203.0" prefHeight="40.0" prefWidth="85.0" text="人事管理">
                                     <font>
-                                        <Font size="21.0"/>
+                                        <Font size="21.0" />
                                     </font>
                                 </Label>
                             </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="BusinessAdminPane" layoutX="367.0" layoutY="21.0"
-                                    onMouseReleased="#moveBusinessAdmin" prefHeight="243.0" prefWidth="200.0">
+                        <AnchorPane fx:id="BusinessAdminPane" layoutX="367.0" layoutY="21.0" onMouseReleased="#moveBusinessAdmin" prefHeight="243.0" prefWidth="200.0">
                             <children>
-                                <ImageView fitHeight="194.0" fitWidth="232.0" layoutY="7.0" pickOnBounds="true"
-                                           preserveRatio="true">
+                                <ImageView fitHeight="194.0" fitWidth="232.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
-                                        <Image url="@../img/securities.jpg"/>
+                                        <Image url="@../img/securities.jpg" />
                                     </image>
                                 </ImageView>
-                                <Label alignment="CENTER" layoutX="58.0" layoutY="203.0" prefHeight="40.0"
-                                       prefWidth="85.0" text="业务管理">
+                                <Label alignment="CENTER" layoutX="58.0" layoutY="203.0" prefHeight="40.0" prefWidth="85.0" text="业务管理">
                                     <font>
-                                        <Font size="21.0"/>
+                                        <Font size="21.0" />
                                     </font>
                                 </Label>
                             </children>

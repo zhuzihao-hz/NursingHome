@@ -10,9 +10,9 @@ import java.sql.*;
 import static NursingHome.ControllerUtils.*;
 
 public class SQLMethod {
-    public static String MYSQL_URL = "jdbc:mysql://localhost:3306";
-    public static String MYSQL_USER = "root";
-    public static String MYSQL_PASSWORD = "12345678";
+    public static String MYSQL_URL = "jdbc:mysql://106.15.187.231";
+    public static String MYSQL_USER = "quest";
+    public static String MYSQL_PASSWORD = "QWEasd123!@#";
 
     /**
      * 随机生成一个新密码并赋给新员工
