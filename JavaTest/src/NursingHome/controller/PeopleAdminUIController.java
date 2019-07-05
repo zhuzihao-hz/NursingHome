@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 
 import java.net.URL;
@@ -101,6 +102,8 @@ public class PeopleAdminUIController implements Initializable {
     private TextField searchText;
     @FXML
     private JFXComboBox<String> contextComboBox = new JFXComboBox<>();
+    @FXML
+    private ImageView imageView;
 
     public void setApp(Main app) {
         this.application = app;
@@ -171,6 +174,41 @@ public class PeopleAdminUIController implements Initializable {
      */
     public void aboutInfo() {
         application.createAboutInfoUI();
+    }
+
+    /**
+     * 上传头像
+     */
+    public void uploadImage() {
+        if (MANAGER_PRIV == 0) {
+            if (doctorTab.isSelected()) {
+                List<Doctor> doctorSelected = doctorTableView.getSelectionModel().getSelectedItems();
+                if (doctorSelected.size() > 0) {
+                    ChangePasswordUIController.setPeopleId(doctorSelected.get(0).getId());
+                    getApp().createUploadImageUI();
+                }
+            } else if (doorBoyTab.isSelected()) {
+                List<DoorBoy> doorBoySelected = doorBoyTableView.getSelectionModel().getSelectedItems();
+                if (doorBoySelected.size() > 0) {
+                    if (doorBoySelected.get(0).getWorkPlace().equals("前台")) {
+                        ChangePasswordUIController.setPeopleId(doorBoySelected.get(0).getId());
+                        getApp().createUploadImageUI();
+                    } else {
+                        showAlert("[警告]该员工没有账户！");
+                    }
+                }
+            } else if (adminTab.isSelected()) {
+                List<Administrator> adminSelected = adminTableView.getSelectionModel().getSelectedItems();
+                if (adminSelected.size() > 0) {
+                    ChangePasswordUIController.setPeopleId(adminSelected.get(0).getId());
+                    getApp().createUploadImageUI();
+                }
+            } else {
+                showAlert("[警告]该员工没有账户！");
+            }
+        } else {
+            showAlert("[警告]您没有上传头像的权限！");
+        }
     }
 
     /**

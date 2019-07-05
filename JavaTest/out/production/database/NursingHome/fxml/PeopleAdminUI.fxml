@@ -39,6 +39,7 @@
                                 <MenuItem mnemonicParsing="false" onAction="#deletePeople" text="解雇员工" />
                                 <MenuItem mnemonicParsing="false" onAction="#setPeopleInfo" text="查看员工信息" />
                                 <MenuItem mnemonicParsing="false" onAction="#changePassword" text="修改员工密码" />
+                        <MenuItem mnemonicParsing="false" onAction="#uploadImage" text="上传员工头像" />
                             </items>
                         </Menu>
                         <Menu mnemonicParsing="false" text="帮助">
@@ -54,7 +55,7 @@
                             <children>
                                 <AnchorPane prefHeight="448.0" prefWidth="165.0">
                                     <children>
-                                        <ImageView fitHeight="76.0" fitWidth="76.0" layoutX="43.0" layoutY="28.0" onMouseReleased="#personInfoImage" pickOnBounds="true" preserveRatio="true">
+                                        <ImageView fx:id="imageView" fitHeight="76.0" fitWidth="76.0" layoutX="43.0" layoutY="28.0" onMouseReleased="#personInfoImage" pickOnBounds="true" preserveRatio="true">
                                             <image>
                                                 <Image url="@../img/dummy_potrait.jpg" />
                                             </image>

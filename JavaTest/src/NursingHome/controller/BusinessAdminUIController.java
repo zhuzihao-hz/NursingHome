@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 
 import java.net.URL;
@@ -106,6 +107,8 @@ public class BusinessAdminUIController implements Initializable {
     private TextField searchText;
     @FXML
     private JFXComboBox<String> contextComboBox = new JFXComboBox<>();
+    @FXML
+    private ImageView imageView;
 
     public void setApp(Main app) {
         this.application = app;

@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="database:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/database_jar</output-path>
+    <root id="archive" name="database.jar">
+      <element id="module-output" name="database" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../smalltool/jfoenix-9.0.8.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../smalltool/mysql-connector-java-8.0.15/mysql-connector-java-8.0.15.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

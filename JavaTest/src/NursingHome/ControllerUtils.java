@@ -6,6 +6,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
@@ -226,5 +227,15 @@ public class ControllerUtils {
         // TODO 防止密码只有数字或者字母，于是在后面加上一个数字和一个字母
         password = password + random.nextInt(10) + (char) (97 + random.nextInt(26));
         return password;
+    }
+
+    /**
+     * 显示用户头像
+     *
+     * @param imageName 文件名
+     * @return 返回Image对象
+     */
+    public static Image showImage(String imageName) {
+        return new Image("file:" + System.getProperty("user.dir") + "/src/NursingHome/img/" + imageName);
     }
 }

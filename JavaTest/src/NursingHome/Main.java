@@ -319,6 +319,31 @@ public class Main extends Application {
         aboutInfoUI.setApp(this);
     }
 
+    /**
+     * 创建上传图像的窗口
+     */
+    public void createUploadImageUI() {
+        AnchorPane page = new AnchorPane();
+        floatStage = new Stage();
+        floatStage.setAlwaysOnTop(true);
+        floatStage.initModality(Modality.APPLICATION_MODAL);
+        floatStage.setTitle("管理员 - 上传头像 Administrator Upload Image");
+        floatStage.setResizable(false);
+        FXMLLoader loader = new FXMLLoader();
+        try (InputStream ignored = Main.class.getResourceAsStream("fxml/UploadImageUI.fxml")) {
+            loader.setBuilderFactory(new JavaFXBuilderFactory());
+            loader.setLocation(Main.class.getResource("fxml/UploadImageUI.fxml"));
+            page = loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Scene scene = new Scene(page);
+        floatStage.setScene(scene);
+        floatStage.show();
+        UploadImageUIController uploadImageUI = loader.getController();
+        uploadImageUI.setApp(this);
+    }
+
     private Initializable replaceSceneContent(String fxml) {
         AnchorPane page = new AnchorPane();
         FXMLLoader loader = new FXMLLoader();

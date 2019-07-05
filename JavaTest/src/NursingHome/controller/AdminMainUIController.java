@@ -3,17 +3,25 @@ package NursingHome.controller;
 import NursingHome.Main;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import static NursingHome.ControllerUtils.showAlert;
-import static NursingHome.ControllerUtils.showtime;
+import static NursingHome.ControllerUtils.*;
 import static NursingHome.GlobalInfo.*;
 
 public class AdminMainUIController implements Initializable {
     private Main application;
+
+    @FXML
+    Text welcome;
+    @FXML
+    Text dateText;
+    @FXML
+    private ImageView imageView;
 
     public void setApp(Main app) {
         this.application = app;
@@ -23,13 +31,9 @@ public class AdminMainUIController implements Initializable {
         return this.application;
     }
 
-    @FXML
-    Text welcome;
-    @FXML
-    Text dateText;
-
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        imageView.setImage(showImage("dummy_potrait.jpg"));
         welcome.setText(MANAGER_NAME);
         showtime(dateText);
     }
