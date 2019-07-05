@@ -6,7 +6,10 @@ import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.image.Image;
 
+import javax.imageio.ImageIO;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import java.util.ResourceBundle;
@@ -23,6 +26,7 @@ public class AdminLoginUIController implements Initializable {
     private JFXTextField managerId;
     private String password;
     private String id;
+    private Image image;
 
     public AdminLoginUIController() {
     }
@@ -78,6 +82,8 @@ public class AdminLoginUIController implements Initializable {
                 if (rs.next()) {
                     tempPri = rs.getInt(2);
                     password1 = rs.getString(3);
+                    //Blob blob= rs.getBlob(4);
+                    //image= (Image) ImageIO.createImageInputStream(blob.getBinaryStream());
                 }
                 stmt.close();
                 conn.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
@@ -87,7 +93,9 @@ public class AdminLoginUIController implements Initializable {
             e.printStackTrace();
         } catch (SQLException e) {
             e.printStackTrace();
-        }
+        } //catch (IOException e){
+            //e.printStackTrace();
+        //}
 
         if (password1.equals(md5(password))) {
             GlobalInfo.MANAGER_PRIV = tempPri;

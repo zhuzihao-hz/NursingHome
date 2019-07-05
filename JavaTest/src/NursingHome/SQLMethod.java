@@ -15,6 +15,9 @@ public class SQLMethod {
     public static String MYSQL_USER = "quest";
     public static String MYSQL_PASSWORD = "QWEasd123!@#";
 
+
+    // 需要修改，图片
+
     /**
      * 随机生成一个新密码并赋给新员工
      *
@@ -27,7 +30,7 @@ public class SQLMethod {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-            if (conn.getTransactionIsolation()==Connection.TRANSACTION_REPEATABLE_READ) {
+            if (conn.getTransactionIsolation() == Connection.TRANSACTION_REPEATABLE_READ) {
                 conn.setTransactionIsolation(TRANSACTION_SERIALIZABLE);
                 String sql = "";
                 if (object.getClass().getName().equals("NursingHome.dataclass.Doctor")) {
@@ -77,7 +80,7 @@ public class SQLMethod {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-            if (conn.getTransactionIsolation()==Connection.TRANSACTION_REPEATABLE_READ) {
+            if (conn.getTransactionIsolation() == Connection.TRANSACTION_REPEATABLE_READ) {
                 conn.setTransactionIsolation(TRANSACTION_SERIALIZABLE);
                 String sql, sql1;
                 if (flag) {
@@ -126,27 +129,27 @@ public class SQLMethod {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-            if (conn.getTransactionIsolation()==Connection.TRANSACTION_REPEATABLE_READ) {
+            if (conn.getTransactionIsolation() == Connection.TRANSACTION_REPEATABLE_READ) {
                 conn.setTransactionIsolation(TRANSACTION_SERIALIZABLE);
                 String sql = "";
                 String sql1 = "";
                 if (object.getClass().getName().equals("NursingHome.dataclass.Worker")) {
                     Worker worker = ((Worker) object);
-                    sql1 = "INSERT INTO NursingHome.historical_staff VALUES ('" + worker.getId() + "','1')";
+                    sql1 = "INSERT INTO NursingHome.historical_staff VALUES ('" + worker.getId() + "','" + worker.getName() + "','" + worker.getDate() + "','" + worker.getSalary() + "','1')";
                     sql = "INSERT INTO NursingHome.worker VALUES " + worker.getWorkerInfo();
                 } else if (object.getClass().getName().equals("NursingHome.dataclass.Doctor")) {
                     Doctor doctor = ((Doctor) object);
-                    sql1 = "INSERT INTO NursingHome.historical_staff VALUES ('" + doctor.getId() + "','1')";
+                    sql1 = "INSERT INTO NursingHome.historical_staff VALUES ('" + doctor.getId() + "','" + doctor.getName() + "','" + doctor.getDate() + "','" + doctor.getSalary() + "','1')";
                     sql = "INSERT INTO NursingHome.doctor VALUES " + doctor.getDoctorInfo();
 
                 } else if (object.getClass().getName().equals("NursingHome.dataclass.DoorBoy")) {
                     DoorBoy doorBoy = ((DoorBoy) object);
-                    sql1 = "INSERT INTO NursingHome.historical_staff VALUES ('" + doorBoy.getId() + "','1')";
+                    sql1 = "INSERT INTO NursingHome.historical_staff VALUES ('" + doorBoy.getId() + "','" + doorBoy.getName() + "','" + doorBoy.getDate() + "','" + doorBoy.getSalary() + "','1')";
                     sql = "INSERT INTO NursingHome.doorboy VALUES " + doorBoy.getDoorBoyInfo();
 
                 } else if (object.getClass().getName().equals("NursingHome.dataclass.Administrator")) {
                     Administrator admin = ((Administrator) object);
-                    sql1 = "INSERT INTO NursingHome.historical_staff VALUES ('" + admin.getId() + "','1')";
+                    sql1 = "INSERT INTO NursingHome.historical_staff VALUES ('" + admin.getId() + "','" + admin.getName() + "','" + admin.getDate() + "','" + admin.getSalary() + "','1')";
                     sql = "INSERT INTO NursingHome.administrator VALUES " + admin.getAdminInfo();
                 }
                 stmt = conn.createStatement();
@@ -177,13 +180,15 @@ public class SQLMethod {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-            if (conn.getTransactionIsolation()==Connection.TRANSACTION_REPEATABLE_READ){
+            if (conn.getTransactionIsolation() == Connection.TRANSACTION_REPEATABLE_READ) {
                 conn.setTransactionIsolation(TRANSACTION_SERIALIZABLE);
-                String sql;
+                String sql, sql1 = "";
                 if (ch == 'C') {
                     sql = "SELECT count(*) FROM NursingHome.historical_customer;";
+                    sql1 = "SELECT count(*) FROM NursingHome.customer;";
                 } else if (ch == 'R') {
                     sql = "SELECT count(*) FROM NursingHome.record;";
+                    sql1 = "SELECT count(*) FROM NursingHome.historical_record;";
                 } else {
                     sql = "SELECT count(*) FROM NursingHome.historical_staff WHERE staff_id LIKE '" + ch + "%';";
                 }
@@ -191,6 +196,10 @@ public class SQLMethod {
                 ResultSet rs = stmt.executeQuery(sql);
                 if (rs.next()) {
                     N = rs.getInt(1);
+                }
+                if (sql1.equals("")) {
+                    ResultSet rs1 = stmt.executeQuery(sql1);
+                    N = (N > rs1.getInt(1)) ? N : rs1.getInt(1);
                 }
                 rs.close();
                 stmt.close();

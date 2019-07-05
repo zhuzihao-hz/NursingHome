@@ -47,7 +47,6 @@ public class UploadImageUIController implements Initializable {
                 Dragboard db = event.getDragboard();
                 boolean success = false;
                 if (db.hasFiles()) {
-                    System.out.println(db.getFiles().toString());
                     fileName=db.getFiles().toString();
                     success = true;
                 }

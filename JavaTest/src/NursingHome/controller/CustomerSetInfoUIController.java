@@ -131,7 +131,7 @@ public class CustomerSetInfoUIController implements Initializable {
      */
     public Customer autoAllocate(Customer customer, int rank) {
         // TODO 自动再分配
-        //  参数为原来的护理等级(新)、护工等级（旧）、房间等级（旧）
+        //  参数为原来的护理等级(新)
 
         // TODO 检查是否需要换房间
         String roomIdOld = customer.getRoomID(); //原来的房间号

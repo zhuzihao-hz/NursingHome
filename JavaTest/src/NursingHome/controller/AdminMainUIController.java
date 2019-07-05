@@ -3,7 +3,6 @@ package NursingHome.controller;
 import NursingHome.Main;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 
@@ -33,6 +32,7 @@ public class AdminMainUIController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        // 需要修改
         imageView.setImage(showImage("dummy_potrait.jpg"));
         welcome.setText(MANAGER_NAME);
         showtime(dateText);
@@ -63,10 +63,7 @@ public class AdminMainUIController implements Initializable {
      * 登出
      */
     public void logout() {
-        MANAGER_ID = "";
-        MANAGER_NAME = "";
-        MANAGER_PRIV = -1;
-        MANAGER_PASSWORD = "";
+        clearInfo();
         application.stage.close();
         application.gotoAdminLoginUI();
     }

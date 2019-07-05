@@ -121,6 +121,8 @@ public class BusinessAdminUIController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         nameLabel.setText(MANAGER_NAME);
+        // 需要修改，显示图片
+        // imageView.setImage();
         showtime(dateText);
         businessSelected();
         displayBusiness();
@@ -137,10 +139,7 @@ public class BusinessAdminUIController implements Initializable {
      * 登出
      */
     public void logout() {
-        MANAGER_ID = "";
-        MANAGER_NAME = "";
-        MANAGER_PRIV = -1;
-        MANAGER_PASSWORD = "";
+        clearInfo();
         application.stage.close();
         application.gotoAdminLoginUI();
     }
@@ -289,6 +288,7 @@ public class BusinessAdminUIController implements Initializable {
      * 删除客户
      */
     public void deleteBusiness() {
+        // 需要修改
         // TODO 删除客户，并且在record表中将该客户的档案记录一起删除,最后将历史客户表的状态改为不在(0)
         if (MANAGER_PRIV == 3) {
             // TODO 只有前台工作人员能删除客户
@@ -741,7 +741,7 @@ public class BusinessAdminUIController implements Initializable {
                 } else if (contextComboBox.getValue().equals("医生编号")) {
                     sql = "SELECT * FROM NursingHome.record WHERE doctor_id LIKE '" + searchText.getText() + "%'";
                 } else if (contextComboBox.getValue().equals("记录日期")) {
-                    sql = "SELECT * FROM NursingHome.record WHERE record_time LIKE '" + StringToDate(searchText.getText()) + "'";
+                    sql = "SELECT * FROM NursingHome.record WHERE record_date LIKE '" + StringToDate(searchText.getText()) + "'";
                 } else if (contextComboBox.getValue().equals("记录内容")) {
                     sql = "SELECT * FROM NursingHome.record WHERE record_context LIKE '%" + searchText.getText() + "%'";
                 } else {

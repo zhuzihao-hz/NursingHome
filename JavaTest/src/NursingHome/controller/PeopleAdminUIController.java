@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 
@@ -116,6 +117,8 @@ public class PeopleAdminUIController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         nameLabel.setText(MANAGER_NAME);
+        // 需要修改，增加显示图片
+        // imageView.setImage();
         showtime(dateText);
         workerSelected();
         displayDoctor();
@@ -132,10 +135,7 @@ public class PeopleAdminUIController implements Initializable {
      * 登出
      */
     public void logout() {
-        MANAGER_ID = "";
-        MANAGER_NAME = "";
-        MANAGER_PRIV = -1;
-        MANAGER_PASSWORD = "";
+        clearInfo();
         application.stage.close();
         application.gotoAdminLoginUI();
     }

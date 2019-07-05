@@ -337,13 +337,14 @@ public class PeopleSetInfoUIController implements Initializable {
                         conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
                         if (conn.getTransactionIsolation() == Connection.TRANSACTION_REPEATABLE_READ) {
                             conn.setTransactionIsolation(TRANSACTION_SERIALIZABLE);
-                            String sql;
                             // TODO 可以修改所有信息
                             worker.setRank(peopleOtherComboBox.getValue());
                             worker.setCustomerRank(customerRankComboBox.getValue());
-                            sql = "UPDATE NursingHome.worker SET worker_name='" + worker.getName() + "', worker_date='" + worker.getDate() + "', worker_salary='" + worker.getSalary() + "', worker_rank='" + worker.getRank() + "', worker_customerrank='" + worker.getCustomerRank() + "' WHERE worker_id='" + worker.getId() + "'";
+                            String sql = "UPDATE NursingHome.worker SET worker_name='" + worker.getName() + "', worker_date='" + worker.getDate() + "', worker_salary='" + worker.getSalary() + "', worker_rank='" + worker.getRank() + "', worker_customerrank='" + worker.getCustomerRank() + "' WHERE worker_id='" + worker.getId() + "'";
+                            String sql1 = "UPDATE NursingHome.historical_staff SET staff_name='" + worker.getName() + "', staff_date='" + worker.getDate() + "', staff_salary='" + worker.getSalary() + "' WHERE staff_id='" + worker.getId() + "'";
                             stmt = conn.createStatement();
                             stmt.executeUpdate(sql);
+                            stmt.executeUpdate(sql1);
                             stmt.close();
                             conn.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
                         }
@@ -377,8 +378,10 @@ public class PeopleSetInfoUIController implements Initializable {
                         if (conn.getTransactionIsolation() == Connection.TRANSACTION_REPEATABLE_READ) {
                             conn.setTransactionIsolation(TRANSACTION_SERIALIZABLE);
                             String sql = "UPDATE NursingHome.doctor SET doctor_name='" + doctor.getName() + "', doctor_date='" + doctor.getDate() + "', doctor_salary='" + doctor.getSalary() + "', doctor_major='" + doctor.getMajor() + "' WHERE doctor_id='" + doctor.getId() + "'";
+                            String sql1 = "UPDATE NursingHome.historical_staff SET staff_name='" + doctor.getName() + "', staff_date='" + doctor.getDate() + "', staff_salary='" + doctor.getSalary() + "' WHERE staff_id='" + doctor.getId() + "'";
                             stmt = conn.createStatement();
                             stmt.executeUpdate(sql);
+                            stmt.executeUpdate(sql1);
                             stmt.close();
                             conn.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
                         }
@@ -413,8 +416,10 @@ public class PeopleSetInfoUIController implements Initializable {
                         if (conn.getTransactionIsolation() == Connection.TRANSACTION_REPEATABLE_READ) {
                             conn.setTransactionIsolation(TRANSACTION_SERIALIZABLE);
                             String sql = "UPDATE NursingHome.doorboy SET doorboy_name='" + doorBoy.getName() + "', doorboy_date='" + doorBoy.getDate() + "', doorboy_salary='" + doorBoy.getSalary() + "', doorboy_workplace='" + doorBoy.getWorkPlace() + "' WHERE doorboy_id='" + doorBoy.getId() + "'";
+                            String sql1 = "UPDATE NursingHome.historical_staff SET staff_name='" + doorBoy.getName() + "', staff_date='" + doorBoy.getDate() + "', staff_salary='" + doorBoy.getSalary() + "' WHERE staff_id='" + doorBoy.getId() + "'";
                             stmt = conn.createStatement();
                             stmt.executeUpdate(sql);
+                            stmt.executeUpdate(sql1);
                             stmt.close();
                             conn.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
                         }
