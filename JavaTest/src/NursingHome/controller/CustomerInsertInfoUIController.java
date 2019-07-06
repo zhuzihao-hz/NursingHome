@@ -4,6 +4,7 @@ import NursingHome.ControllerUtils;
 import NursingHome.Main;
 import NursingHome.dataclass.Customer;
 import com.jfoenix.controls.JFXDatePicker;
+import com.mysql.cj.util.StringUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
@@ -196,15 +197,6 @@ public class CustomerInsertInfoUIController implements Initializable {
         customer.setRelation(customerRelationTextField.getText());
         customer.setRelationName(customerRelationNameTextField.getText());
         customer.setDate(localDateToString(customerBirthDatePicker.getValue()));
-        try {
-            Integer.parseInt(customerPhoneTextField.getText());
-            customer.setPhone(customerPhoneTextField.getText());
-            Integer.parseInt(customerRelationPhoneTextField.getText());
-            customer.setRelationPhone(customerRelationPhoneTextField.getText());
-        } catch (NumberFormatException e) {
-            available = false;
-            showAlert("[错误]电话格式错误");
-        }
         customer.setRank(customerRankComboBox.getValue());
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         customer.setEnterTime(df.format(new Date()));
@@ -215,6 +207,13 @@ public class CustomerInsertInfoUIController implements Initializable {
 
         customer = autoAllocate(customer, rank, workerRank, roomRank);
 
+        if (StringUtils.isStrictlyNumeric(customerPhoneTextField.getText()) && StringUtils.isStrictlyNumeric(customerRelationPhoneTextField.getText())) {
+            customer.setPhone(customerPhoneTextField.getText());
+            customer.setRelationPhone(customerRelationPhoneTextField.getText());
+        }else{
+            available=false;
+            showAlert("[错误]电话格式错误");
+        }
         if (available) {
             Connection conn;
             Statement stmt;

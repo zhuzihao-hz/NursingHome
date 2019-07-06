@@ -7,12 +7,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b39658a6-836c-40d7-993d-e05f082f754b" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/A1.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/B1.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/database_jar/database.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/database_jarpic1.jpg" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/NursingHome/controller/CustomerInsertInfoUIController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/NursingHome/controller/CustomerInsertInfoUIController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/NursingHome/controller/CustomerSetInfoUIController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/NursingHome/controller/CustomerSetInfoUIController.java" afterDir="false" />
     </list>
@@ -54,29 +48,39 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/NursingHome/controller/CustomerSetInfoUIController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="479">
-              <caret line="312" column="21" selection-start-line="312" selection-start-column="21" selection-end-line="312" selection-end-column="21" />
+            <state relative-caret-position="365">
+              <caret line="312" column="8" selection-start-line="312" selection-start-column="8" selection-end-line="312" selection-end-column="8" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="method#initialize#0;class#CustomerSetInfoUIController#0" />
                 <element signature="method#autoAllocate#0;class#CustomerSetInfoUIController#0" />
+                <element signature="e#15832#15833#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/NursingHome/controller/CustomerInsertInfoUIController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="181">
-              <caret line="21" column="59" selection-start-line="21" selection-start-column="59" selection-end-line="21" selection-end-column="59" />
+            <state relative-caret-position="229">
+              <caret line="218" selection-start-line="218" selection-end-line="224" selection-end-column="9" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="method#autoAllocate#0;class#CustomerInsertInfoUIController#0" />
+                <element signature="e#10796#10797#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="jar://$PROJECT_DIR$/../../smalltool/mysql-connector-java-8.0.15/mysql-connector-java-8.0.15.jar!/com/mysql/cj/util/StringUtils.class">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="35">
+              <caret line="1303" lean-forward="true" selection-start-line="1303" selection-end-line="1303" />
             </state>
           </provider>
         </entry>
@@ -179,8 +183,8 @@
         <option value="$PROJECT_DIR$/src/NursingHome/controller/RecordInsertUIController.java" />
         <option value="$PROJECT_DIR$/src/NursingHome/controller/BusinessAdminUIController.java" />
         <option value="$PROJECT_DIR$/src/NursingHome/controller/PeopleSetInfoUIController.java" />
-        <option value="$PROJECT_DIR$/src/NursingHome/controller/CustomerSetInfoUIController.java" />
         <option value="$PROJECT_DIR$/src/NursingHome/controller/CustomerInsertInfoUIController.java" />
+        <option value="$PROJECT_DIR$/src/NursingHome/controller/CustomerSetInfoUIController.java" />
       </list>
     </option>
   </component>
@@ -195,7 +199,6 @@
     </navigator>
     <panes>
       <pane id="Scope" />
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -244,6 +247,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -345,17 +349,18 @@
       <workItem from="1562311345237" duration="6228000" />
       <workItem from="1562324355631" duration="18983000" />
       <workItem from="1562410318048" duration="555000" />
+      <workItem from="1562422218443" duration="1315000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="255917000" />
+    <option name="totallyTimeSpent" value="257232000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.36080587" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.36507937" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -364,7 +369,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32959184" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.32959184" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32959184" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -421,14 +426,6 @@
     <option name="version" value="1" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/NursingHome/fxml/PeopleSetInfoUI.fxml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="365">
-          <caret line="59" column="19" selection-start-line="59" selection-start-column="19" selection-end-line="59" selection-end-column="19" />
-        </state>
-      </provider>
-      <provider editor-type-id="JavaFX-Scene-Builder" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/NursingHome/fxml/PersonalInfoUI.fxml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="198">
@@ -810,16 +807,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/NursingHome/controller/BusinessAdminUIController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="9130">
-          <caret line="449" column="27" selection-start-line="449" selection-start-column="27" selection-end-line="449" selection-end-column="27" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar:///Library/Java/JavaVirtualMachines/jdk-10.jdk/Contents/Home/lib/src.zip!/java.base/sun/util/locale/LanguageTag.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="318">
@@ -838,25 +825,43 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/NursingHome/controller/CustomerSetInfoUIController.java">
+    <entry file="file://$PROJECT_DIR$/src/NursingHome/controller/BusinessAdminUIController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="479">
-          <caret line="312" column="21" selection-start-line="312" selection-start-column="21" selection-end-line="312" selection-end-column="21" />
+        <state relative-caret-position="9130">
+          <caret line="449" column="27" selection-start-line="449" selection-start-column="27" selection-end-line="449" selection-end-column="27" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#initialize#0;class#CustomerSetInfoUIController#0" />
-            <element signature="method#autoAllocate#0;class#CustomerSetInfoUIController#0" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/../../smalltool/mysql-connector-java-8.0.15/mysql-connector-java-8.0.15.jar!/com/mysql/cj/util/StringUtils.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="35">
+          <caret line="1303" lean-forward="true" selection-start-line="1303" selection-end-line="1303" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/NursingHome/controller/CustomerInsertInfoUIController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="181">
-          <caret line="21" column="59" selection-start-line="21" selection-start-column="59" selection-end-line="21" selection-end-column="59" />
+        <state relative-caret-position="229">
+          <caret line="218" selection-start-line="218" selection-end-line="224" selection-end-column="9" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#autoAllocate#0;class#CustomerInsertInfoUIController#0" />
+            <element signature="e#10796#10797#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/NursingHome/controller/CustomerSetInfoUIController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="365">
+          <caret line="312" column="8" selection-start-line="312" selection-start-column="8" selection-end-line="312" selection-end-column="8" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#initialize#0;class#CustomerSetInfoUIController#0" />
+            <element signature="method#autoAllocate#0;class#CustomerSetInfoUIController#0" />
+            <element signature="e#15832#15833#0" expanded="true" />
           </folding>
         </state>
       </provider>
