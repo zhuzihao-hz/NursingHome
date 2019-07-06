@@ -6,16 +6,7 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b39658a6-836c-40d7-993d-e05f082f754b" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NursingHome/ControllerUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/NursingHome/ControllerUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NursingHome/SQLMethod.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/NursingHome/SQLMethod.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NursingHome/controller/AdminLoginUIController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/NursingHome/controller/AdminLoginUIController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NursingHome/controller/AdminMainUIController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/NursingHome/controller/AdminMainUIController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NursingHome/controller/BusinessAdminUIController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/NursingHome/controller/BusinessAdminUIController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NursingHome/controller/PeopleAdminUIController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/NursingHome/controller/PeopleAdminUIController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NursingHome/controller/UploadImageUIController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/NursingHome/controller/UploadImageUIController.java" afterDir="false" />
-    </list>
+    <list default="true" id="b39658a6-836c-40d7-993d-e05f082f754b" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -406,16 +397,15 @@
       <workItem from="1562294141376" duration="365000" />
       <workItem from="1562294846931" duration="263000" />
       <workItem from="1562311345237" duration="6228000" />
-      <workItem from="1562324355631" duration="8828000" />
+      <workItem from="1562324355631" duration="9002000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="245207000" />
+    <option name="totallyTimeSpent" value="245381000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.35653237" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
