@@ -1,7 +1,11 @@
 package NursingHome.controller;
 
 import NursingHome.Main;
+import com.jfoenix.controls.JFXButton;
+import javafx.event.Event;
+import javafx.event.EventDispatchChain;
 import javafx.event.EventHandler;
+import javafx.event.EventTarget;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.image.Image;
@@ -9,6 +13,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
+import javafx.stage.WindowEvent;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -18,14 +23,16 @@ import java.net.URL;
 import java.sql.*;
 import java.util.ResourceBundle;
 
-import static NursingHome.ControllerUtils.downloadPic;
-import static NursingHome.ControllerUtils.showAlert;
+import static NursingHome.ControllerUtils.*;
 import static NursingHome.GlobalInfo.MANAGER_ID;
+import static NursingHome.SQLMethod.*;
 
 public class UploadImageUIController implements Initializable {
     private Main application;
     @FXML
     private ImageView imageView;
+    @FXML
+    public JFXButton uploadBtn;
     private String fileName = "";
     private static String id;
 
@@ -66,8 +73,9 @@ public class UploadImageUIController implements Initializable {
                 boolean success = false;
                 if (db.hasFiles()) {
                     fileName = db.getFiles().toString();
+                    fileName = fileName.substring(1, fileName.length() - 1);
                     // TODO 拖上去后就显示图片
-                    imageView.setImage(new Image(fileName));
+                    imageView.setImage(new Image("file:" + fileName));
                     success = true;
                 }
                 /* let the source know whether the string was successfully
@@ -86,7 +94,7 @@ public class UploadImageUIController implements Initializable {
         Connection conn;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306", "root", "12345678");
+            conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
             Statement stmt;
             PreparedStatement ps = conn.prepareStatement("UPDATE NursingHome.manager SET manager_pic=? WHERE manager_id='" + getId() + "';");
             InputStream in = new FileInputStream(fileName);
@@ -111,12 +119,9 @@ public class UploadImageUIController implements Initializable {
             if (getId().equals(MANAGER_ID)) {
                 // TODO 如果主管修改自己的头像，则修改完后应该刷新现在用户(主管)的头像
                 downloadPic();
-                PeopleAdminUIController.flushPic();
-                //AdminMainUIController.flushPic();
-                //BusinessAdminUIController.flushPic();
                 id = "";
             }
-            getApp().floatStage.close();
+            showAlert("[提示]上传成功！");
         } else {
             showAlert("[警告]您上传的图片大小超过限制！");
         }

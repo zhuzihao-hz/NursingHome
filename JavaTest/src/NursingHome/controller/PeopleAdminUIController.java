@@ -7,12 +7,15 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
+import javafx.stage.WindowEvent;
 
 import java.net.URL;
 import java.sql.*;
@@ -103,7 +106,7 @@ public class PeopleAdminUIController implements Initializable {
     @FXML
     private JFXComboBox<String> contextComboBox = new JFXComboBox<>();
     @FXML
-    private static ImageView imageView=new ImageView();
+    ImageView imageView;
 
     public void setApp(Main app) {
         this.application = app;
@@ -117,9 +120,7 @@ public class PeopleAdminUIController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         nameLabel.setText(MANAGER_NAME);
         // 需要修改，增加显示图片
-        // imageView.setImage();
-        //downloadPic();
-        flushPic();
+        imageView.setImage(showImage("pic1.jpg"));
         showtime(dateText);
         workerSelected();
         displayDoctor();
@@ -130,10 +131,6 @@ public class PeopleAdminUIController implements Initializable {
         bindWorker();
         displayAdministrator();
         bindAdministrator();
-    }
-
-    public static void flushPic(){
-        imageView.setImage(showImage("pic1.jpg"));
     }
 
     /**
@@ -207,6 +204,12 @@ public class PeopleAdminUIController implements Initializable {
                 if (adminSelected.size() > 0) {
                     UploadImageUIController.setId(adminSelected.get(0).getId());
                     getApp().createUploadImageUI();
+                    getApp().floatStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                        @Override
+                        public void handle(WindowEvent event) {
+                            imageView.setImage(showImage("pic1.jpg"));
+                        }
+                    });
                 }
             } else {
                 showAlert("[警告]该员工没有账户！");

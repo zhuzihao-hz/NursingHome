@@ -25,7 +25,9 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.util.Random;
 
+import static NursingHome.GlobalInfo.MANAGER_ID;
 import static NursingHome.GlobalInfo.MANAGER_PRIV;
+import static NursingHome.SQLMethod.*;
 
 public class ControllerUtils {
     /**
@@ -250,9 +252,9 @@ public class ControllerUtils {
         InputStream in = null;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306", "root", "12345678");
+            Connection conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
             Statement stmt = conn.createStatement();
-            String sql = "select * from NursingHome.manager where manager_id = 'W7'";
+            String sql = "SELECT * FROM NursingHome.manager WHERE manager_id = '" + MANAGER_ID + "'";
             ResultSet rs = stmt.executeQuery(sql);
             if (rs.next()) {
                 in = rs.getBinaryStream(4);
@@ -273,5 +275,6 @@ public class ControllerUtils {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+        System.out.println("已将图片加载到本地！");
     }
 }

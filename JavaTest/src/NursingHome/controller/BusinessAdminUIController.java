@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 
@@ -108,7 +109,7 @@ public class BusinessAdminUIController implements Initializable {
     @FXML
     private JFXComboBox<String> contextComboBox = new JFXComboBox<>();
     @FXML
-    private static ImageView imageView=new ImageView();
+    private ImageView imageView;
 
     public void setApp(Main app) {
         this.application = app;
@@ -122,9 +123,7 @@ public class BusinessAdminUIController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         nameLabel.setText(MANAGER_NAME);
         // 需要修改，显示图片
-        // imageView.setImage();
-        //downloadPic();
-        flushPic();
+        imageView.setImage(showImage("pic1.jpg"));
         showtime(dateText);
         businessSelected();
         displayBusiness();
@@ -135,10 +134,6 @@ public class BusinessAdminUIController implements Initializable {
         bindRoom();
         displayRecord();
         bindRecord();
-    }
-
-    public static void flushPic(){
-        imageView.setImage(showImage("pic1.jpg"));
     }
 
     /**

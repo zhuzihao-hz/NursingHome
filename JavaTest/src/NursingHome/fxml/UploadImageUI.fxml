@@ -7,6 +7,6 @@
 <AnchorPane prefHeight="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="NursingHome.controller.UploadImageUIController">
    <children>
       <ImageView fx:id="imageView" fitHeight="240.0" fitWidth="240.0" layoutX="80.0" layoutY="39.0" pickOnBounds="true" preserveRatio="true" />
-      <JFXButton fx:id="upload" layoutX="148.0" layoutY="295.0" prefHeight="40.0" prefWidth="104.0" text="上传" />
+      <JFXButton fx:id="uploadBtn" layoutX="148.0" layoutY="295.0" onAction="#upload" prefHeight="40.0" prefWidth="104.0" text="上传" />
    </children>
 </AnchorPane>
