@@ -243,7 +243,8 @@ public class ControllerUtils {
      * @return 返回Image对象
      */
     public static Image showImage(String imageName) {
-        Image image = new Image("file:" + System.getProperty("user.dir") + imageName);
+        System.out.println(System.getProperty("user.dir"));
+        Image image = new Image("file:" + System.getProperty("user.dir") + "/" + imageName);
         return image;
     }
 
@@ -261,7 +262,7 @@ public class ControllerUtils {
                 byte[] b = new byte[in.available()];    //新建保存图片数据的byte数组
                 in.read(b);
                 System.out.println(System.getProperty("user.dir"));
-                OutputStream out = new FileOutputStream("pic1.jpg");
+                OutputStream out = new FileOutputStream(MANAGER_ID+".jpg");
                 out.write(b);
                 out.flush();
                 out.close();

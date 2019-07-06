@@ -120,7 +120,7 @@ public class PeopleAdminUIController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         nameLabel.setText(MANAGER_NAME);
         // 需要修改，增加显示图片
-        imageView.setImage(showImage("pic1.jpg"));
+        imageView.setImage(showImage(MANAGER_ID + ".jpg"));
         showtime(dateText);
         workerSelected();
         displayDoctor();
@@ -207,7 +207,7 @@ public class PeopleAdminUIController implements Initializable {
                     getApp().floatStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
                         @Override
                         public void handle(WindowEvent event) {
-                            imageView.setImage(showImage("pic1.jpg"));
+                            imageView.setImage(showImage(MANAGER_ID + ".jpg"));
                         }
                     });
                 }
