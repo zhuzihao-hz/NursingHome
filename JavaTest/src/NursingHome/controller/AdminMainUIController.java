@@ -33,8 +33,6 @@ public class AdminMainUIController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // 需要修改
-        //imageView.setImage(showImage("dummy_potrait.jpg"));
-        //downloadPic();
         imageView.setImage(showImage("pic1.jpg"));
         welcome.setText(MANAGER_NAME);
         showtime(dateText);
