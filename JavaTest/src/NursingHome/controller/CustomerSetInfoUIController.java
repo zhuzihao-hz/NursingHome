@@ -17,6 +17,7 @@ import java.util.ResourceBundle;
 
 import static NursingHome.ControllerUtils.*;
 import static NursingHome.SQLMethod.*;
+import static NursingHome.controller.BusinessAdminUIController.*;
 import static java.sql.Connection.TRANSACTION_SERIALIZABLE;
 
 public class CustomerSetInfoUIController implements Initializable {
@@ -304,6 +305,7 @@ public class CustomerSetInfoUIController implements Initializable {
             customer.setPhone(customerPhoneTextField.getText());
             customer.setRelationPhone(customerRelationPhoneTextField.getText());
         } catch (NumberFormatException e) {
+            available = false;
             showAlert("[错误]电话格式错误");
         }
         customer.setRelation(customerRelationTextField.getText());
@@ -336,7 +338,11 @@ public class CustomerSetInfoUIController implements Initializable {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            BusinessAdminUIController.setInfoTableView(false, false, customer);
+            displayBusiness();
+            displayRoom();
+            displayBed();
+            displayRecord();
+            //BusinessAdminUIController.setInfoTableView(false, false, customer);
             getApp().floatStage.close();
         }
     }

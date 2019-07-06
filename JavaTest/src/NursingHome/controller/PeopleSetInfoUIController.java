@@ -213,6 +213,7 @@ public class PeopleSetInfoUIController implements Initializable {
                     try {
                         worker.setSalary(Double.valueOf(peopleSalaryTextField.getText()));
                     } catch (NumberFormatException e) {
+                        insertFailed = true;
                         showAlert("[错误]薪水格式错误");
                     }
                     worker.setRank(peopleOtherComboBox.getValue());
@@ -232,6 +233,7 @@ public class PeopleSetInfoUIController implements Initializable {
                     try {
                         doctor.setSalary(Double.valueOf(peopleSalaryTextField.getText()));
                     } catch (NumberFormatException e) {
+                        insertFailed = true;
                         showAlert("[错误]薪水格式错误");
                     }
                     doctor.setMajor(peopleOtherComboBox.getValue());
@@ -251,6 +253,7 @@ public class PeopleSetInfoUIController implements Initializable {
                     try {
                         doorBoy.setSalary(Double.valueOf(peopleSalaryTextField.getText()));
                     } catch (NumberFormatException e) {
+                        insertFailed = true;
                         showAlert("[错误]薪水格式错误");
                     }
                     doorBoy.setWorkPlace(peopleOtherComboBox.getValue());
@@ -273,6 +276,7 @@ public class PeopleSetInfoUIController implements Initializable {
                     try {
                         admin.setSalary(Double.valueOf(peopleSalaryTextField.getText()));
                     } catch (NumberFormatException e) {
+                        insertFailed = true;
                         showAlert("[错误]薪水格式错误");
                     }
                     admin.setPosition(peopleOtherComboBox.getValue());
@@ -326,6 +330,7 @@ public class PeopleSetInfoUIController implements Initializable {
                     try {
                         worker.setSalary(Double.valueOf(peopleSalaryTextField.getText()));
                     } catch (NumberFormatException e) {
+                        insertFailed = true;
                         showAlert("[错误]薪水格式错误");
                     }
 
@@ -365,6 +370,7 @@ public class PeopleSetInfoUIController implements Initializable {
                     try {
                         doctor.setSalary(Double.valueOf(peopleSalaryTextField.getText()));
                     } catch (NumberFormatException e) {
+                        insertFailed = true;
                         showAlert("[错误]薪水格式错误");
                     }
                     doctor.setMajor(peopleOtherComboBox.getValue());
@@ -401,6 +407,7 @@ public class PeopleSetInfoUIController implements Initializable {
                     try {
                         doorBoy.setSalary(Double.valueOf(peopleSalaryTextField.getText()));
                     } catch (NumberFormatException e) {
+                        insertFailed = true;
                         showAlert("[错误]薪水格式错误");
                     }
                     String workerPlaceOld = doorBoyOldPos;
@@ -467,6 +474,7 @@ public class PeopleSetInfoUIController implements Initializable {
                     try {
                         admin.setSalary(Double.valueOf(peopleSalaryTextField.getText()));
                     } catch (NumberFormatException e) {
+                        insertFailed = true;
                         showAlert("[错误]薪水格式错误");
                     }
                     String adminPosOld = adminOldPos;

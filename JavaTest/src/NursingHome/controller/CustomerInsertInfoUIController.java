@@ -18,6 +18,7 @@ import java.util.Date;
 
 import static NursingHome.ControllerUtils.*;
 import static NursingHome.SQLMethod.*;
+import static NursingHome.controller.BusinessAdminUIController.*;
 import static java.sql.Connection.TRANSACTION_SERIALIZABLE;
 
 public class CustomerInsertInfoUIController implements Initializable {
@@ -192,11 +193,16 @@ public class CustomerInsertInfoUIController implements Initializable {
         Customer customer = new Customer();
         customer.setId(customerIdLabel.getText());
         customer.setName(customerNameTextField.getText());
-        customer.setPhone(customerPhoneTextField.getText());
         customer.setRelation(customerRelationTextField.getText());
-        customer.setRelationPhone(customerRelationPhoneTextField.getText());
         customer.setRelationName(customerRelationNameTextField.getText());
         customer.setDate(localDateToString(customerBirthDatePicker.getValue()));
+        try {
+            customer.setPhone(customerPhoneTextField.getText());
+            customer.setRelationPhone(customerRelationPhoneTextField.getText());
+        } catch (NumberFormatException e) {
+            available = false;
+            showAlert("[错误]电话格式错误");
+        }
         customer.setRank(customerRankComboBox.getValue());
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         customer.setEnterTime(df.format(new Date()));
@@ -215,10 +221,9 @@ public class CustomerInsertInfoUIController implements Initializable {
                 conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
                 if (conn.getTransactionIsolation() == Connection.TRANSACTION_REPEATABLE_READ) {
                     conn.setTransactionIsolation(TRANSACTION_SERIALIZABLE);
-                    String sql1 = "INSERT INTO NursingHome.historical_customer VALUES ('" + customer.getId() + "','" + customer.getName() + "',1);";
                     String sql = "INSERT INTO NursingHome.customer VALUES " + customer.getCustomerInfo();
                     stmt = conn.createStatement();
-                    stmt.executeUpdate(sql1);
+
                     stmt.executeUpdate(sql);
                     stmt.close();
                     conn.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
@@ -229,7 +234,10 @@ public class CustomerInsertInfoUIController implements Initializable {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            BusinessAdminUIController.setInfoTableView(false, true, customer);
+            displayBed();
+            displayBusiness();
+            displayRoom();
+            //BusinessAdminUIController.setInfoTableView(false, true, customer);
             getApp().floatStage.close();
         }
     }
