@@ -302,7 +302,9 @@ public class CustomerSetInfoUIController implements Initializable {
         customer.setName(customerNameTextField.getText());
         customer.setDate(localDateToString(customerBirthDatePicker.getValue()));
         try {
+            Integer.parseInt(customerPhoneTextField.getText());
             customer.setPhone(customerPhoneTextField.getText());
+            Integer.parseInt(customerRelationPhoneTextField.getText());
             customer.setRelationPhone(customerRelationPhoneTextField.getText());
         } catch (NumberFormatException e) {
             available = false;
