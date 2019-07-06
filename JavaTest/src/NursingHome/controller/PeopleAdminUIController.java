@@ -103,7 +103,7 @@ public class PeopleAdminUIController implements Initializable {
     @FXML
     private JFXComboBox<String> contextComboBox = new JFXComboBox<>();
     @FXML
-    private static ImageView imageView;
+    private static ImageView imageView=new ImageView();
 
     public void setApp(Main app) {
         this.application = app;

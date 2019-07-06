@@ -241,7 +241,8 @@ public class ControllerUtils {
      * @return 返回Image对象
      */
     public static Image showImage(String imageName) {
-        return new Image("file:" + System.getProperty("user.dir") + "/src/NursingHome/img/" + imageName);
+        Image image = new Image("file:" + System.getProperty("user.dir") + "/src/NursingHome/img/" + imageName);
+        return image;
     }
 
     public static void downloadPic() {

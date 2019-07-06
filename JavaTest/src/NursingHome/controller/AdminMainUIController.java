@@ -20,7 +20,7 @@ public class AdminMainUIController implements Initializable {
     @FXML
     Text dateText;
     @FXML
-    private static ImageView imageView;
+    private static ImageView imageView=new ImageView();
 
     public void setApp(Main app) {
         this.application = app;

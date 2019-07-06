@@ -6,7 +6,12 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b39658a6-836c-40d7-993d-e05f082f754b" name="Default Changelist" comment="" />
+    <list default="true" id="b39658a6-836c-40d7-993d-e05f082f754b" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/src/NursingHome/ControllerUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/NursingHome/ControllerUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NursingHome/controller/AdminMainUIController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/NursingHome/controller/AdminMainUIController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NursingHome/controller/BusinessAdminUIController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/NursingHome/controller/BusinessAdminUIController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NursingHome/controller/PeopleAdminUIController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/NursingHome/controller/PeopleAdminUIController.java" afterDir="false" />
+    </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -36,18 +41,18 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/NursingHome/controller/PeopleAdminUIController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="596">
-              <caret line="136" column="5" lean-forward="true" selection-start-line="134" selection-start-column="3" selection-end-line="136" selection-end-column="5" />
+            <state relative-caret-position="454">
+              <caret line="105" column="53" selection-start-line="105" selection-start-column="53" selection-end-line="105" selection-end-column="53" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#4205#4206#0" expanded="true" />
-                <element signature="e#4229#4230#0" expanded="true" />
+                <element signature="e#4181#4182#0" expanded="true" />
+                <element signature="e#4238#4239#0" expanded="true" />
                 <element signature="e#4133#4283#0" />
-                <element signature="e#4487#4488#0" expanded="true" />
-                <element signature="e#4596#4597#0" expanded="true" />
-                <element signature="e#4710#4711#0" expanded="true" />
+                <element signature="e#4503#4504#0" expanded="true" />
+                <element signature="e#4612#4613#0" expanded="true" />
+                <element signature="e#4726#4727#0" expanded="true" />
                 <element signature="e#4605#4725#0" />
-                <element signature="e#4942#4943#0" expanded="true" />
+                <element signature="e#4958#4959#0" expanded="true" />
                 <element signature="e#6356#6941#0" />
                 <element signature="e#6947#7434#0" />
                 <element signature="e#7440#7929#0" />
@@ -76,8 +81,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/NursingHome/controller/AdminMainUIController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="417">
-              <caret line="37" column="19" selection-start-line="37" selection-start-column="19" selection-end-line="37" selection-end-column="19" />
+            <state relative-caret-position="379">
+              <caret line="32" column="13" lean-forward="true" selection-start-line="32" selection-start-column="13" selection-end-line="32" selection-end-column="13" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#999#1000#0" expanded="true" />
@@ -91,11 +96,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/NursingHome/controller/BusinessAdminUIController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="311">
-              <caret line="139" column="23" selection-start-line="139" selection-start-column="23" selection-end-line="139" selection-end-column="23" />
+            <state relative-caret-position="484">
+              <caret line="110" column="53" selection-start-line="110" selection-start-column="53" selection-end-line="110" selection-end-column="53" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#4364#4365#0" expanded="true" />
@@ -108,8 +113,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/NursingHome/ControllerUtils.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="311">
-              <caret line="246" column="30" selection-start-line="246" selection-start-column="30" selection-end-line="246" selection-end-column="30" />
+            <state relative-caret-position="122">
+              <caret line="244" column="21" selection-start-line="244" selection-start-column="21" selection-end-line="244" selection-end-column="21" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="method#showAlert#0;class#ControllerUtils#0" />
@@ -125,17 +130,46 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/NursingHome/controller/UploadImageUIController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-145">
-              <caret line="82" column="24" selection-start-line="82" selection-start-column="24" selection-end-line="82" selection-end-column="24" />
+            <state relative-caret-position="2310">
+              <caret line="109" column="22" lean-forward="true" selection-start-line="109" selection-start-column="22" selection-end-line="109" selection-end-column="22" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#967#968#0" expanded="true" />
                 <element signature="e#992#993#0" expanded="true" />
                 <element signature="e#1035#1036#0" expanded="true" />
                 <element signature="e#1082#1083#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/NursingHome/Main.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="155">
+              <caret line="109" column="68" selection-start-line="109" selection-start-column="68" selection-end-line="109" selection-end-column="68" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="method#createPeopleSetInfoUI#0;class#Main#0" />
+                <element signature="method#createCustomerSetInfoUI#0;class#Main#0" />
+                <element signature="method#createCustomerInsertInfoUI#0;class#Main#0" />
+                <element signature="method#createRecordLookInfoUI#0;class#Main#0" />
+                <element signature="method#createAboutInfoUI#0;class#Main#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/NursingHome/controller/AdminLoginUIController.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="210">
+              <caret line="53" column="24" selection-start-line="53" selection-start-column="24" selection-end-line="53" selection-end-column="24" />
+              <folding>
+                <element signature="imports" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -227,13 +261,13 @@
         <option value="$PROJECT_DIR$/src/NursingHome/controller/PeopleSetInfoUIController.java" />
         <option value="$PROJECT_DIR$/src/NursingHome/GlobalInfo.java" />
         <option value="$PROJECT_DIR$/src/NursingHome/controller/CustomerSetInfoUIController.java" />
-        <option value="$PROJECT_DIR$/src/NursingHome/ControllerUtils.java" />
         <option value="$PROJECT_DIR$/src/NursingHome/controller/AdminLoginUIController.java" />
-        <option value="$PROJECT_DIR$/src/NursingHome/controller/PeopleAdminUIController.java" />
-        <option value="$PROJECT_DIR$/src/NursingHome/controller/AdminMainUIController.java" />
-        <option value="$PROJECT_DIR$/src/NursingHome/controller/BusinessAdminUIController.java" />
         <option value="$PROJECT_DIR$/src/NursingHome/SQLMethod.java" />
         <option value="$PROJECT_DIR$/src/NursingHome/controller/UploadImageUIController.java" />
+        <option value="$PROJECT_DIR$/src/NursingHome/ControllerUtils.java" />
+        <option value="$PROJECT_DIR$/src/NursingHome/controller/AdminMainUIController.java" />
+        <option value="$PROJECT_DIR$/src/NursingHome/controller/PeopleAdminUIController.java" />
+        <option value="$PROJECT_DIR$/src/NursingHome/controller/BusinessAdminUIController.java" />
       </list>
     </option>
   </component>
@@ -397,18 +431,18 @@
       <workItem from="1562294141376" duration="365000" />
       <workItem from="1562294846931" duration="263000" />
       <workItem from="1562311345237" duration="6228000" />
-      <workItem from="1562324355631" duration="9300000" />
+      <workItem from="1562324355631" duration="9812000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="245679000" />
+    <option name="totallyTimeSpent" value="246191000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.35653237" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.35653237" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -417,7 +451,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32959184" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.32959184" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32959184" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -800,10 +834,36 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/NursingHome/SQLMethod.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="8">
+          <caret line="6" selection-start-line="6" selection-end-line="6" />
+          <folding>
+            <element signature="method#changeWorkerPos#0;class#SQLMethod#0" />
+            <element signature="method#newPeople#0;class#SQLMethod#0" />
+            <element signature="method#generateId#0;class#SQLMethod#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/NursingHome/controller/UploadImageUIController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2310">
+          <caret line="109" column="22" lean-forward="true" selection-start-line="109" selection-start-column="22" selection-end-line="109" selection-end-column="22" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#967#968#0" expanded="true" />
+            <element signature="e#992#993#0" expanded="true" />
+            <element signature="e#1035#1036#0" expanded="true" />
+            <element signature="e#1082#1083#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/NursingHome/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="847">
-          <caret line="363" column="21" selection-start-line="363" selection-start-column="8" selection-end-line="363" selection-end-column="21" />
+        <state relative-caret-position="155">
+          <caret line="109" column="68" selection-start-line="109" selection-start-column="68" selection-end-line="109" selection-end-column="68" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#createPeopleSetInfoUI#0;class#Main#0" />
@@ -815,20 +875,64 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/NursingHome/controller/PeopleAdminUIController.java">
+    <entry file="file://$PROJECT_DIR$/src/NursingHome/controller/AdminLoginUIController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="596">
-          <caret line="136" column="5" lean-forward="true" selection-start-line="134" selection-start-column="3" selection-end-line="136" selection-end-column="5" />
+        <state relative-caret-position="210">
+          <caret line="53" column="24" selection-start-line="53" selection-start-column="24" selection-end-line="53" selection-end-column="24" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#4205#4206#0" expanded="true" />
-            <element signature="e#4229#4230#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/NursingHome/ControllerUtils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="122">
+          <caret line="244" column="21" selection-start-line="244" selection-start-column="21" selection-end-line="244" selection-end-column="21" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#showAlert#0;class#ControllerUtils#0" />
+            <element signature="method#md5#0;class#ControllerUtils#0" />
+            <element signature="method#initPeopleComboBox#0;class#ControllerUtils#0" />
+            <element signature="method#changeComboBox#0;class#ControllerUtils#0" />
+            <element signature="method#StringToDate#0;class#ControllerUtils#0" />
+            <element signature="method#initCustomerComboBox#0;class#ControllerUtils#0" />
+            <element signature="method#showtime#0;class#ControllerUtils#0" />
+            <element signature="method#randomPassword#0;class#ControllerUtils#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/NursingHome/controller/AdminMainUIController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="379">
+          <caret line="32" column="13" lean-forward="true" selection-start-line="32" selection-start-column="13" selection-end-line="32" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#999#1000#0" expanded="true" />
+            <element signature="e#1056#1057#0" expanded="true" />
+            <element signature="method#movePeopleAdmin#0;class#AdminMainUIController#0" />
+            <element signature="method#moveBusinessAdmin#0;class#AdminMainUIController#0" />
+            <element signature="method#movePeopleAdminMenu#0;class#AdminMainUIController#0" />
+            <element signature="method#moveBusinessAdminMenu#0;class#AdminMainUIController#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/NursingHome/controller/PeopleAdminUIController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="454">
+          <caret line="105" column="53" selection-start-line="105" selection-start-column="53" selection-end-line="105" selection-end-column="53" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#4181#4182#0" expanded="true" />
+            <element signature="e#4238#4239#0" expanded="true" />
             <element signature="e#4133#4283#0" />
-            <element signature="e#4487#4488#0" expanded="true" />
-            <element signature="e#4596#4597#0" expanded="true" />
-            <element signature="e#4710#4711#0" expanded="true" />
+            <element signature="e#4503#4504#0" expanded="true" />
+            <element signature="e#4612#4613#0" expanded="true" />
+            <element signature="e#4726#4727#0" expanded="true" />
             <element signature="e#4605#4725#0" />
-            <element signature="e#4942#4943#0" expanded="true" />
+            <element signature="e#4958#4959#0" expanded="true" />
             <element signature="e#6356#6941#0" />
             <element signature="e#6947#7434#0" />
             <element signature="e#7440#7929#0" />
@@ -853,84 +957,14 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/NursingHome/controller/AdminMainUIController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="417">
-          <caret line="37" column="19" selection-start-line="37" selection-start-column="19" selection-end-line="37" selection-end-column="19" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#999#1000#0" expanded="true" />
-            <element signature="e#1056#1057#0" expanded="true" />
-            <element signature="method#movePeopleAdmin#0;class#AdminMainUIController#0" />
-            <element signature="method#moveBusinessAdmin#0;class#AdminMainUIController#0" />
-            <element signature="method#movePeopleAdminMenu#0;class#AdminMainUIController#0" />
-            <element signature="method#moveBusinessAdminMenu#0;class#AdminMainUIController#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/NursingHome/controller/BusinessAdminUIController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="311">
-          <caret line="139" column="23" selection-start-line="139" selection-start-column="23" selection-end-line="139" selection-end-column="23" />
+        <state relative-caret-position="484">
+          <caret line="110" column="53" selection-start-line="110" selection-start-column="53" selection-end-line="110" selection-end-column="53" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#4364#4365#0" expanded="true" />
             <element signature="e#4421#4422#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/NursingHome/controller/AdminLoginUIController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="318">
-          <caret line="52" column="19" selection-start-line="52" selection-start-column="19" selection-end-line="52" selection-end-column="19" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/NursingHome/ControllerUtils.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="311">
-          <caret line="246" column="30" selection-start-line="246" selection-start-column="30" selection-end-line="246" selection-end-column="30" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#showAlert#0;class#ControllerUtils#0" />
-            <element signature="method#md5#0;class#ControllerUtils#0" />
-            <element signature="method#initPeopleComboBox#0;class#ControllerUtils#0" />
-            <element signature="method#changeComboBox#0;class#ControllerUtils#0" />
-            <element signature="method#StringToDate#0;class#ControllerUtils#0" />
-            <element signature="method#initCustomerComboBox#0;class#ControllerUtils#0" />
-            <element signature="method#showtime#0;class#ControllerUtils#0" />
-            <element signature="method#randomPassword#0;class#ControllerUtils#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/NursingHome/SQLMethod.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="8">
-          <caret line="6" selection-start-line="6" selection-end-line="6" />
-          <folding>
-            <element signature="method#changeWorkerPos#0;class#SQLMethod#0" />
-            <element signature="method#newPeople#0;class#SQLMethod#0" />
-            <element signature="method#generateId#0;class#SQLMethod#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/NursingHome/controller/UploadImageUIController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-145">
-          <caret line="82" column="24" selection-start-line="82" selection-start-column="24" selection-end-line="82" selection-end-column="24" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#967#968#0" expanded="true" />
-            <element signature="e#992#993#0" expanded="true" />
-            <element signature="e#1035#1036#0" expanded="true" />
-            <element signature="e#1082#1083#0" expanded="true" />
           </folding>
         </state>
       </provider>
