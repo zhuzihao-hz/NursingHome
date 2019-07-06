@@ -20,7 +20,7 @@ public class AdminMainUIController implements Initializable {
     @FXML
     Text dateText;
     @FXML
-    private ImageView imageView;
+    private static ImageView imageView;
 
     public void setApp(Main app) {
         this.application = app;
@@ -33,9 +33,15 @@ public class AdminMainUIController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // 需要修改
-        imageView.setImage(showImage("dummy_potrait.jpg"));
+        //imageView.setImage(showImage("dummy_potrait.jpg"));
+        //downloadPic();
+        flushPic();
         welcome.setText(MANAGER_NAME);
         showtime(dateText);
+    }
+
+    public static void flushPic(){
+        imageView.setImage(showImage("pic1.jpg"));
     }
 
     /**

@@ -108,7 +108,7 @@ public class BusinessAdminUIController implements Initializable {
     @FXML
     private JFXComboBox<String> contextComboBox = new JFXComboBox<>();
     @FXML
-    private ImageView imageView;
+    private static ImageView imageView;
 
     public void setApp(Main app) {
         this.application = app;
@@ -123,6 +123,8 @@ public class BusinessAdminUIController implements Initializable {
         nameLabel.setText(MANAGER_NAME);
         // 需要修改，显示图片
         // imageView.setImage();
+        //downloadPic();
+        flushPic();
         showtime(dateText);
         businessSelected();
         displayBusiness();
@@ -133,6 +135,10 @@ public class BusinessAdminUIController implements Initializable {
         bindRoom();
         displayRecord();
         bindRecord();
+    }
+
+    public static void flushPic(){
+        imageView.setImage(showImage("pic1.jpg"));
     }
 
     /**

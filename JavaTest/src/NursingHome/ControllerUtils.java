@@ -12,9 +12,14 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
@@ -237,5 +242,35 @@ public class ControllerUtils {
      */
     public static Image showImage(String imageName) {
         return new Image("file:" + System.getProperty("user.dir") + "/src/NursingHome/img/" + imageName);
+    }
+
+    public static void downloadPic() {
+        // TODO 显示图片，先从数据库中读取，保存到本地，再重新
+        InputStream in = null;
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306", "root", "12345678");
+            Statement stmt = conn.createStatement();
+            String sql = "select * from NursingHome.manager where manager_id = 'W7'";
+            ResultSet rs = stmt.executeQuery(sql);
+            if (rs.next()) {
+                in = rs.getBinaryStream(4);
+                byte[] b = new byte[in.available()];    //新建保存图片数据的byte数组
+                in.read(b);
+                OutputStream out = new FileOutputStream(System.getProperty("user.dir") + "/src/NursingHome/img/" + "pic1.jpg");
+                out.write(b);
+                out.flush();
+                out.close();
+            }
+            in.close();
+            stmt.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -11,7 +11,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 
@@ -104,7 +103,7 @@ public class PeopleAdminUIController implements Initializable {
     @FXML
     private JFXComboBox<String> contextComboBox = new JFXComboBox<>();
     @FXML
-    private ImageView imageView;
+    private static ImageView imageView;
 
     public void setApp(Main app) {
         this.application = app;
@@ -119,6 +118,8 @@ public class PeopleAdminUIController implements Initializable {
         nameLabel.setText(MANAGER_NAME);
         // 需要修改，增加显示图片
         // imageView.setImage();
+        //downloadPic();
+        flushPic();
         showtime(dateText);
         workerSelected();
         displayDoctor();
@@ -129,6 +130,10 @@ public class PeopleAdminUIController implements Initializable {
         bindWorker();
         displayAdministrator();
         bindAdministrator();
+    }
+
+    public static void flushPic(){
+        imageView.setImage(showImage("pic1.jpg"));
     }
 
     /**
@@ -184,14 +189,14 @@ public class PeopleAdminUIController implements Initializable {
             if (doctorTab.isSelected()) {
                 List<Doctor> doctorSelected = doctorTableView.getSelectionModel().getSelectedItems();
                 if (doctorSelected.size() > 0) {
-                    ChangePasswordUIController.setPeopleId(doctorSelected.get(0).getId());
+                    UploadImageUIController.setId(doctorSelected.get(0).getId());
                     getApp().createUploadImageUI();
                 }
             } else if (doorBoyTab.isSelected()) {
                 List<DoorBoy> doorBoySelected = doorBoyTableView.getSelectionModel().getSelectedItems();
                 if (doorBoySelected.size() > 0) {
                     if (doorBoySelected.get(0).getWorkPlace().equals("前台")) {
-                        ChangePasswordUIController.setPeopleId(doorBoySelected.get(0).getId());
+                        UploadImageUIController.setId(doorBoySelected.get(0).getId());
                         getApp().createUploadImageUI();
                     } else {
                         showAlert("[警告]该员工没有账户！");
@@ -200,7 +205,7 @@ public class PeopleAdminUIController implements Initializable {
             } else if (adminTab.isSelected()) {
                 List<Administrator> adminSelected = adminTableView.getSelectionModel().getSelectedItems();
                 if (adminSelected.size() > 0) {
-                    ChangePasswordUIController.setPeopleId(adminSelected.get(0).getId());
+                    UploadImageUIController.setId(adminSelected.get(0).getId());
                     getApp().createUploadImageUI();
                 }
             } else {
