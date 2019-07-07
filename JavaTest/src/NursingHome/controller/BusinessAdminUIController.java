@@ -105,7 +105,7 @@ public class BusinessAdminUIController implements Initializable {
     @FXML
     private Label nameLabel;
     @FXML
-    private static TextField searchText;
+    private TextField searchText;
     @FXML
     private JFXComboBox<String> contextComboBox = new JFXComboBox<>();
     @FXML

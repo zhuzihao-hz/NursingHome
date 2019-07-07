@@ -24,7 +24,7 @@ public class AdminLoginUIController implements Initializable {
     private JFXTextField managerId;
     private String password;
     private String id;
-    private Image image;
+    private boolean flag;
 
     public AdminLoginUIController() {
     }
@@ -53,7 +53,11 @@ public class AdminLoginUIController implements Initializable {
             downloadPic();
             application.gotoAdminMainUI();
         } else {
-            showAlert("[错误]用户名或密码错误！");
+            if (flag){
+                showAlert("[错误]用户名或密码错误！");
+            }else{
+                showAlert("[错误]用户不存在！");
+            }
         }
     }
 
@@ -71,7 +75,7 @@ public class AdminLoginUIController implements Initializable {
         Connection conn;
         Statement stmt;
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
             if (conn.getTransactionIsolation() == Connection.TRANSACTION_REPEATABLE_READ) {
                 conn.setTransactionIsolation(TRANSACTION_SERIALIZABLE);
@@ -81,6 +85,9 @@ public class AdminLoginUIController implements Initializable {
                 if (rs.next()) {
                     tempPri = rs.getInt(2);
                     password1 = rs.getString(3);
+                    flag = true;
+                } else {
+                    flag = false;
                 }
                 stmt.close();
                 conn.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
