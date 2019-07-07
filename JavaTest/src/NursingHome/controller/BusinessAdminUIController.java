@@ -327,11 +327,10 @@ public class BusinessAdminUIController implements Initializable {
                     conn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
                     if (conn.getTransactionIsolation() == Connection.TRANSACTION_REPEATABLE_READ) {
                         conn.setTransactionIsolation(TRANSACTION_SERIALIZABLE);
-                        String sql = "DELETE FROM NursingHome.customer WHERE customer_id='" + customerSelected.get(i).getId() + "'";
-                        String sql1 = "UPDATE NursingHome.historical_customer SET customer_status=0 WHERE customer_id='" + customerSelected.get(i).getId() + "'";
+                        System.out.println(customerSelected.get(i).getId());
+                        String sql = "DELETE FROM NursingHome.customer WHERE customer_id='" + customerSelected.get(i).getId() + "';";
                         stmt = conn.createStatement();
                         stmt.executeUpdate(sql);
-                        stmt.executeUpdate(sql1);
                         stmt.close();
                         conn.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
                     }
@@ -344,6 +343,8 @@ public class BusinessAdminUIController implements Initializable {
             }
             displayBusiness();
             bindBusiness();
+            displayRecord();
+            bindRecord();
             System.out.println("删除Customer成功");
         } else {
             showAlert("[警告]您没有删除客户的权限！");
