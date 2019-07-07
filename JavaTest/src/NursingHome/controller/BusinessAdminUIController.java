@@ -107,7 +107,7 @@ public class BusinessAdminUIController implements Initializable {
     @FXML
     private static TextField searchText;
     @FXML
-    private static JFXComboBox<String> contextComboBox = new JFXComboBox<>();
+    private JFXComboBox<String> contextComboBox = new JFXComboBox<>();
     @FXML
     private ImageView imageView;
 
@@ -450,7 +450,7 @@ public class BusinessAdminUIController implements Initializable {
      * @param isRecord 是否是记录信息
      * @param isInsert 是否是插入信息
      * @param object   修改或插入信息的对象
-     *//*
+     */
     public static void setInfoTableView(boolean isRecord, boolean isInsert, Object object) {
         if (isRecord) {
             Record record = (Record) object;
@@ -480,7 +480,6 @@ public class BusinessAdminUIController implements Initializable {
             }
         }
     }
-    */
 
     /**
      * 绑定并显示业务数据
@@ -550,7 +549,7 @@ public class BusinessAdminUIController implements Initializable {
     /**
      * 加载业务数据
      */
-    public static void displayBusiness() {
+    public void displayBusiness() {
         customerObservableList.clear();
         // TODO 显示客户信息
         Connection conn;
@@ -624,7 +623,7 @@ public class BusinessAdminUIController implements Initializable {
     /**
      * 加载床位数据
      */
-    public static void displayBed() {
+    public void displayBed() {
         bedObservableList.clear();
         // TODO 显示床位信息
         Connection conn;
@@ -671,7 +670,7 @@ public class BusinessAdminUIController implements Initializable {
     /**
      * 加载房间数据
      */
-    public static void displayRoom() {
+    public void displayRoom() {
         roomObservableList.clear();
         // TODO 显示房间信息
         Connection conn;
@@ -722,7 +721,7 @@ public class BusinessAdminUIController implements Initializable {
     /**
      * 加载记录数据
      */
-    public static void displayRecord() {
+    public void displayRecord() {
         recordObservableList.clear();
         Connection conn;
         Statement stmt;

@@ -198,9 +198,12 @@ public class SQLMethod {
                 if (rs.next()) {
                     N = rs.getInt(1);
                 }
-                if (sql1.equals("")) {
+                if (!sql1.equals("")) {
                     ResultSet rs1 = stmt.executeQuery(sql1);
-                    N = (N > rs1.getInt(1)) ? N : rs1.getInt(1);
+                    if (rs1.next()) {
+                        int temp = rs1.getInt(1);
+                        N = Math.max(N, temp);
+                    }
                 }
                 rs.close();
                 stmt.close();

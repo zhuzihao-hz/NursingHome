@@ -18,7 +18,6 @@ import java.util.ResourceBundle;
 import static NursingHome.ControllerUtils.*;
 import static NursingHome.GlobalInfo.MANAGER_ID;
 import static NursingHome.SQLMethod.*;
-import static NursingHome.controller.BusinessAdminUIController.displayRecord;
 import static java.sql.Connection.TRANSACTION_SERIALIZABLE;
 
 public class RecordInsertUIController implements Initializable {
@@ -123,8 +122,7 @@ public class RecordInsertUIController implements Initializable {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            displayRecord();
-            //BusinessAdminUIController.setInfoTableView(true, true, record);
+            BusinessAdminUIController.setInfoTableView(true, true, record);
             backToBusinessAdmin();
         }
     }
