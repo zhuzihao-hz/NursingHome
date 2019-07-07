@@ -180,7 +180,7 @@ public class CustomerSetInfoUIController implements Initializable {
                 if (conn.getTransactionIsolation() == Connection.TRANSACTION_REPEATABLE_READ) {
                     conn.setTransactionIsolation(TRANSACTION_SERIALIZABLE);
                     String sql = "UPDATE NursingHome.bed SET bed_status=0 WHERE bed_id='" + customer.getBedID() + "' AND bed_roomid='" + customer.getRoomID() + "';";
-                    String sql1 = "UPDATE Nursinghome.room SET room_usedbed=room_usedbed-1 WHERE room_id='" + customer.getRoomID() + "';";
+                    String sql1 = "UPDATE NursingHome.room SET room_usedbed=room_usedbed-1 WHERE room_id='" + customer.getRoomID() + "';";
                     stmt = conn.createStatement();
                     stmt.executeUpdate(sql);
                     stmt.executeUpdate(sql1);
@@ -208,7 +208,7 @@ public class CustomerSetInfoUIController implements Initializable {
                         bedIdNew = rs.getString(1);
                     }
                     String sql1 = "UPDATE NursingHome.bed SET bed_status=1 WHERE bed_id='" + bedIdNew + "' AND bed_roomid='" + roomIdNew + "';";
-                    String sql2 = "UPDATE Nursinghome.room SET room_usedbed=room_usedbed+1 WHERE room_id='" + roomIdNew + "';";
+                    String sql2 = "UPDATE NursingHome.room SET room_usedbed=room_usedbed+1 WHERE room_id='" + roomIdNew + "';";
                     stmt.executeUpdate(sql1);
                     stmt.executeUpdate(sql2);
                     stmt.close();
