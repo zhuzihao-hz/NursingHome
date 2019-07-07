@@ -24,7 +24,7 @@ import static java.sql.Connection.TRANSACTION_SERIALIZABLE;
 public class CustomerSetInfoUIController implements Initializable {
     private Main application;
     private static Customer customer;
-    private boolean available = false;
+    private boolean available = true;
     @FXML
     private Label customerIdLabel;
     @FXML
@@ -300,24 +300,27 @@ public class CustomerSetInfoUIController implements Initializable {
      */
     public void saveCustomerInfo() {
         // TODO 保存修改的客户信息
+        available = true;
         customer.setName(customerNameTextField.getText());
         customer.setDate(localDateToString(customerBirthDatePicker.getValue()));
         customer.setRelation(customerRelationTextField.getText());
         customer.setRelationName(customerRelationNameTextField.getText());
         customer.setEnterTime(ControllerUtils.localDateToString(customerEnterTimeDatePicker.getValue()));
+        if (StringUtils.isStrictlyNumeric(customerPhoneTextField.getText()) && StringUtils.isStrictlyNumeric(customerRelationPhoneTextField.getText())) {
+            customer.setPhone(customerPhoneTextField.getText());
+            customer.setRelationPhone(customerRelationPhoneTextField.getText());
+        } else {
+            available = false;
+            showAlert("[错误]电话格式错误");
+        }
 
         // TODO 如果客户改变护理等级、护工等级、房间等级，需要重新分配
 
         // TODO 将该客户重新分配一个护工
-        customer = autoAllocate(customer, customer.getRank());
-
-        if (StringUtils.isStrictlyNumeric(customerPhoneTextField.getText()) && StringUtils.isStrictlyNumeric(customerRelationPhoneTextField.getText())) {
-            customer.setPhone(customerPhoneTextField.getText());
-            customer.setRelationPhone(customerRelationPhoneTextField.getText());
-        }else{
-            available=false;
-            showAlert("[错误]电话格式错误");
+        if (available) {
+            customer = autoAllocate(customer, customer.getRank());
         }
+
         if (available) {
             // TODO 保存修改的信息
             Connection conn;

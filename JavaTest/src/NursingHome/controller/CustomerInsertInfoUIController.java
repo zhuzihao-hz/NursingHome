@@ -24,7 +24,7 @@ import static java.sql.Connection.TRANSACTION_SERIALIZABLE;
 
 public class CustomerInsertInfoUIController implements Initializable {
     private Main application;
-    private boolean available = false;
+    private boolean available = true;
     @FXML
     private Label customerIdLabel;
     @FXML
@@ -191,6 +191,7 @@ public class CustomerInsertInfoUIController implements Initializable {
      * 保存插入的客户信息
      */
     public void insertCustomerInfo() {
+        available = true;
         Customer customer = new Customer();
         customer.setId(customerIdLabel.getText());
         customer.setName(customerNameTextField.getText());
@@ -200,20 +201,22 @@ public class CustomerInsertInfoUIController implements Initializable {
         customer.setRank(customerRankComboBox.getValue());
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         customer.setEnterTime(df.format(new Date()));
+        if (StringUtils.isStrictlyNumeric(customerPhoneTextField.getText()) && StringUtils.isStrictlyNumeric(customerRelationPhoneTextField.getText())) {
+            customer.setPhone(customerPhoneTextField.getText());
+            customer.setRelationPhone(customerRelationPhoneTextField.getText());
+        } else {
+            available = false;
+            showAlert("[错误]电话格式错误");
+        }
 
         int rank = customerRankComboBox.getValue();
         String workerRank = customerWorkerRankComboBox.getValue();
         String roomRank = customerRoomRankComboBox.getValue();
 
-        customer = autoAllocate(customer, rank, workerRank, roomRank);
-
-        if (StringUtils.isStrictlyNumeric(customerPhoneTextField.getText()) && StringUtils.isStrictlyNumeric(customerRelationPhoneTextField.getText())) {
-            customer.setPhone(customerPhoneTextField.getText());
-            customer.setRelationPhone(customerRelationPhoneTextField.getText());
-        }else{
-            available=false;
-            showAlert("[错误]电话格式错误");
+        if (available) {
+            customer = autoAllocate(customer, rank, workerRank, roomRank);
         }
+
         if (available) {
             Connection conn;
             Statement stmt;
