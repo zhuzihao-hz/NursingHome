@@ -212,6 +212,9 @@ public class PeopleSetInfoUIController implements Initializable {
                     worker.setName(peopleNameTextField.getText());
                     try {
                         worker.setSalary(Double.valueOf(peopleSalaryTextField.getText()));
+                        if (Double.valueOf(peopleSalaryTextField.getText())<0){
+                            throw new NumberFormatException();
+                        }
                     } catch (NumberFormatException e) {
                         insertFailed = true;
                         showAlert("[错误]薪水格式错误");
@@ -232,6 +235,9 @@ public class PeopleSetInfoUIController implements Initializable {
                     doctor.setName(peopleNameTextField.getText());
                     try {
                         doctor.setSalary(Double.valueOf(peopleSalaryTextField.getText()));
+                        if (Double.valueOf(peopleSalaryTextField.getText())<0){
+                            throw new NumberFormatException();
+                        }
                     } catch (NumberFormatException e) {
                         insertFailed = true;
                         showAlert("[错误]薪水格式错误");
@@ -252,6 +258,9 @@ public class PeopleSetInfoUIController implements Initializable {
                     doorBoy.setName(peopleNameTextField.getText());
                     try {
                         doorBoy.setSalary(Double.valueOf(peopleSalaryTextField.getText()));
+                        if (Double.valueOf(peopleSalaryTextField.getText())<0){
+                            throw new NumberFormatException();
+                        }
                     } catch (NumberFormatException e) {
                         insertFailed = true;
                         showAlert("[错误]薪水格式错误");
@@ -275,6 +284,9 @@ public class PeopleSetInfoUIController implements Initializable {
                     admin.setName(peopleNameTextField.getText());
                     try {
                         admin.setSalary(Double.valueOf(peopleSalaryTextField.getText()));
+                        if (Double.valueOf(peopleSalaryTextField.getText())<0){
+                            throw new NumberFormatException();
+                        }
                     } catch (NumberFormatException e) {
                         insertFailed = true;
                         showAlert("[错误]薪水格式错误");
@@ -329,6 +341,9 @@ public class PeopleSetInfoUIController implements Initializable {
                     worker.setName(peopleNameTextField.getText());
                     try {
                         worker.setSalary(Double.valueOf(peopleSalaryTextField.getText()));
+                        if (Double.valueOf(peopleSalaryTextField.getText())<0){
+                            throw new NumberFormatException();
+                        }
                     } catch (NumberFormatException e) {
                         insertFailed = true;
                         showAlert("[错误]薪水格式错误");
@@ -369,6 +384,9 @@ public class PeopleSetInfoUIController implements Initializable {
                     doctor.setName(peopleNameTextField.getText());
                     try {
                         doctor.setSalary(Double.valueOf(peopleSalaryTextField.getText()));
+                        if (Double.valueOf(peopleSalaryTextField.getText())<0){
+                            throw new NumberFormatException();
+                        }
                     } catch (NumberFormatException e) {
                         insertFailed = true;
                         showAlert("[错误]薪水格式错误");
@@ -406,6 +424,9 @@ public class PeopleSetInfoUIController implements Initializable {
                     doorBoy.setName(peopleNameTextField.getText());
                     try {
                         doorBoy.setSalary(Double.valueOf(peopleSalaryTextField.getText()));
+                        if (Double.valueOf(peopleSalaryTextField.getText())<0){
+                            throw new NumberFormatException();
+                        }
                     } catch (NumberFormatException e) {
                         insertFailed = true;
                         showAlert("[错误]薪水格式错误");
@@ -473,6 +494,9 @@ public class PeopleSetInfoUIController implements Initializable {
                     admin.setName(peopleNameTextField.getText());
                     try {
                         admin.setSalary(Double.valueOf(peopleSalaryTextField.getText()));
+                        if (Double.valueOf(peopleSalaryTextField.getText())<0){
+                            throw new NumberFormatException();
+                        }
                     } catch (NumberFormatException e) {
                         insertFailed = true;
                         showAlert("[错误]薪水格式错误");
