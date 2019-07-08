@@ -226,7 +226,6 @@ public class CustomerInsertInfoUIController implements Initializable {
                     conn.setTransactionIsolation(TRANSACTION_SERIALIZABLE);
                     String sql = "INSERT INTO NursingHome.customer VALUES " + customer.getCustomerInfo();
                     stmt = conn.createStatement();
-
                     stmt.executeUpdate(sql);
                     stmt.close();
                     conn.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);

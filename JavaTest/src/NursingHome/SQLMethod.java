@@ -35,21 +35,21 @@ public class SQLMethod {
                     Doctor doctor = ((Doctor) object);
                     showAlert("[提示]该医生的密码为：" + tempPassword);
                     sql = "INSERT INTO NursingHome.manager VALUES ('" + doctor.getId() + "',2,'" + md5(tempPassword) + "', null);";
-                    sql1 = "UPDATE NursingHome.manager SET manager_pic = (SELECT pic FROM NursingHome.defaultpic WHERE pic_id = 'P1') WHERE manager_id = " + doctor.getId() + ";";
+                    sql1 = "UPDATE NursingHome.manager SET manager_pic = (SELECT pic FROM NursingHome.defaultpic WHERE pic_id = 'P1') WHERE manager_id = '" + doctor.getId() + "';";
                 } else if (object.getClass().getName().equals("NursingHome.dataclass.DoorBoy")) {
                     DoorBoy doorBoy = ((DoorBoy) object);
                     showAlert("[提示]该前台人员的密码为：" + tempPassword);
                     sql = "INSERT INTO NursingHome.manager VALUES ('" + doorBoy.getId() + "',3,'" + md5(tempPassword) + "', null);";
-                    sql1 = "UPDATE NursingHome.manager SET manager_pic = (SELECT pic FROM NursingHome.defaultpic WHERE pic_id = 'P1') WHERE manager_id = " + doorBoy.getId() + ";";
+                    sql1 = "UPDATE NursingHome.manager SET manager_pic = (SELECT pic FROM NursingHome.defaultpic WHERE pic_id = 'P1') WHERE manager_id = '" + doorBoy.getId() + "';";
                 } else if (object.getClass().getName().equals("NursingHome.dataclass.Administrator")) {
                     Administrator admin = ((Administrator) object);
                     showAlert("[提示]该行政人员的密码为：" + tempPassword);
                     if (admin.getPosition().equals("主管")) {
                         sql = "INSERT INTO NursingHome.manager VALUES ('" + admin.getId() + "',0,'" + md5(tempPassword) + "', null);";
-                        sql1 = "UPDATE NursingHome.manager SET manager_pic = (SELECT pic FROM NursingHome.defaultpic WHERE pic_id = 'P1') WHERE manager_id = " + admin.getId() + ";";
+                        sql1 = "UPDATE NursingHome.manager SET manager_pic = (SELECT pic FROM NursingHome.defaultpic WHERE pic_id = 'P1') WHERE manager_id = '" + admin.getId() + "';";
                     } else {
                         sql = "INSERT INTO NursingHome.manager VALUES ('" + admin.getId() + "',1,'" + md5(tempPassword) + "', null);";
-                        sql1 = "UPDATE NursingHome.manager SET manager_pic = (SELECT pic FROM NursingHome.defaultpic WHERE pic_id = 'P1') WHERE manager_id = " + admin.getId() + ";";
+                        sql1 = "UPDATE NursingHome.manager SET manager_pic = (SELECT pic FROM NursingHome.defaultpic WHERE pic_id = 'P1') WHERE manager_id = '" + admin.getId() + "';";
                     }
                 }
                 stmt = conn.createStatement();
@@ -202,7 +202,7 @@ public class SQLMethod {
                     ResultSet rs1 = stmt.executeQuery(sql1);
                     if (rs1.next()) {
                         int temp = rs1.getInt(1);
-                        N = Math.max(N, temp);
+                        N = N + temp;
                     }
                 }
                 rs.close();
